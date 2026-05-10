@@ -1,13 +1,15 @@
 import { useLang } from '@/hooks/useLang';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import ViewHeader from '@/components/ViewHeader';
 
 export default function SettingsView() {
   const { t, lang } = useLang();
+  const isMobile = useIsMobile();
 
   return (
     <div style={{ flex: 1, overflow: 'auto' }}>
       <ViewHeader titleKey="nav.settings" subtitleKey="settings.subtitle" rightRaw="OC#0001" />
-      <div style={{ maxWidth: 720, margin: '24px auto', padding: '0 56px 80px' }}>
+      <div style={{ maxWidth: 720, margin: '24px auto', padding: isMobile ? '0 16px 40px' : '0 56px 80px' }}>
         <SettingsSection title={t('settings.section.character')}>
           <SettingsRow label={t('settings.name')} hint={t('settings.name.hint')}>
             <input defaultValue="XZ" style={settingsInput} />
@@ -70,6 +72,6 @@ function SettingsRow({ label, hint, children }: { label: string; hint?: string; 
 const settingsInput: React.CSSProperties = {
   padding: '7px 12px', border: '1px solid var(--line)', background: 'var(--glass-bg-strong)',
   fontSize: 13, color: 'var(--ink)', outline: 'none', borderRadius: 8,
-  fontFamily: 'inherit', minWidth: 160,
+  fontFamily: 'inherit', minWidth: 120, maxWidth: '100%',
   backdropFilter: 'blur(10px)',
 };

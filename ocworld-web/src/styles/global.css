@@ -203,10 +203,20 @@ img { image-rendering: auto; }
 
 ::selection { background: var(--accent); color: #FFFFFF; }
 
-/* Responsive: web端全屏适配 */
+/* Responsive */
+:root {
+  --page-px: 56px;
+  --page-py-top: 32px;
+  --page-py-bottom: 60px;
+}
+
 @media (max-width: 768px) {
+  :root {
+    --page-px: 16px;
+    --page-py-top: 16px;
+    --page-py-bottom: 24px;
+  }
   .glass, .glass-strong, .glass-soft {
     clip-path: none !important;
-    border-radius: 12px !important;
   }
 }

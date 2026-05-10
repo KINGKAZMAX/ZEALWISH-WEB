@@ -1,8 +1,10 @@
 import { useLang } from '@/hooks/useLang';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import ViewHeader from '@/components/ViewHeader';
 
 export default function RewindView() {
   const { t, lang } = useLang();
+  const isMobile = useIsMobile();
 
   const days = lang === 'en' ? [
     { time: 'Today · 14:32', body: 'They drew you a tiny card: a cup of coffee, still steaming.', hl: true, tone: 'sketch · coffee' },
@@ -23,7 +25,7 @@ export default function RewindView() {
   return (
     <div style={{ flex: 1, overflow: 'auto' }}>
       <ViewHeader titleKey="nav.rewind" subtitleKey="rewind.subtitle" rightRaw="6 / 412" />
-      <div style={{ maxWidth: 720, margin: '24px auto', padding: '0 56px 80px' }}>
+      <div style={{ maxWidth: 720, margin: '24px auto', padding: isMobile ? '0 16px 40px' : '0 56px 80px' }}>
         <div className="glass-soft" style={{
           padding: '14px 18px', marginBottom: 28,
           borderRadius: 14,

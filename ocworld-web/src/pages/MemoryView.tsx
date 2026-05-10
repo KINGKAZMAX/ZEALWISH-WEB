@@ -1,9 +1,11 @@
 import { useLang } from '@/hooks/useLang';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import ViewHeader from '@/components/ViewHeader';
 import { IconSearch } from '@/components/Icons';
 
 export default function MemoryView() {
   const { t, lang } = useLang();
+  const isMobile = useIsMobile();
 
   const groups = lang === 'en' ? [
     { titleKey: 'record.group.you', count: 12, items: [
@@ -42,7 +44,7 @@ export default function MemoryView() {
   return (
     <div style={{ flex: 1, overflow: 'auto' }}>
       <ViewHeader titleKey="nav.memory" subtitleKey="record.subtitle" rightRaw={`21 ${t('record.items')}`} />
-      <div style={{ maxWidth: 940, margin: '24px auto', padding: '0 56px 80px' }}>
+      <div style={{ maxWidth: 940, margin: '24px auto', padding: isMobile ? '0 16px 40px' : '0 56px 80px' }}>
         <div className="glass-soft" style={{
           display: 'flex', gap: 10, alignItems: 'center', marginBottom: 18,
           padding: '10px 14px', borderRadius: 12,
@@ -55,7 +57,7 @@ export default function MemoryView() {
           <span className="mono" style={{ fontSize: 10, color: 'var(--ink-faint)', letterSpacing: '0.16em' }}>21 {t('record.items')}</span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 14 }}>
           {groups.map((g, i) => (
             <div key={i} className="glass-strong" style={{
               borderRadius: 14, overflow: 'hidden',

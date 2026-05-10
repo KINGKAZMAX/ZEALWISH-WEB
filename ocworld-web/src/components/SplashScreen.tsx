@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLang } from '@/hooks/useLang';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import OCMark from './OCMark';
 
 interface SplashScreenProps {
@@ -10,6 +11,7 @@ interface SplashScreenProps {
 
 export default function SplashScreen({ onEnter, onCreateOc, fadingOut }: SplashScreenProps) {
   const { lang } = useLang();
+  const isMobile = useIsMobile();
   const [shown, setShown] = useState(0);
   const [ready, setReady] = useState(false);
 
@@ -41,8 +43,8 @@ export default function SplashScreen({ onEnter, onCreateOc, fadingOut }: SplashS
         position: 'absolute', inset: 0, zIndex: 100,
         background: 'var(--bg-base)',
         userSelect: 'none', overflow: 'hidden',
-        display: 'grid',
-        gridTemplateColumns: '1.35fr 1fr',
+        display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
       }}
     >
       {/* drifting blobs */}
@@ -101,10 +103,12 @@ export default function SplashScreen({ onEnter, onCreateOc, fadingOut }: SplashS
       {/* LEFT — type column */}
       <div style={{
         position: 'relative',
+        flex: isMobile ? 1 : '1.35',
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
-        padding: '60px 56px 60px 72px',
+        padding: isMobile ? '50px 20px 24px' : '60px 56px 60px 72px',
         minWidth: 0,
         filter: 'brightness(1.35)',
+        overflow: isMobile ? 'auto' : undefined,
       }}>
         {/* eyebrow */}
         <div className="glass-soft" style={{
@@ -123,7 +127,7 @@ export default function SplashScreen({ onEnter, onCreateOc, fadingOut }: SplashS
         {/* HERO */}
         <h1 className="heitai" style={{
           margin: 0,
-          fontSize: 'clamp(64px, 7.6vw, 116px)',
+          fontSize: isMobile ? 'clamp(36px, 10vw, 52px)' : 'clamp(64px, 7.6vw, 116px)',
           lineHeight: 0.94,
           color: 'var(--ink)',
           letterSpacing: '-0.03em',
@@ -172,13 +176,14 @@ export default function SplashScreen({ onEnter, onCreateOc, fadingOut }: SplashS
         {/* boot log + CTA */}
         <div style={{
           marginTop: 30,
-          display: 'flex', alignItems: 'flex-end', gap: 32,
+          display: 'flex', alignItems: isMobile ? 'stretch' : 'flex-end',
+          flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 16 : 32,
           flexWrap: 'wrap',
         }}>
           <div className="mono" style={{
             fontSize: 11.5, lineHeight: 1.85,
             color: 'rgba(255,255,255,0.66)',
-            minHeight: 96, minWidth: 280,
+            minHeight: 96, minWidth: isMobile ? 0 : 280,
             paddingLeft: 14,
             borderLeft: '2px solid var(--accent)',
           }}>
@@ -244,7 +249,7 @@ export default function SplashScreen({ onEnter, onCreateOc, fadingOut }: SplashS
 
         {/* footer marker */}
         <div className="mono" style={{
-          position: 'absolute', bottom: 28, left: 72,
+          position: 'absolute', bottom: 28, left: isMobile ? 20 : 72,
           fontSize: 10, letterSpacing: '0.22em',
           color: 'var(--ink-faint)', textTransform: 'uppercase',
           display: 'flex', gap: 16,
@@ -255,11 +260,13 @@ export default function SplashScreen({ onEnter, onCreateOc, fadingOut }: SplashS
         </div>
       </div>
 
-      {/* RIGHT — OC stage */}
+      {/* RIGHT — OC stage (hidden on mobile) */}
       <div style={{
         position: 'relative',
-        borderLeft: '1px solid var(--line-soft)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        flex: 1,
+        borderLeft: isMobile ? 'none' : '1px solid var(--line-soft)',
+        display: isMobile ? 'none' : 'flex',
+        alignItems: 'center', justifyContent: 'center',
         padding: '60px 30px',
         overflow: 'hidden',
       }}>
