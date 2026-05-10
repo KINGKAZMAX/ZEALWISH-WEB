@@ -58,7 +58,7 @@ app.post('/api/generate-image', async (req, res) => {
   }
 
   try {
-    const response = await fetch(`${IMAGE_BASE_URL}/images/generations`, {
+    const response = await fetchWithRetry(`${IMAGE_BASE_URL}/images/generations`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ app.post('/api/generate-image', async (req, res) => {
         size: imageSize || ({ '16:9': '1536x1024', '9:16': '1024x1536' }[aspectRatio] || '1024x1024'),
         response_format: 'b64_json',
       }),
-    });
+    }, { timeout: 55000 });
 
     if (!response.ok) {
       const errText = await response.text();
@@ -104,7 +104,7 @@ app.post('/api/analyze-photo', async (req, res) => {
   }
 
   try {
-    const response = await fetch(`${VISION_BASE_URL}/chat/completions`, {
+    const response = await fetchWithRetry(`${VISION_BASE_URL}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ app.post('/api/analyze-photo', async (req, res) => {
         }],
         max_tokens: 600,
       }),
-    });
+    }, { timeout: 25000 });
 
     if (!response.ok) {
       const errText = await response.text();
@@ -293,6 +293,34 @@ app.get('/api/runtime-status', (_req, res) => {
     airjelly: { source: 'mock' },
   });
 });
+
+async function fetchWithRetry(url, options, { maxRetries = 2, baseDelay = 1000, timeout = 25000 } = {}) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeout);
+    try {
+      const res = await fetch(url, { ...options, signal: controller.signal });
+      clearTimeout(timer);
+      if (res.ok || res.status < 500) return res;
+      if (attempt < maxRetries) {
+        const delay = baseDelay * Math.pow(2, attempt);
+        console.log(`[retry] ${res.status} on attempt ${attempt + 1}, waiting ${delay}ms`);
+        await new Promise(r => setTimeout(r, delay));
+        continue;
+      }
+      return res;
+    } catch (err) {
+      clearTimeout(timer);
+      if (attempt < maxRetries && (err.name === 'AbortError' || err.code === 'ECONNRESET')) {
+        const delay = baseDelay * Math.pow(2, attempt);
+        console.log(`[retry] ${err.name} on attempt ${attempt + 1}, waiting ${delay}ms`);
+        await new Promise(r => setTimeout(r, delay));
+        continue;
+      }
+      throw err;
+    }
+  }
+}
 
 const PORT = process.env.API_PORT || 7291;
 app.listen(PORT, () => {

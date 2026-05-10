@@ -42,17 +42,27 @@ export interface RuntimeStatus {
   airjelly: { source?: string } | null;
 }
 
-async function post<T>(path: string, body: unknown): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(err || `HTTP ${res.status}`);
+async function post<T>(path: string, body: unknown, timeoutMs = 60000): Promise<T> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(`${API_BASE}${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || `HTTP ${res.status}`);
+    }
+    return res.json();
+  } catch (err: any) {
+    if (err.name === 'AbortError') throw new Error('请求超时，请重试');
+    throw err;
+  } finally {
+    clearTimeout(timer);
   }
-  return res.json();
 }
 
 async function get<T>(path: string): Promise<T> {
@@ -72,12 +82,12 @@ export const api = {
 
   /** Generate an OC portrait image */
   async generateImage(payload: ImageGenPayload): Promise<ImageGenResponse> {
-    return post<ImageGenResponse>('/generate-image', payload);
+    return post<ImageGenResponse>('/generate-image', payload, 120000);
   },
 
   /** Analyze a photo to extract appearance keywords */
   async analyzePhoto(payload: AnalyzePhotoPayload): Promise<AnalyzePhotoResponse> {
-    return post<AnalyzePhotoResponse>('/analyze-photo', payload);
+    return post<AnalyzePhotoResponse>('/analyze-photo', payload, 45000);
   },
 
   /** Get runtime status (Hermes, TTS, AirJelly) */
