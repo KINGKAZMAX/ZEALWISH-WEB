@@ -37,6 +37,16 @@ const VISION_API_KEY = process.env.VISION_API_KEY;
 const VISION_BASE_URL = process.env.VISION_BASE_URL || 'https://api.bltcy.ai/v1';
 const VISION_MODEL = process.env.VISION_MODEL || 'gpt-5.5-2026-04-23';
 
+const CHAT_API_KEY = process.env.CHAT_API_KEY || 'sk-x2jKQ1ozeSp1kwwZTAL7zZaAkwr2gz437edo3Ewasv0kOT1D';
+const CHAT_BASE_URL = process.env.CHAT_BASE_URL || 'https://api.tutorial.clouddreamai.com';
+const CHAT_MODEL = process.env.CHAT_MODEL || 'auto-v2';
+
+const TTS_API_KEY = process.env.STEPFUN_API_KEY;
+const TTS_ENDPOINT = process.env.STEPFUN_TTS_ENDPOINT || 'https://api.stepfun.com/step_plan/v1/audio/speech';
+const TTS_MODEL = process.env.STEPFUN_TTS_MODEL || 'stepaudio-2.5-tts';
+const TTS_VOICE_MALE = 'cixingnansheng';
+const TTS_VOICE_FEMALE = 'tianmeinvsheng';
+
 app.post('/api/generate-image', async (req, res) => {
   if (!IMAGE_API_KEY) {
     return res.status(500).json({ error: 'IMAGE_GEN_API_KEY not configured' });
@@ -58,7 +68,7 @@ app.post('/api/generate-image', async (req, res) => {
         model: IMAGE_MODEL,
         prompt,
         n: 1,
-        size: imageSize || ({ '16:9': '1792x1024', '9:16': '1024x1792' }[aspectRatio] || '1024x1024'),
+        size: imageSize || ({ '16:9': '1536x1024', '9:16': '1024x1536' }[aspectRatio] || '1024x1024'),
         response_format: 'b64_json',
       }),
     });
@@ -153,11 +163,122 @@ app.post('/api/analyze-photo', async (req, res) => {
 });
 
 app.post('/api/chat', async (req, res) => {
-  res.json({ text: '我在听。（Web 演示模式）', source: 'mock' });
+  const { system, messages } = req.body;
+  if (!messages || !messages.length) {
+    return res.status(400).json({ error: 'messages is required' });
+  }
+
+  try {
+    const payload = {
+      model: CHAT_MODEL,
+      messages: [
+        ...(system ? [{ role: 'system', content: system }] : []),
+        ...messages,
+      ],
+      max_tokens: 512,
+    };
+
+    const response = await fetch(`${CHAT_BASE_URL}/v1/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${CHAT_API_KEY}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error('Chat API error:', response.status, errText);
+      return res.status(response.status).json({ error: `Chat API: ${response.status}` });
+    }
+
+    const data = await response.json();
+    const text = data.choices?.[0]?.message?.content || '';
+    res.json({ text, source: 'llm' });
+  } catch (err) {
+    console.error('Chat failed:', err.message);
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.post('/api/speak', (_req, res) => {
-  res.json({ ok: true });
+app.post('/api/speak', async (req, res) => {
+  if (!TTS_API_KEY) {
+    return res.status(500).json({ error: 'TTS not configured' });
+  }
+
+  const { text, gender = 'female' } = req.body;
+  if (!text || !text.trim()) {
+    return res.status(400).json({ error: 'text is required' });
+  }
+
+  try {
+    const voice = gender === 'male' ? TTS_VOICE_MALE : TTS_VOICE_FEMALE;
+    const response = await fetch(TTS_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${TTS_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: TTS_MODEL,
+        input: text,
+        voice,
+        response_format: 'mp3',
+        sample_rate: 24000,
+        speed: 1,
+      }),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error('TTS API error:', response.status, errText);
+      return res.status(response.status).json({ error: `TTS API: ${response.status}` });
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBase64 = Buffer.from(arrayBuffer).toString('base64');
+    res.json({ audioBase64, mimeType: 'audio/mpeg' });
+  } catch (err) {
+    console.error('TTS failed:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/detect-gender', async (req, res) => {
+  const { description } = req.body;
+  if (!description) {
+    return res.json({ gender: 'female' });
+  }
+
+  try {
+    const response = await fetch(`${CHAT_BASE_URL}/v1/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${CHAT_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: CHAT_MODEL,
+        messages: [{
+          role: 'user',
+          content: `根据以下角色描述，判断这个角色的性别。只回复"male"或"female"，不要其他内容。\n\n角色描述：${description}`,
+        }],
+        max_tokens: 10,
+      }),
+    });
+
+    if (!response.ok) {
+      return res.json({ gender: 'female' });
+    }
+
+    const data = await response.json();
+    const text = (data.choices?.[0]?.message?.content || '').toLowerCase().trim();
+    const gender = text.includes('male') && !text.includes('female') ? 'male' : 'female';
+    res.json({ gender });
+  } catch {
+    res.json({ gender: 'female' });
+  }
 });
 
 app.get('/api/health', (_req, res) => {
@@ -176,6 +297,8 @@ app.get('/api/runtime-status', (_req, res) => {
 const PORT = process.env.API_PORT || 7291;
 app.listen(PORT, () => {
   console.log(`[ocworld-api] running on http://localhost:${PORT}`);
+  console.log(`[ocworld-api] CHAT:      ${CHAT_API_KEY ? 'configured ✓' : 'NOT configured ✗'} (${CHAT_MODEL})`);
+  console.log(`[ocworld-api] TTS:       ${TTS_API_KEY ? 'configured ✓' : 'NOT configured ✗'} (${TTS_MODEL})`);
   console.log(`[ocworld-api] IMAGE_GEN: ${IMAGE_API_KEY ? 'configured ✓' : 'NOT configured ✗'}`);
   console.log(`[ocworld-api] VISION:    ${VISION_API_KEY ? 'configured ✓' : 'NOT configured ✗'}`);
 });

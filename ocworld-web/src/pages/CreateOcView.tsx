@@ -87,8 +87,7 @@ export default function CreateOcView({ onCreated }: CreateOcViewProps) {
     setConfirmed(false);
     setPreviews([]);
     try {
-      const styleLabel = OC_STYLE_OPTIONS.find(s => s.id === selectedStyle);
-      const prompt = buildPrompt(description, styleLabel?.[lang] || styleLabel?.zh || '', keywords);
+      const prompt = buildPrompt(description, selectedStyle, keywords);
       const payload = { prompt, aspectRatio: '9:16' };
       const results = await Promise.allSettled([
         api.generateImage(payload),
@@ -107,12 +106,16 @@ export default function CreateOcView({ onCreated }: CreateOcViewProps) {
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!selectedPreview) return;
     setConfirmed(true);
     localStorage.setItem('ocworld.avatar', selectedPreview);
     localStorage.setItem('ocworld.avatarDesc', description);
     onCreated?.(selectedPreview, description);
+    try {
+      const gender = await api.detectGender(description);
+      localStorage.setItem('ocworld.ocGender', gender);
+    } catch {}
   };
 
   const handleSave = () => {
@@ -475,16 +478,30 @@ function readAndResize(file: File, maxDim: number): Promise<string> {
   });
 }
 
-function buildPrompt(description: string, styleLabel: string, keywords: string[]): string {
+const STYLE_ANCHORS: Record<string, string> = {
+  pixel: '像素风格渲染：32-bit 游戏美术，有限调色板（不超过 48 色），可见像素网格，干净色块分区，平面阴影无渐变，轮廓线清晰锐利，复古游戏角色选人画面的质感。',
+  anime: '日系赛璐璐动画风格：干净精准的描线，明亮饱和的色彩，柔和的光影过渡与高光反射，头发有层次分明的色块阴影，眼睛精致有神，轻小说封面插画品质。',
+  cyber: '赛博朋克机械风格：深色基调配霓虹色点缀（青蓝/品红/琥珀），金属质感与磨损纹理，机械零件与发光线路细节，硬光源投射锐利阴影，科幻概念设计图品质。',
+  figure: '3D 手办渲染风格：PBR 材质质感，柔和影棚布光（三点光源），微缩模型摄影感，皮肤有轻微次表面散射，衣物褶皱有体积感，微距镜头浅景深效果。',
+  comic: '美式漫画线稿风格：高对比度墨线，粗细变化的轮廓线，交叉排线阴影（cross-hatching），局部色彩点缀，漫画封面构图的张力与动感，印刷纸质纹理。',
+  arcade: '复古街机风格：粗壮像素比例，明亮饱和的高对比色彩，简洁图形化造型，最少的阴影层次，80 年代日式街机游戏角色选择界面的视觉风格。',
+};
+
+function buildPrompt(description: string, styleId: string, keywords: string[]): string {
   const keywordLine = keywords.length > 0
-    ? `\n参考照片提取的关键特征：${keywords.join('、')}`
+    ? `\n外貌关键特征：${keywords.join('、')}`
     : '';
-  return `为 OCWORLD 生成一张竖屏 9:16 的原创 OC 全身角色概念图。
-角色描述：${description}${keywordLine}
-风格：${styleLabel}
-要求：
-- 竖屏构图，全身立绘，正面或 3/4 侧面
-- 纯白或透明背景
-- 高质量，细节丰富
-- 适合作为桌面虚拟角色展示`;
+  const styleAnchor = STYLE_ANCHORS[styleId] || '';
+  return `纯白背景，竖屏 2:3 全身立绘，正面或四分之三侧面站姿，脚部完整可见。
+
+角色：${description}${keywordLine}
+
+视觉风格：${styleAnchor}
+
+构图与约束：
+- 单一角色居中，留出头顶和脚底空间
+- 服装纹理、配饰细节、发丝层次清晰可辨
+- 角色表情自然生动，眼神有神采
+- 不含文字、水印、签名、UI 元素
+- 原创角色设计，不参考任何版权形象`;
 }

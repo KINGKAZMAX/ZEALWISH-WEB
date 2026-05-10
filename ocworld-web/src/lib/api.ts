@@ -85,9 +85,20 @@ export const api = {
     return get<RuntimeStatus>('/runtime-status');
   },
 
-  /** Text-to-speech */
+  /** Text-to-speech — returns audio and plays it */
   async speak(text: string): Promise<void> {
-    await post('/speak', { text });
+    const gender = localStorage.getItem('ocworld.ocGender') || 'female';
+    const res = await post<{ audioBase64: string; mimeType: string }>('/speak', { text, gender });
+    if (res.audioBase64) {
+      const audio = new Audio(`data:${res.mimeType};base64,${res.audioBase64}`);
+      await audio.play();
+    }
+  },
+
+  /** Detect OC gender from description */
+  async detectGender(description: string): Promise<'male' | 'female'> {
+    const res = await post<{ gender: string }>('/detect-gender', { description });
+    return res.gender === 'male' ? 'male' : 'female';
   },
 
   /** Health check */
