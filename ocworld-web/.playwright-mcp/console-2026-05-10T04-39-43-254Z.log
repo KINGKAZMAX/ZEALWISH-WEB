@@ -1,0 +1,42 @@
+[      39ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:7290/node_modules/.vite/deps/chunk-SVG7M4VJ.js?v=e8ea50cc:21606
+[      66ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433
+[      67ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433
+[  487707ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_RESET @ http://localhost:7290/src/App.tsx?t=1778388470946:0
+[  487707ms] [ERROR] [vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487708ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/src/components/Composer.tsx?t=1778388470946:0
+[  487708ms] [ERROR] [vite] Failed to reload /src/components/Composer.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487711ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/src/components/GlassShell.tsx?t=1778388470946:0
+[  487711ms] [ERROR] [vite] Failed to reload /src/components/GlassShell.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487713ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/src/components/Icons.tsx?t=1778388470946:0
+[  487713ms] [ERROR] [vite] Failed to reload /src/components/Icons.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487714ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/src/components/OCMark.tsx?t=1778388470946:0
+[  487714ms] [ERROR] [vite] Failed to reload /src/components/OCMark.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487715ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/src/components/Sidebar.tsx?t=1778388470946:0
+[  487715ms] [ERROR] [vite] Failed to reload /src/components/Sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487724ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/components/SplashScreen.tsx?t=1778388470946:0
+[  487724ms] [ERROR] [vite] Failed to reload /src/components/SplashScreen.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487733ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/components/TopBar.tsx?t=1778388470946:0
+[  487733ms] [ERROR] [vite] Failed to reload /src/components/TopBar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487737ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/components/ViewHeader.tsx?t=1778388470946:0
+[  487737ms] [ERROR] [vite] Failed to reload /src/components/ViewHeader.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487741ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/hooks/useLang.tsx?t=1778388470946:0
+[  487741ms] [ERROR] [vite] Failed to reload /src/hooks/useLang.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487745ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/ChatView.tsx?t=1778388470946:0
+[  487745ms] [ERROR] [vite] Failed to reload /src/pages/ChatView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487749ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/CreateOcView.tsx?t=1778388470946:0
+[  487749ms] [ERROR] [vite] Failed to reload /src/pages/CreateOcView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487752ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/HomeView.tsx?t=1778388470946:0
+[  487752ms] [ERROR] [vite] Failed to reload /src/pages/HomeView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487755ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/MemoryView.tsx?t=1778388470946:0
+[  487755ms] [ERROR] [vite] Failed to reload /src/pages/MemoryView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487758ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/RewindView.tsx?t=1778388470946:0
+[  487758ms] [ERROR] [vite] Failed to reload /src/pages/RewindView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487765ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/SettingsView.tsx?t=1778388470946:0
+[  487765ms] [ERROR] [vite] Failed to reload /src/pages/SettingsView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487768ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/WorldView.tsx?t=1778388470946:0
+[  487768ms] [ERROR] [vite] Failed to reload /src/pages/WorldView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487771ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/styles/global.css?t=1778388470946:0
+[  487771ms] [ERROR] [vite] Failed to reload /src/styles/global.css. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[  487771ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:7290/@vite/client:963
+[  487796ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ chrome-error://chromewebdata/:0
+[  487822ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ chrome-error://chromewebdata/:0

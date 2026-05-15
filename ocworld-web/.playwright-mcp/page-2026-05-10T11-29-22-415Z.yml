@@ -1,0 +1,49 @@
+- generic [ref=e3]:
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: 设置
+          - generic [ref=e9]: SETTINGS · 个性化
+        - generic [ref=e10]: OC#0001
+      - generic [ref=e11]:
+        - generic [ref=e12]:
+          - generic [ref=e14]: 角色
+          - generic [ref=e16]:
+            - generic [ref=e17]:
+              - generic [ref=e18]:
+                - generic [ref=e19]: 名字
+                - generic [ref=e20]: 给 TA 一个名字
+              - textbox [ref=e21]: XZ
+            - generic [ref=e22]:
+              - generic [ref=e23]:
+                - generic [ref=e24]: TA 怎么称呼你
+                - generic [ref=e25]: 默认是「你」
+              - textbox [ref=e26]: 小伙伴
+        - generic [ref=e27]:
+          - generic [ref=e29]: 界面
+          - generic [ref=e32]:
+            - generic [ref=e33]:
+              - generic [ref=e34]: 主色调
+              - generic [ref=e35]: OZ 红 → 移动到喜欢的颜色
+            - slider [ref=e36]: "0"
+        - generic [ref=e37]:
+          - generic [ref=e39]: 演示
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - generic [ref=e44]: 重新播放欢迎画面
+              - generic [ref=e45]: 再看一遍开场
+            - button "重播" [ref=e46] [cursor=pointer]
+  - navigation [ref=e47]:
+    - button "广场" [ref=e48] [cursor=pointer]:
+      - img [ref=e49]
+      - generic [ref=e52]: 广场
+    - button "对话" [ref=e53] [cursor=pointer]:
+      - img [ref=e54]
+      - generic [ref=e56]: 对话
+    - button "创作 OC" [ref=e57] [cursor=pointer]:
+      - img [ref=e58]
+      - generic [ref=e60]: 创作 OC
+    - button "设置" [ref=e61] [cursor=pointer]:
+      - img [ref=e62]
+      - generic [ref=e65]: 设置

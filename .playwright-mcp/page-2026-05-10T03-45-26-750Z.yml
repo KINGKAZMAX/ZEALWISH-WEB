@@ -1,0 +1,145 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - generic: OCWORLD
+  - generic [ref=e10]:
+    - complementary [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - img "XZ" [ref=e15]
+          - generic [ref=e16]:
+            - generic [ref=e17]: OCWORLD
+            - generic [ref=e18]: v0.4 · SIGNAL
+        - button "收起" [ref=e19] [cursor=pointer]:
+          - img [ref=e20]
+      - button "搜索 / ⌘K ⌘K" [ref=e23] [cursor=pointer]:
+        - img [ref=e24]
+        - generic [ref=e27]: 搜索 / ⌘K
+        - generic [ref=e28]: ⌘K
+      - generic [ref=e29]:
+        - button "广场" [ref=e30] [cursor=pointer]:
+          - img [ref=e33]
+          - generic [ref=e36]: 广场
+        - button "对话" [ref=e37] [cursor=pointer]:
+          - img [ref=e39]
+          - generic [ref=e41]: 对话
+        - button "世界" [ref=e42] [cursor=pointer]:
+          - img [ref=e44]
+          - generic [ref=e48]: 世界
+        - button "回溯" [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+          - generic [ref=e55]: 回溯
+        - button "记录" [ref=e56] [cursor=pointer]:
+          - img [ref=e58]
+          - generic [ref=e60]: 记录
+        - button "设置" [ref=e61] [cursor=pointer]:
+          - img [ref=e63]
+          - generic [ref=e64]: 设置
+      - button "创作 OC" [ref=e66] [cursor=pointer]:
+        - img [ref=e68]
+        - generic [ref=e69]: 创作 OC
+      - generic [ref=e70]:
+        - generic [ref=e71]: 对话
+        - button "＋" [ref=e73] [cursor=pointer]
+      - generic [ref=e74]:
+        - button "今天降温了，记得加件外套 14:32 \"昨晚你 1 点才睡哦。\"" [ref=e75] [cursor=pointer]:
+          - generic [ref=e76]:
+            - generic [ref=e77]: 今天降温了，记得加件外套
+            - generic [ref=e78]: 14:32
+          - generic [ref=e79]: "\"昨晚你 1 点才睡哦。\""
+        - button "关于昨晚那个梦 昨天 梦到一个会说话的橘子。" [ref=e80] [cursor=pointer]:
+          - generic [ref=e81]:
+            - generic [ref=e82]: 关于昨晚那个梦
+            - generic [ref=e83]: 昨天
+          - generic [ref=e84]: 梦到一个会说话的橘子。
+        - button "我又拖延了… 前天 我帮你把任务切小了。" [ref=e85] [cursor=pointer]:
+          - generic [ref=e86]:
+            - generic [ref=e87]: 我又拖延了…
+            - generic [ref=e88]: 前天
+          - generic [ref=e89]: 我帮你把任务切小了。
+        - button "第27天 · 你说的咖啡馆 5天前 风信子拿铁，下雨天。" [ref=e90] [cursor=pointer]:
+          - generic [ref=e91]:
+            - generic [ref=e92]: 第27天 · 你说的咖啡馆
+            - generic [ref=e93]: 5天前
+          - generic [ref=e94]: 风信子拿铁，下雨天。
+        - button "给XZ的一封信 2周前 不一定要寄出去。" [ref=e95] [cursor=pointer]:
+          - generic [ref=e96]:
+            - generic [ref=e97]: 给XZ的一封信
+            - generic [ref=e98]: 2周前
+          - generic [ref=e99]: 不一定要寄出去。
+        - button "周末计划讨论 3周前 想去看那个展览。" [ref=e100] [cursor=pointer]:
+          - generic [ref=e101]:
+            - generic [ref=e102]: 周末计划讨论
+            - generic [ref=e103]: 3周前
+          - generic [ref=e104]: 想去看那个展览。
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - generic [ref=e107]: 亲密度
+          - generic [ref=e108]: 32 / 100
+        - generic [ref=e111]:
+          - generic [ref=e112]: DAY 27
+          - generic [ref=e113]: 熟人
+    - main [ref=e114]:
+      - generic [ref=e115]:
+        - generic [ref=e117]:
+          - generic [ref=e118]: 广场
+          - generic [ref=e119]: TA 今天对你说
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - img "OC portrait" [ref=e127]
+              - generic [ref=e128]: OC#0001
+              - generic [ref=e129]: ● ALIVE
+            - generic [ref=e130]:
+              - generic [ref=e131]: TA 今天对你说
+              - generic [ref=e132]:
+                - text: "\"今天没什么大事，"
+                - emphasis [ref=e133]: 但我注意到你昨晚很晚才睡。
+                - text: "\""
+              - generic [ref=e134]: "14:32 · LOG #0427"
+          - generic [ref=e135]:
+            - textbox "说点什么，或交给 TA 一件小事…" [ref=e136]
+            - generic [ref=e137]:
+              - button "附件" [ref=e138] [cursor=pointer]:
+                - img [ref=e139]
+              - button "模板" [ref=e141] [cursor=pointer]:
+                - img [ref=e142]
+              - generic [ref=e143]: ENTER 发送 · SHIFT+ENTER 换行
+              - button "发送" [disabled] [ref=e144]:
+                - text: 发送
+                - img [ref=e145]
+          - generic [ref=e147]:
+            - button "Read Me 把最近的对话和兴趣，整理成 TA 眼中的你。" [ref=e148] [cursor=pointer]:
+              - generic [ref=e149]: Read Me
+              - generic [ref=e150]: 把最近的对话和兴趣，整理成 TA 眼中的你。
+              - img [ref=e152]
+            - button "Insights 看看这周的注意力都流向了哪里。" [ref=e154] [cursor=pointer]:
+              - generic [ref=e155]: Insights
+              - generic [ref=e156]: 看看这周的注意力都流向了哪里。
+              - img [ref=e158]
+            - button "Plan 基于你当前的状态，决定先处理哪件事。" [ref=e160] [cursor=pointer]:
+              - generic [ref=e161]: Plan
+              - generic [ref=e162]: 基于你当前的状态，决定先处理哪件事。
+              - img [ref=e164]
+            - button "Unblock 找出最可能卡住你的那一步。" [ref=e166] [cursor=pointer]:
+              - generic [ref=e167]: Unblock
+              - generic [ref=e168]: 找出最可能卡住你的那一步。
+              - img [ref=e170]
+            - button "Daily Report 给今天写一段简短而真诚的总结。" [ref=e172] [cursor=pointer]:
+              - generic [ref=e173]: Daily Report
+              - generic [ref=e174]: 给今天写一段简短而真诚的总结。
+              - img [ref=e176]
+            - button "Snapshot 此刻 TA 看见的你，是什么样子。" [ref=e178] [cursor=pointer]:
+              - generic [ref=e179]: Snapshot
+              - generic [ref=e180]: 此刻 TA 看见的你，是什么样子。
+              - img [ref=e182]
+          - generic [ref=e184]:
+            - generic [ref=e185]: ● Web 端演示模式
+            - generic [ref=e186]:
+              - generic [ref=e187]: AirJelly Mock
+              - generic [ref=e188]: TTS Browser
+    - generic [ref=e189]:
+      - generic [ref=e190]:
+        - button "zh" [ref=e191] [cursor=pointer]: 中
+        - button "en" [ref=e192] [cursor=pointer]: EN
+      - button "theme" [ref=e193] [cursor=pointer]:
+        - img [ref=e194]

@@ -1,0 +1,50 @@
+- generic [ref=e3]:
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e7]:
+        - generic [ref=e8]: 创作 OC
+        - generic [ref=e9]: 为你的世界生成一个专属角色
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e12]: 视觉风格
+          - generic [ref=e13]:
+            - button "像素风" [ref=e14] [cursor=pointer]
+            - button "二次元" [ref=e15] [cursor=pointer]
+            - button "赛博机械" [ref=e16] [cursor=pointer]
+            - button "3D 手办" [ref=e17] [cursor=pointer]
+            - button "漫画线稿" [ref=e18] [cursor=pointer]
+            - button "复古街机" [ref=e19] [cursor=pointer]
+        - generic [ref=e20]:
+          - generic [ref=e21]:
+            - generic [ref=e22]: 参考照片
+            - generic [ref=e23] [cursor=pointer]:
+              - generic [ref=e24]: +
+              - generic [ref=e25]: 拖拽或点击上传你的照片
+              - generic [ref=e26]: 自动识别外貌特征，生成专属角色
+            - generic [ref=e27]: 角色描述
+            - textbox "描述你想生成的 OC…" [ref=e28]: 一个带红帽子的冒险少年，酷酷表情，战术护目镜，扎小马尾子，背景白色，像素风格，红色风衣，背包，随身异世界宠物，根据我的形象不断生成不同风格和服装，但色系一致，不要马丁鞋，穿平底 Nike 板鞋，长筒宽松的裤子
+            - generic [ref=e29]:
+              - button "生成 OC" [ref=e30] [cursor=pointer]
+              - button "使用默认描述" [ref=e31] [cursor=pointer]
+              - generic [ref=e32]: AI IMAGE · 9:16 · x2
+          - generic [ref=e33]:
+            - generic [ref=e34]: 预览
+            - generic [ref=e36]:
+              - img "XZ" [ref=e38]
+              - generic [ref=e39]: 等待生成…
+        - generic [ref=e40]:
+          - generic [ref=e41]: 提示
+          - generic [ref=e42]: 上传照片可自动提取外貌关键词，也可以直接手写描述。内容越详细，生成的角色越贴近你的想象——外貌、服装、配饰、气质都可以写进去。
+  - navigation [ref=e43]:
+    - button "广场" [ref=e44] [cursor=pointer]:
+      - img [ref=e45]
+      - generic [ref=e48]: 广场
+    - button "对话" [ref=e49] [cursor=pointer]:
+      - img [ref=e50]
+      - generic [ref=e52]: 对话
+    - button "创作 OC" [ref=e53] [cursor=pointer]:
+      - img [ref=e54]
+      - generic [ref=e56]: 创作 OC
+    - button "设置" [ref=e57] [cursor=pointer]:
+      - img [ref=e58]
+      - generic [ref=e61]: 设置

@@ -1,0 +1,72 @@
+- generic [ref=e3]:
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: 记录
+          - generic [ref=e9]: RECORD · TA 替你记得的事
+        - generic [ref=e10]: 21 ITEMS
+      - generic [ref=e11]:
+        - generic [ref=e12]:
+          - img [ref=e13]
+          - textbox "搜索：人、事、感受…" [ref=e16]
+          - generic [ref=e17]: 21 ITEMS
+        - generic [ref=e18]:
+          - generic [ref=e19]:
+            - generic [ref=e20]:
+              - generic [ref=e21]: 关于你
+              - generic [ref=e22]: "12"
+            - list [ref=e23]:
+              - listitem [ref=e24] [cursor=pointer]:
+                - generic [ref=e25]: 习惯凌晨 1 点睡
+                - generic [ref=e26]: day 3
+              - listitem [ref=e27] [cursor=pointer]:
+                - generic [ref=e28]: 喝拿铁不加糖
+                - generic [ref=e29]: day 5
+              - listitem [ref=e30] [cursor=pointer]:
+                - generic [ref=e31]: 外婆做的桂花糕
+                - generic [ref=e32]: day 22
+              - listitem [ref=e33] [cursor=pointer]:
+                - generic [ref=e34]: 会因为下雨心情低落
+                - generic [ref=e35]: day 14
+            - button "+ 添加" [ref=e36] [cursor=pointer]
+          - generic [ref=e37]:
+            - generic [ref=e38]:
+              - generic [ref=e39]: 你提过的人
+              - generic [ref=e40]: "5"
+            - list [ref=e41]:
+              - listitem [ref=e42] [cursor=pointer]:
+                - generic [ref=e43]: 老周（同事）
+                - generic [ref=e44]: day 8
+              - listitem [ref=e45] [cursor=pointer]:
+                - generic [ref=e46]: 阿酱（猫）
+                - generic [ref=e47]: day 11
+              - listitem [ref=e48] [cursor=pointer]:
+                - generic [ref=e49]: 妈妈
+                - generic [ref=e50]: day 1
+            - button "+ 添加" [ref=e51] [cursor=pointer]
+          - generic [ref=e52]:
+            - generic [ref=e53]:
+              - generic [ref=e54]: 挂念的事
+              - generic [ref=e55]: "4"
+            - list [ref=e56]:
+              - listitem [ref=e57] [cursor=pointer]:
+                - generic [ref=e58]: 周五的提案
+                - generic [ref=e59]: 本周
+              - listitem [ref=e60] [cursor=pointer]:
+                - generic [ref=e61]: 答应每天散步 20 分钟
+                - generic [ref=e62]: 上周
+            - button "+ 添加" [ref=e63] [cursor=pointer]
+  - navigation [ref=e64]:
+    - button "广场" [ref=e65] [cursor=pointer]:
+      - img [ref=e66]
+      - generic [ref=e69]: 广场
+    - button "对话" [ref=e70] [cursor=pointer]:
+      - img [ref=e71]
+      - generic [ref=e73]: 对话
+    - button "创作 OC" [ref=e74] [cursor=pointer]:
+      - img [ref=e75]
+      - generic [ref=e77]: 创作 OC
+    - button "设置" [ref=e78] [cursor=pointer]:
+      - img [ref=e79]
+      - generic [ref=e82]: 设置

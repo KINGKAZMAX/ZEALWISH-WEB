@@ -1,0 +1,202 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - generic: OCWORLD
+  - generic [ref=e10]:
+    - generic [ref=e11]:
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e19]: OCWORLD
+          - generic [ref=e20]: ·
+          - generic [ref=e21]: 桌面的住人
+          - generic [ref=e22]: ·
+          - generic [ref=e23]: 你的专属虚拟角色
+          - generic [ref=e24]: ·
+          - generic [ref=e25]: v0.4 · 信号黑箱
+          - generic [ref=e26]: ·
+          - generic [ref=e27]: RECORD · TALK · REWIND · SETTINGS
+          - generic [ref=e28]: ·
+          - generic [ref=e29]: EST.027
+          - generic [ref=e30]: ·
+        - generic [ref=e31]:
+          - generic [ref=e32]: OCWORLD
+          - generic [ref=e33]: ·
+          - generic [ref=e34]: 桌面的住人
+          - generic [ref=e35]: ·
+          - generic [ref=e36]: 你的专属虚拟角色
+          - generic [ref=e37]: ·
+          - generic [ref=e38]: v0.4 · 信号黑箱
+          - generic [ref=e39]: ·
+          - generic [ref=e40]: RECORD · TALK · REWIND · SETTINGS
+          - generic [ref=e41]: ·
+          - generic [ref=e42]: EST.027
+          - generic [ref=e43]: ·
+      - generic [ref=e44]:
+        - generic [ref=e45]: OCWORLD · v0.4 · 信号黑箱
+        - heading "HELLO OC WORLD" [level=1] [ref=e47]:
+          - text: HELLO
+          - generic [ref=e48]: OC WORLD
+        - generic [ref=e50]:
+          - generic [ref=e51]: 为你生成一个
+          - generic [ref=e52]: 专属的 OC 角色。
+        - paragraph [ref=e53]: OCWORLD 为你生成一个 OC（Original Character）——不是 app，也不是聊天机器人。TA 住在你屏幕的边缘，不抢你的注意力，只在该出现时出现。
+        - generic [ref=e57]:
+          - generic [ref=e58]: Boot · 0.3.27
+          - generic [ref=e59]: ●
+          - generic [ref=e60]: Connected
+      - generic [ref=e61]:
+        - img [ref=e67]
+        - generic [ref=e95]:
+          - img "XZ" [ref=e97]
+          - generic [ref=e98]: SAMPLE · XZ · OC#0001
+        - generic [ref=e99]:
+          - text: 虚拟空间
+          - text: VIRTUAL · 3D
+        - generic [ref=e100]:
+          - text: ID 0001 / 0001
+          - text: ● ALIVE
+    - complementary [ref=e101]:
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - img "XZ" [ref=e105]
+          - generic [ref=e106]:
+            - generic [ref=e107]: OCWORLD
+            - generic [ref=e108]: v0.4 · SIGNAL
+        - button "收起" [ref=e109] [cursor=pointer]:
+          - img [ref=e110]
+      - button "搜索 / ⌘K ⌘K" [ref=e113] [cursor=pointer]:
+        - img [ref=e114]
+        - generic [ref=e117]: 搜索 / ⌘K
+        - generic [ref=e118]: ⌘K
+      - generic [ref=e119]:
+        - button "广场" [ref=e120] [cursor=pointer]:
+          - img [ref=e123]
+          - generic [ref=e126]: 广场
+        - button "对话" [ref=e127] [cursor=pointer]:
+          - img [ref=e129]
+          - generic [ref=e131]: 对话
+        - button "世界" [ref=e132] [cursor=pointer]:
+          - img [ref=e134]
+          - generic [ref=e138]: 世界
+        - button "回溯" [ref=e139] [cursor=pointer]:
+          - img [ref=e141]
+          - generic [ref=e145]: 回溯
+        - button "记录" [ref=e146] [cursor=pointer]:
+          - img [ref=e148]
+          - generic [ref=e150]: 记录
+        - button "设置" [ref=e151] [cursor=pointer]:
+          - img [ref=e153]
+          - generic [ref=e154]: 设置
+      - button "创作 OC" [ref=e156] [cursor=pointer]:
+        - img [ref=e158]
+        - generic [ref=e159]: 创作 OC
+      - generic [ref=e160]:
+        - generic [ref=e161]: 对话
+        - button "＋" [ref=e163] [cursor=pointer]
+      - generic [ref=e164]:
+        - button "今天降温了，记得加件外套 14:32 \"昨晚你 1 点才睡哦。\"" [ref=e165] [cursor=pointer]:
+          - generic [ref=e166]:
+            - generic [ref=e167]: 今天降温了，记得加件外套
+            - generic [ref=e168]: 14:32
+          - generic [ref=e169]: "\"昨晚你 1 点才睡哦。\""
+        - button "关于昨晚那个梦 昨天 梦到一个会说话的橘子。" [ref=e170] [cursor=pointer]:
+          - generic [ref=e171]:
+            - generic [ref=e172]: 关于昨晚那个梦
+            - generic [ref=e173]: 昨天
+          - generic [ref=e174]: 梦到一个会说话的橘子。
+        - button "我又拖延了… 前天 我帮你把任务切小了。" [ref=e175] [cursor=pointer]:
+          - generic [ref=e176]:
+            - generic [ref=e177]: 我又拖延了…
+            - generic [ref=e178]: 前天
+          - generic [ref=e179]: 我帮你把任务切小了。
+        - button "第27天 · 你说的咖啡馆 5天前 风信子拿铁，下雨天。" [ref=e180] [cursor=pointer]:
+          - generic [ref=e181]:
+            - generic [ref=e182]: 第27天 · 你说的咖啡馆
+            - generic [ref=e183]: 5天前
+          - generic [ref=e184]: 风信子拿铁，下雨天。
+        - button "给XZ的一封信 2周前 不一定要寄出去。" [ref=e185] [cursor=pointer]:
+          - generic [ref=e186]:
+            - generic [ref=e187]: 给XZ的一封信
+            - generic [ref=e188]: 2周前
+          - generic [ref=e189]: 不一定要寄出去。
+        - button "周末计划讨论 3周前 想去看那个展览。" [ref=e190] [cursor=pointer]:
+          - generic [ref=e191]:
+            - generic [ref=e192]: 周末计划讨论
+            - generic [ref=e193]: 3周前
+          - generic [ref=e194]: 想去看那个展览。
+      - generic [ref=e195]:
+        - generic [ref=e196]:
+          - generic [ref=e197]: 亲密度
+          - generic [ref=e198]: 32 / 100
+        - generic [ref=e201]:
+          - generic [ref=e202]: DAY 27
+          - generic [ref=e203]: 熟人
+    - main [ref=e204]:
+      - generic [ref=e205]:
+        - generic [ref=e207]:
+          - generic [ref=e208]: 广场
+          - generic [ref=e209]: TA 今天对你说
+        - generic [ref=e210]:
+          - button "＋ 创作新 OC 为你的世界生成一个专属角色 →" [ref=e211] [cursor=pointer]:
+            - generic [ref=e212]:
+              - generic [ref=e213]: ＋ 创作新 OC
+              - generic [ref=e214]: 为你的世界生成一个专属角色
+            - generic [ref=e215]: →
+          - generic [ref=e216]:
+            - generic [ref=e217]:
+              - img "XZ" [ref=e222]
+              - generic [ref=e223]: OC#0001
+              - generic [ref=e224]: ● ALIVE
+            - generic [ref=e225]:
+              - generic [ref=e226]: TA 今天对你说
+              - generic [ref=e227]:
+                - text: "\"今天没什么大事，"
+                - emphasis [ref=e228]: 但我注意到你昨晚很晚才睡。
+                - text: "\""
+              - generic [ref=e229]: "14:32 · LOG #0427"
+          - generic [ref=e230]:
+            - textbox "说点什么，或交给 TA 一件小事…" [ref=e231]
+            - generic [ref=e232]:
+              - button "附件" [ref=e233] [cursor=pointer]:
+                - img [ref=e234]
+              - button "模板" [ref=e236] [cursor=pointer]:
+                - img [ref=e237]
+              - generic [ref=e238]: ENTER 发送 · SHIFT+ENTER 换行
+              - button "发送" [disabled] [ref=e239]:
+                - text: 发送
+                - img [ref=e240]
+          - generic [ref=e242]:
+            - button "Read Me 把最近的对话和兴趣，整理成 TA 眼中的你。" [ref=e243] [cursor=pointer]:
+              - generic [ref=e244]: Read Me
+              - generic [ref=e245]: 把最近的对话和兴趣，整理成 TA 眼中的你。
+              - img [ref=e247]
+            - button "Insights 看看这周的注意力都流向了哪里。" [ref=e249] [cursor=pointer]:
+              - generic [ref=e250]: Insights
+              - generic [ref=e251]: 看看这周的注意力都流向了哪里。
+              - img [ref=e253]
+            - button "Plan 基于你当前的状态，决定先处理哪件事。" [ref=e255] [cursor=pointer]:
+              - generic [ref=e256]: Plan
+              - generic [ref=e257]: 基于你当前的状态，决定先处理哪件事。
+              - img [ref=e259]
+            - button "Unblock 找出最可能卡住你的那一步。" [ref=e261] [cursor=pointer]:
+              - generic [ref=e262]: Unblock
+              - generic [ref=e263]: 找出最可能卡住你的那一步。
+              - img [ref=e265]
+            - button "Daily Report 给今天写一段简短而真诚的总结。" [ref=e267] [cursor=pointer]:
+              - generic [ref=e268]: Daily Report
+              - generic [ref=e269]: 给今天写一段简短而真诚的总结。
+              - img [ref=e271]
+            - button "Snapshot 此刻 TA 看见的你，是什么样子。" [ref=e273] [cursor=pointer]:
+              - generic [ref=e274]: Snapshot
+              - generic [ref=e275]: 此刻 TA 看见的你，是什么样子。
+              - img [ref=e277]
+          - generic [ref=e279]:
+            - generic [ref=e280]: ● Web 端演示模式
+            - generic [ref=e281]:
+              - generic [ref=e282]: AirJelly Mock
+              - generic [ref=e283]: TTS Browser
+    - generic [ref=e284]:
+      - generic [ref=e285]:
+        - button "zh" [ref=e286] [cursor=pointer]: 中
+        - button "en" [ref=e287] [cursor=pointer]: EN
+      - button "theme" [ref=e288] [cursor=pointer]:
+        - img [ref=e289]

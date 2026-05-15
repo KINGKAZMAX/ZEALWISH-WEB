@@ -1,0 +1,113 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - generic: OCWORLD
+  - generic [ref=e10]:
+    - complementary [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - img "OC" [ref=e14]
+          - generic [ref=e15]:
+            - generic [ref=e16]: OCWORLD
+            - generic [ref=e17]: v0.4 · SIGNAL
+        - button "收起" [ref=e18] [cursor=pointer]:
+          - img [ref=e19]
+      - button "搜索 / ⌘K ⌘K" [ref=e22] [cursor=pointer]:
+        - img [ref=e23]
+        - generic [ref=e26]: 搜索 / ⌘K
+        - generic [ref=e27]: ⌘K
+      - generic [ref=e28]:
+        - button "广场" [ref=e29] [cursor=pointer]:
+          - img [ref=e31]
+          - generic [ref=e34]: 广场
+        - button "对话" [ref=e35] [cursor=pointer]:
+          - img [ref=e38]
+          - generic [ref=e40]: 对话
+        - button "世界" [ref=e41] [cursor=pointer]:
+          - img [ref=e43]
+          - generic [ref=e47]: 世界
+        - button "回溯" [ref=e48] [cursor=pointer]:
+          - img [ref=e50]
+          - generic [ref=e54]: 回溯
+        - button "记录" [ref=e55] [cursor=pointer]:
+          - img [ref=e57]
+          - generic [ref=e59]: 记录
+        - button "设置" [ref=e60] [cursor=pointer]:
+          - img [ref=e62]
+          - generic [ref=e63]: 设置
+      - button "创作 OC" [ref=e65] [cursor=pointer]:
+        - img [ref=e67]
+        - generic [ref=e68]: 创作 OC
+      - generic [ref=e69]:
+        - generic [ref=e70]: 对话
+        - button "＋" [ref=e72] [cursor=pointer]
+      - generic [ref=e73]:
+        - button "今天降温了，记得加件外套 14:32 \"昨晚你 1 点才睡哦。\"" [ref=e74] [cursor=pointer]:
+          - generic [ref=e75]:
+            - generic [ref=e76]: 今天降温了，记得加件外套
+            - generic [ref=e77]: 14:32
+          - generic [ref=e78]: "\"昨晚你 1 点才睡哦。\""
+        - button "关于昨晚那个梦 昨天 梦到一个会说话的橘子。" [ref=e79] [cursor=pointer]:
+          - generic [ref=e80]:
+            - generic [ref=e81]: 关于昨晚那个梦
+            - generic [ref=e82]: 昨天
+          - generic [ref=e83]: 梦到一个会说话的橘子。
+        - button "我又拖延了… 前天 我帮你把任务切小了。" [ref=e84] [cursor=pointer]:
+          - generic [ref=e85]:
+            - generic [ref=e86]: 我又拖延了…
+            - generic [ref=e87]: 前天
+          - generic [ref=e88]: 我帮你把任务切小了。
+        - button "第27天 · 你说的咖啡馆 5天前 风信子拿铁，下雨天。" [ref=e89] [cursor=pointer]:
+          - generic [ref=e90]:
+            - generic [ref=e91]: 第27天 · 你说的咖啡馆
+            - generic [ref=e92]: 5天前
+          - generic [ref=e93]: 风信子拿铁，下雨天。
+        - button "给XZ的一封信 2周前 不一定要寄出去。" [ref=e94] [cursor=pointer]:
+          - generic [ref=e95]:
+            - generic [ref=e96]: 给XZ的一封信
+            - generic [ref=e97]: 2周前
+          - generic [ref=e98]: 不一定要寄出去。
+        - button "周末计划讨论 3周前 想去看那个展览。" [ref=e99] [cursor=pointer]:
+          - generic [ref=e100]:
+            - generic [ref=e101]: 周末计划讨论
+            - generic [ref=e102]: 3周前
+          - generic [ref=e103]: 想去看那个展览。
+      - generic [ref=e104]:
+        - generic [ref=e105]:
+          - generic [ref=e106]: 亲密度
+          - generic [ref=e107]: 32 / 100
+        - generic [ref=e110]:
+          - generic [ref=e111]: DAY 27
+          - generic [ref=e112]: 熟人
+    - main [ref=e113]:
+      - generic [ref=e114]:
+        - generic [ref=e115]:
+          - generic [ref=e116]:
+            - generic [ref=e117]: 对话
+            - generic [ref=e118]: TALK · 今天降温了，记得加件外套
+          - generic [ref=e119]: 0 条 · TTS On
+        - generic [ref=e120]:
+          - img "XZ" [ref=e122]
+          - generic [ref=e123]: 说点什么。
+          - generic [ref=e124]: TA IS LISTENING · 慢慢来
+          - generic [ref=e126]:
+            - textbox "今天怎么样…" [ref=e127]
+            - generic [ref=e128]:
+              - button "附件" [ref=e129] [cursor=pointer]:
+                - img [ref=e130]
+              - button "模板" [ref=e132] [cursor=pointer]:
+                - img [ref=e133]
+              - generic [ref=e134]: ENTER 发送 · SHIFT+ENTER 换行
+              - button "发送" [disabled] [ref=e135]:
+                - text: 发送
+                - img [ref=e136]
+          - generic [ref=e138]:
+            - button "有点累，想聊聊" [ref=e139] [cursor=pointer]
+            - button "帮我整理一下思路" [ref=e140] [cursor=pointer]
+            - button "今天发生了开心的事" [ref=e141] [cursor=pointer]
+            - button "我又拖延了…" [ref=e142] [cursor=pointer]
+    - generic [ref=e143]:
+      - generic [ref=e144]:
+        - button "zh" [ref=e145] [cursor=pointer]: 中
+        - button "en" [ref=e146] [cursor=pointer]: EN
+      - button "theme" [ref=e147] [cursor=pointer]:
+        - img [ref=e148]

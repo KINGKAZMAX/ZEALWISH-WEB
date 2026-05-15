@@ -1,0 +1,67 @@
+[      38ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:7290/node_modules/.vite/deps/chunk-SVG7M4VJ.js?v=fb797b1a:21606
+[      80ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=a0203f91:4433
+[      80ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=a0203f91:4433
+[  333194ms] [ERROR] WebSocket connection to 'ws://localhost:7290/?token=hg-Ls8RQKfPy' failed:  @ http://localhost:7290/@vite/client:801
+[  333194ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:7290/@vite/client:963
+[  333224ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  334226ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  335227ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  336228ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  337230ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  338232ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  339242ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  340260ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  341282ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  342343ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  343494ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  344589ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  346073ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  348009ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  350144ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  353914ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  356824ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  359551ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  362828ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  367328ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  371246ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:7290/node_modules/.vite/deps/chunk-SVG7M4VJ.js?v=e8ea50cc:21606
+[  371300ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433
+[  371301ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433
+[ 2876976ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_RESET @ http://localhost:7290/src/App.tsx?t=1778388470946:0
+[ 2876976ms] [ERROR] [vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2876977ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/src/components/Composer.tsx?t=1778388470946:0
+[ 2876977ms] [ERROR] [vite] Failed to reload /src/components/Composer.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2876978ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/src/components/GlassShell.tsx?t=1778388470946:0
+[ 2876978ms] [ERROR] [vite] Failed to reload /src/components/GlassShell.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2876979ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/src/components/Icons.tsx?t=1778388470946:0
+[ 2876979ms] [ERROR] [vite] Failed to reload /src/components/Icons.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2876980ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/src/components/OCMark.tsx?t=1778388470946:0
+[ 2876980ms] [ERROR] [vite] Failed to reload /src/components/OCMark.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2876981ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/src/components/Sidebar.tsx?t=1778388470946:0
+[ 2876981ms] [ERROR] [vite] Failed to reload /src/components/Sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2876983ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/src/components/SplashScreen.tsx?t=1778388470946:0
+[ 2876983ms] [ERROR] [vite] Failed to reload /src/components/SplashScreen.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2876984ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/src/components/TopBar.tsx?t=1778388470946:0
+[ 2876984ms] [ERROR] [vite] Failed to reload /src/components/TopBar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2876991ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/components/ViewHeader.tsx?t=1778388470946:0
+[ 2876991ms] [ERROR] [vite] Failed to reload /src/components/ViewHeader.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2877001ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/hooks/useLang.tsx?t=1778388470946:0
+[ 2877001ms] [ERROR] [vite] Failed to reload /src/hooks/useLang.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2877004ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/ChatView.tsx?t=1778388470946:0
+[ 2877005ms] [ERROR] [vite] Failed to reload /src/pages/ChatView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2877010ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/CreateOcView.tsx?t=1778388470946:0
+[ 2877010ms] [ERROR] [vite] Failed to reload /src/pages/CreateOcView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2877013ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/HomeView.tsx?t=1778388470946:0
+[ 2877014ms] [ERROR] [vite] Failed to reload /src/pages/HomeView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2877016ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/MemoryView.tsx?t=1778388470946:0
+[ 2877017ms] [ERROR] [vite] Failed to reload /src/pages/MemoryView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2877020ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/RewindView.tsx?t=1778388470946:0
+[ 2877020ms] [ERROR] [vite] Failed to reload /src/pages/RewindView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2877023ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/SettingsView.tsx?t=1778388470946:0
+[ 2877024ms] [ERROR] [vite] Failed to reload /src/pages/SettingsView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2877026ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/pages/WorldView.tsx?t=1778388470946:0
+[ 2877026ms] [ERROR] [vite] Failed to reload /src/pages/WorldView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2877028ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7290/src/styles/global.css?t=1778388470946:0
+[ 2877028ms] [ERROR] [vite] Failed to reload /src/styles/global.css. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:7290/@vite/client:881
+[ 2877028ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:7290/@vite/client:963
+[ 2877059ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ chrome-error://chromewebdata/:0
+[ 2877075ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ chrome-error://chromewebdata/:0

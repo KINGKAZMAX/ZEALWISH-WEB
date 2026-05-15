@@ -1,0 +1,134 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - generic: OCWORLD
+  - generic [ref=e10]:
+    - complementary [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - img "XZ" [ref=e15]
+          - generic [ref=e16]:
+            - generic [ref=e17]: OCWORLD
+            - generic [ref=e18]: v0.4 · SIGNAL
+        - button "收起" [ref=e19] [cursor=pointer]:
+          - img [ref=e20]
+      - button "搜索 / ⌘K ⌘K" [ref=e23] [cursor=pointer]:
+        - img [ref=e24]
+        - generic [ref=e27]: 搜索 / ⌘K
+        - generic [ref=e28]: ⌘K
+      - generic [ref=e29]:
+        - button "广场" [ref=e30] [cursor=pointer]:
+          - img [ref=e32]
+          - generic [ref=e35]: 广场
+        - button "对话" [ref=e36] [cursor=pointer]:
+          - img [ref=e38]
+          - generic [ref=e40]: 对话
+        - button "世界" [ref=e41] [cursor=pointer]:
+          - img [ref=e43]
+          - generic [ref=e47]: 世界
+        - button "回溯" [ref=e48] [cursor=pointer]:
+          - img [ref=e50]
+          - generic [ref=e54]: 回溯
+        - button "记录" [ref=e55] [cursor=pointer]:
+          - img [ref=e57]
+          - generic [ref=e59]: 记录
+        - button "设置" [ref=e60] [cursor=pointer]:
+          - img [ref=e62]
+          - generic [ref=e63]: 设置
+      - button "创作 OC" [ref=e65] [cursor=pointer]:
+        - img [ref=e68]
+        - generic [ref=e69]: 创作 OC
+      - generic [ref=e70]:
+        - generic [ref=e71]: 对话
+        - button "＋" [ref=e73] [cursor=pointer]
+      - generic [ref=e74]:
+        - button "今天降温了，记得加件外套 14:32 \"昨晚你 1 点才睡哦。\"" [ref=e75] [cursor=pointer]:
+          - generic [ref=e76]:
+            - generic [ref=e77]: 今天降温了，记得加件外套
+            - generic [ref=e78]: 14:32
+          - generic [ref=e79]: "\"昨晚你 1 点才睡哦。\""
+        - button "关于昨晚那个梦 昨天 梦到一个会说话的橘子。" [ref=e80] [cursor=pointer]:
+          - generic [ref=e81]:
+            - generic [ref=e82]: 关于昨晚那个梦
+            - generic [ref=e83]: 昨天
+          - generic [ref=e84]: 梦到一个会说话的橘子。
+        - button "我又拖延了… 前天 我帮你把任务切小了。" [ref=e85] [cursor=pointer]:
+          - generic [ref=e86]:
+            - generic [ref=e87]: 我又拖延了…
+            - generic [ref=e88]: 前天
+          - generic [ref=e89]: 我帮你把任务切小了。
+        - button "第27天 · 你说的咖啡馆 5天前 风信子拿铁，下雨天。" [ref=e90] [cursor=pointer]:
+          - generic [ref=e91]:
+            - generic [ref=e92]: 第27天 · 你说的咖啡馆
+            - generic [ref=e93]: 5天前
+          - generic [ref=e94]: 风信子拿铁，下雨天。
+        - button "给XZ的一封信 2周前 不一定要寄出去。" [ref=e95] [cursor=pointer]:
+          - generic [ref=e96]:
+            - generic [ref=e97]: 给XZ的一封信
+            - generic [ref=e98]: 2周前
+          - generic [ref=e99]: 不一定要寄出去。
+        - button "周末计划讨论 3周前 想去看那个展览。" [ref=e100] [cursor=pointer]:
+          - generic [ref=e101]:
+            - generic [ref=e102]: 周末计划讨论
+            - generic [ref=e103]: 3周前
+          - generic [ref=e104]: 想去看那个展览。
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - generic [ref=e107]: 亲密度
+          - generic [ref=e108]: 32 / 100
+        - generic [ref=e111]:
+          - generic [ref=e112]: DAY 27
+          - generic [ref=e113]: 熟人
+    - main [ref=e114]:
+      - generic [ref=e115]:
+        - generic [ref=e117]:
+          - generic [ref=e118]: 创作 OC
+          - generic [ref=e119]: 为你的世界生成一个专属角色
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - generic [ref=e122]: 视觉风格
+            - generic [ref=e123]:
+              - button "像素风" [ref=e124] [cursor=pointer]
+              - button "二次元" [ref=e125] [cursor=pointer]
+              - button "赛博机械" [ref=e126] [cursor=pointer]
+              - button "3D 手办" [ref=e127] [cursor=pointer]
+              - button "漫画线稿" [ref=e128] [cursor=pointer]
+              - button "复古街机" [ref=e129] [cursor=pointer]
+          - generic [ref=e130]:
+            - generic [ref=e131]:
+              - generic [ref=e132]: 参考照片
+              - generic [ref=e133]:
+                - img "Reference" [ref=e164]
+                - generic [ref=e172]:
+                  - generic [ref=e173]: 红色兜帽
+                  - generic [ref=e174]: 护目镜
+                  - generic [ref=e175]: 短发
+                  - generic [ref=e176]: 少年感
+                  - generic [ref=e177]: 小巧身形
+                  - generic [ref=e178]: 红长外套
+                  - generic [ref=e179]: 白色宽裤
+                  - generic [ref=e180]: 运动鞋
+                  - generic [ref=e181]: 旅行背包
+                  - generic [ref=e182]: 围巾飘带
+                  - generic [ref=e183]: 机械宠物
+                  - generic [ref=e184]: 冒险气质
+                - button "移除" [ref=e171] [cursor=pointer]
+              - generic [ref=e137]: 角色描述
+              - textbox "描述你想生成的 OC…" [ref=e138]: 一名小巧的少年旅者，戴红色兜帽与护目镜，身穿红色长外套、白色宽松长裤和运动鞋，背着旅行包，身旁跟着小型机械宠物，气质活泼神秘，适合赛博废土或像素冒险角色。
+              - generic [ref=e139]:
+                - button "生成 OC" [ref=e140] [cursor=pointer]
+                - button "使用默认描述" [ref=e141] [cursor=pointer]
+                - generic [ref=e142]: AI IMAGE · 9:16 · x2
+            - generic [ref=e143]:
+              - generic [ref=e144]: 预览
+              - generic [ref=e146]:
+                - img "XZ" [ref=e148]
+                - generic [ref=e149]: 等待生成…
+          - generic [ref=e150]:
+            - generic [ref=e151]: 提示
+            - generic [ref=e152]: 上传照片可自动提取外貌关键词，也可以直接手写描述。内容越详细，生成的角色越贴近你的想象——外貌、服装、配饰、气质都可以写进去。
+    - generic [ref=e153]:
+      - generic [ref=e154]:
+        - button "zh" [ref=e155] [cursor=pointer]: 中
+        - button "en" [ref=e156] [cursor=pointer]: EN
+      - button "theme" [ref=e157] [cursor=pointer]:
+        - img [ref=e158]

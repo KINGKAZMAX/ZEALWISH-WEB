@@ -1,0 +1,91 @@
+[     113ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:7290/node_modules/.vite/deps/chunk-SVG7M4VJ.js?v=e8ea50cc:21606
+[     226ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433
+[     227ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433
+[  422732ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:7290/@vite/client:963
+[  422733ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  423734ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  424735ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  425736ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  426738ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  427742ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  428751ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  429771ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  430796ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  431821ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  432977ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  434252ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  435428ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  437359ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  440364ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  445366ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  450978ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  454128ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  460011ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  462170ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  467776ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  470785ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  476074ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  480042ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  483644ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  486727ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  491044ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  493762ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  496474ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  499966ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  504219ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  506563ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  512090ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  514606ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  518448ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  520790ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  525172ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  530287ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  533873ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  535941ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  540458ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  544063ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  546687ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  551712ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  556205ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  559764ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  562098ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  564479ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  568962ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  574523ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  579235ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  581731ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  586592ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  589696ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  594076ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[  600102ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:7290/node_modules/.vite/deps/chunk-SVG7M4VJ.js?v=e8ea50cc:21606
+[  600124ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433
+[  600124ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433
+[ 1041832ms] [ERROR] WebSocket connection to 'ws://localhost:7290/?token=t7LdIYkHXSR6' failed:  @ http://localhost:7290/@vite/client:801
+[ 1041832ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:7290/@vite/client:963
+[ 1041857ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[ 1042858ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[ 1043859ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[ 1044860ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[ 1045862ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[ 1046864ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[ 1047868ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[ 1048888ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[ 1049898ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[ 1050948ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[ 1052399ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:7290/node_modules/.vite/deps/chunk-SVG7M4VJ.js?v=e8ea50cc:21606
+[ 1052420ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433
+[ 1052420ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433
+[ 1388099ms] [ERROR] WebSocket connection to 'ws://localhost:7290/?token=jryfGLmkSafd' failed:  @ http://localhost:7290/@vite/client:801
+[ 1388099ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:7290/@vite/client:963
+[ 1388128ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[ 1389129ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[ 1390279ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:7290/node_modules/.vite/deps/chunk-SVG7M4VJ.js?v=e8ea50cc:21606
+[ 1390319ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433
+[ 1390319ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433
+[ 1661164ms] [ERROR] WebSocket connection to 'ws://localhost:7290/?token=3xTcQ49-ElZ4' failed:  @ http://localhost:7290/@vite/client:801
+[ 1661165ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:7290/@vite/client:963
+[ 1661173ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed:  @ http://localhost:7290/@vite/client:1034
+[ 1662175ms] [ERROR] WebSocket connection to 'ws://localhost:7290/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:7290/@vite/client:1034
+[ 1663597ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:7290/node_modules/.vite/deps/chunk-SVG7M4VJ.js?v=e8ea50cc:21606
+[ 1663640ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433
+[ 1663640ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:7290/node_modules/.vite/deps/react-router-dom.js?v=e8ea50cc:4433

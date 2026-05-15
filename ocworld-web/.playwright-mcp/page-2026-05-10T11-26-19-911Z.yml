@@ -1,0 +1,114 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - generic [ref=e12]: OCWORLD
+        - generic [ref=e13]: ·
+        - generic [ref=e14]: 桌面的住人
+        - generic [ref=e15]: ·
+        - generic [ref=e16]: 你的专属虚拟角色
+        - generic [ref=e17]: ·
+        - generic [ref=e18]: v0.4 · 信号黑箱
+        - generic [ref=e19]: ·
+        - generic [ref=e20]: RECORD · TALK · REWIND · SETTINGS
+        - generic [ref=e21]: ·
+        - generic [ref=e22]: EST.027
+        - generic [ref=e23]: ·
+      - generic [ref=e24]:
+        - generic [ref=e25]: OCWORLD
+        - generic [ref=e26]: ·
+        - generic [ref=e27]: 桌面的住人
+        - generic [ref=e28]: ·
+        - generic [ref=e29]: 你的专属虚拟角色
+        - generic [ref=e30]: ·
+        - generic [ref=e31]: v0.4 · 信号黑箱
+        - generic [ref=e32]: ·
+        - generic [ref=e33]: RECORD · TALK · REWIND · SETTINGS
+        - generic [ref=e34]: ·
+        - generic [ref=e35]: EST.027
+        - generic [ref=e36]: ·
+    - generic [ref=e37]:
+      - generic [ref=e38]: OCWORLD · v0.4 · 信号黑箱
+      - heading "HELLO OC WORLD" [level=1] [ref=e40]:
+        - text: HELLO
+        - generic [ref=e41]: OC WORLD
+      - generic [ref=e43]:
+        - generic [ref=e44]: 为你生成一个
+        - generic [ref=e45]: 专属的 OC 角色。
+      - paragraph [ref=e46]: OCWORLD 为你生成一个 OC（Original Character）——不是 app，也不是聊天机器人。TA 住在你屏幕的边缘，不抢你的注意力，只在该出现时出现。
+      - generic [ref=e50]:
+        - generic [ref=e51]: Boot · 0.3.27
+        - generic [ref=e52]: ●
+        - generic [ref=e53]: Connected
+  - main [ref=e54]:
+    - generic [ref=e55]:
+      - generic [ref=e57]:
+        - generic [ref=e58]: 广场
+        - generic [ref=e59]: TA 今天对你说
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - img "OC portrait" [ref=e67]
+            - generic [ref=e68]: OC#0001
+            - generic [ref=e69]: ● ALIVE
+          - generic [ref=e70]:
+            - generic [ref=e71]: TA 今天对你说
+            - generic [ref=e72]:
+              - text: "\"今天没什么大事，"
+              - emphasis [ref=e73]: 但我注意到你昨晚很晚才睡。
+              - text: "\""
+            - generic [ref=e74]: "14:32 · LOG #0427"
+        - generic [ref=e75]:
+          - textbox "说点什么，或交给 TA 一件小事…" [ref=e76]
+          - generic [ref=e77]:
+            - button "附件" [ref=e78] [cursor=pointer]:
+              - img [ref=e79]
+            - button "模板" [ref=e81] [cursor=pointer]:
+              - img [ref=e82]
+            - generic [ref=e83]: ENTER 发送 · SHIFT+ENTER 换行
+            - button "发送" [disabled] [ref=e84]:
+              - text: 发送
+              - img [ref=e85]
+        - generic [ref=e87]:
+          - button "Read Me 把最近的对话和兴趣，整理成 TA 眼中的你。" [ref=e88] [cursor=pointer]:
+            - generic [ref=e89]: Read Me
+            - generic [ref=e90]: 把最近的对话和兴趣，整理成 TA 眼中的你。
+            - img [ref=e92]
+          - button "Insights 看看这周的注意力都流向了哪里。" [ref=e94] [cursor=pointer]:
+            - generic [ref=e95]: Insights
+            - generic [ref=e96]: 看看这周的注意力都流向了哪里。
+            - img [ref=e98]
+          - button "Plan 基于你当前的状态，决定先处理哪件事。" [ref=e100] [cursor=pointer]:
+            - generic [ref=e101]: Plan
+            - generic [ref=e102]: 基于你当前的状态，决定先处理哪件事。
+            - img [ref=e104]
+          - button "Unblock 找出最可能卡住你的那一步。" [ref=e106] [cursor=pointer]:
+            - generic [ref=e107]: Unblock
+            - generic [ref=e108]: 找出最可能卡住你的那一步。
+            - img [ref=e110]
+          - button "Daily Report 给今天写一段简短而真诚的总结。" [ref=e112] [cursor=pointer]:
+            - generic [ref=e113]: Daily Report
+            - generic [ref=e114]: 给今天写一段简短而真诚的总结。
+            - img [ref=e116]
+          - button "Snapshot 此刻 TA 看见的你，是什么样子。" [ref=e118] [cursor=pointer]:
+            - generic [ref=e119]: Snapshot
+            - generic [ref=e120]: 此刻 TA 看见的你，是什么样子。
+            - img [ref=e122]
+        - generic [ref=e124]:
+          - generic [ref=e125]: ● Web 端演示模式
+          - generic [ref=e126]:
+            - generic [ref=e127]: AirJelly Mock
+            - generic [ref=e128]: TTS Browser
+  - navigation [ref=e129]:
+    - button "广场" [ref=e130] [cursor=pointer]:
+      - img [ref=e131]
+      - generic [ref=e134]: 广场
+    - button "对话" [ref=e135] [cursor=pointer]:
+      - img [ref=e136]
+      - generic [ref=e138]: 对话
+    - button "创作 OC" [ref=e139] [cursor=pointer]:
+      - img [ref=e140]
+      - generic [ref=e142]: 创作 OC
+    - button "设置" [ref=e143] [cursor=pointer]:
+      - img [ref=e144]
+      - generic [ref=e147]: 设置

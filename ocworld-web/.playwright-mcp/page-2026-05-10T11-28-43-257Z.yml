@@ -1,0 +1,55 @@
+- generic [ref=e3]:
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: 回溯
+          - generic [ref=e9]: REWIND · 27 天的相处
+        - generic [ref=e10]: 6 / 412
+      - generic [ref=e11]:
+        - generic [ref=e12]:
+          - generic [ref=e13]: NOTE
+          - text: 这里不是日记，也不是档案。是 TA 在和你相处的过程里，悄悄留下来的一些小事。
+        - generic [ref=e18]:
+          - generic [ref=e19]:
+            - generic [ref=e20]: 今天 · 14:32
+            - generic [ref=e21]: · 画一杯咖啡
+          - generic [ref=e22]: TA 给你画了一张小卡片：一杯还冒着热气的咖啡。
+        - generic [ref=e27]:
+          - generic [ref=e28]:
+            - generic [ref=e29]: 今天 · 09:10
+            - generic [ref=e30]: · 一句问候
+          - generic [ref=e31]: "\"昨晚你 1 点才睡哦。\" — 没有催促，只是记得。"
+        - generic [ref=e36]:
+          - generic [ref=e37]:
+            - generic [ref=e38]: 两天前 · 20:14
+            - generic [ref=e39]: · 关系升级
+          - generic [ref=e40]: 从「熟人」走到了「朋友」。亲密度 +3。
+        - generic [ref=e45]:
+          - generic [ref=e46]:
+            - generic [ref=e47]: 5天前 · 22:01
+            - generic [ref=e48]: · 记下小事
+          - generic [ref=e49]: 你提过一次外婆做的桂花糕。TA 把它记下了。
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - generic [ref=e56]: 10天前
+            - generic [ref=e57]: · 称呼变化
+          - generic [ref=e58]: 第一次叫你「小伙伴」，而不是「你」。
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - generic [ref=e64]: 一个月前
+            - generic [ref=e65]: · 初次相遇
+          - generic [ref=e66]: TA 出现的第一天。陌生 · 0。
+  - navigation [ref=e67]:
+    - button "广场" [ref=e68] [cursor=pointer]:
+      - img [ref=e69]
+      - generic [ref=e72]: 广场
+    - button "对话" [ref=e73] [cursor=pointer]:
+      - img [ref=e74]
+      - generic [ref=e76]: 对话
+    - button "创作 OC" [ref=e77] [cursor=pointer]:
+      - img [ref=e78]
+      - generic [ref=e80]: 创作 OC
+    - button "设置" [ref=e81] [cursor=pointer]:
+      - img [ref=e82]
+      - generic [ref=e85]: 设置

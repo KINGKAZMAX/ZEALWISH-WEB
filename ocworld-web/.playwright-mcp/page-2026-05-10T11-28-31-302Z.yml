@@ -1,0 +1,25 @@
+- generic [ref=e3]:
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e7]:
+        - generic [ref=e8]: 世界
+        - generic [ref=e9]: WORLD · 虚拟空间
+      - generic [ref=e11]:
+        - generic [ref=e12]: COMING SOON
+        - heading "世界视图" [level=2] [ref=e13]
+        - paragraph [ref=e14]:
+          - text: 这里将展示你的 OC 所在的虚拟世界——任务、成就、探索区域。
+          - text: 正在建设中，敬请期待。
+  - navigation [ref=e15]:
+    - button "广场" [ref=e16] [cursor=pointer]:
+      - img [ref=e17]
+      - generic [ref=e20]: 广场
+    - button "对话" [ref=e21] [cursor=pointer]:
+      - img [ref=e22]
+      - generic [ref=e24]: 对话
+    - button "创作 OC" [ref=e25] [cursor=pointer]:
+      - img [ref=e26]
+      - generic [ref=e28]: 创作 OC
+    - button "设置" [ref=e29] [cursor=pointer]:
+      - img [ref=e30]
+      - generic [ref=e33]: 设置

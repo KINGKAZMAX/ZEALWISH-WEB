@@ -1,0 +1,73 @@
+- generic [ref=e3]:
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e7]:
+        - generic [ref=e8]: 广场
+        - generic [ref=e9]: TA 今天对你说
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e12]:
+            - img "OC portrait" [ref=e17]
+            - generic [ref=e18]: OC#0001
+            - generic [ref=e19]: ● ALIVE
+          - generic [ref=e20]:
+            - generic [ref=e21]: TA 今天对你说
+            - generic [ref=e22]:
+              - text: "\"今天没什么大事，"
+              - emphasis [ref=e23]: 但我注意到你昨晚很晚才睡。
+              - text: "\""
+            - generic [ref=e24]: "14:32 · LOG #0427"
+        - generic [ref=e25]:
+          - textbox "说点什么，或交给 TA 一件小事…" [ref=e26]
+          - generic [ref=e27]:
+            - button "附件" [ref=e28] [cursor=pointer]:
+              - img [ref=e29]
+            - button "模板" [ref=e31] [cursor=pointer]:
+              - img [ref=e32]
+            - generic [ref=e33]: ENTER 发送 · SHIFT+ENTER 换行
+            - button "发送" [disabled] [ref=e34]:
+              - text: 发送
+              - img [ref=e35]
+        - generic [ref=e37]:
+          - button "Read Me 把最近的对话和兴趣，整理成 TA 眼中的你。" [ref=e38] [cursor=pointer]:
+            - generic [ref=e39]: Read Me
+            - generic [ref=e40]: 把最近的对话和兴趣，整理成 TA 眼中的你。
+            - img [ref=e42]
+          - button "Insights 看看这周的注意力都流向了哪里。" [ref=e44] [cursor=pointer]:
+            - generic [ref=e45]: Insights
+            - generic [ref=e46]: 看看这周的注意力都流向了哪里。
+            - img [ref=e48]
+          - button "Plan 基于你当前的状态，决定先处理哪件事。" [ref=e50] [cursor=pointer]:
+            - generic [ref=e51]: Plan
+            - generic [ref=e52]: 基于你当前的状态，决定先处理哪件事。
+            - img [ref=e54]
+          - button "Unblock 找出最可能卡住你的那一步。" [ref=e56] [cursor=pointer]:
+            - generic [ref=e57]: Unblock
+            - generic [ref=e58]: 找出最可能卡住你的那一步。
+            - img [ref=e60]
+          - button "Daily Report 给今天写一段简短而真诚的总结。" [ref=e62] [cursor=pointer]:
+            - generic [ref=e63]: Daily Report
+            - generic [ref=e64]: 给今天写一段简短而真诚的总结。
+            - img [ref=e66]
+          - button "Snapshot 此刻 TA 看见的你，是什么样子。" [ref=e68] [cursor=pointer]:
+            - generic [ref=e69]: Snapshot
+            - generic [ref=e70]: 此刻 TA 看见的你，是什么样子。
+            - img [ref=e72]
+        - generic [ref=e74]:
+          - generic [ref=e75]: ● Web 端演示模式
+          - generic [ref=e76]:
+            - generic [ref=e77]: AirJelly Mock
+            - generic [ref=e78]: TTS Browser
+  - navigation [ref=e79]:
+    - button "广场" [ref=e80] [cursor=pointer]:
+      - img [ref=e81]
+      - generic [ref=e84]: 广场
+    - button "对话" [ref=e85] [cursor=pointer]:
+      - img [ref=e86]
+      - generic [ref=e88]: 对话
+    - button "创作 OC" [ref=e89] [cursor=pointer]:
+      - img [ref=e90]
+      - generic [ref=e92]: 创作 OC
+    - button "设置" [ref=e93] [cursor=pointer]:
+      - img [ref=e94]
+      - generic [ref=e97]: 设置
