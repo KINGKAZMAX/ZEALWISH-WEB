@@ -2,6 +2,8 @@
   <img src="docs/images/banner.png" width="100%" alt="ZEALWISH — Create. Grow. Own your AI character." />
 </p>
 
+# ZEALWISH
+
 <p align="center">
   <a href="https://github.com/KINGKAZMAX/OCWORLD-WEB/stargazers"><img src="https://img.shields.io/github/stars/KINGKAZMAX/OCWORLD-WEB?style=for-the-badge&color=FF2D55&labelColor=0A0A0A" alt="Stars" /></a>
   <a href="https://github.com/KINGKAZMAX/OCWORLD-WEB/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Private-FF2D55?style=for-the-badge&labelColor=0A0A0A" alt="License" /></a>
@@ -27,6 +29,8 @@
 ---
 
 > **ZEALWISH is the first AI character platform where you create, grow, and truly own a living digital companion — backed by persistent memory and Web3 identity.**
+>
+> **Ownership is the product.**
 
 ---
 
@@ -52,7 +56,7 @@ ZEALWISH introduces the missing layer: **ownership.** Your AI character's identi
 - **Onboarding Ritual** — A cinematic four-step character creation ceremony: ignition → visual style selection → character prompt → first meeting. Not a form to fill out — a moment to experience.
 - **Web3 Ownership Layer** — Character identity, memory vault, and provenance can be minted as portable on-chain assets. Users hold the keys to their AI companion's existence.
 - **Multi-Platform Runtime** — Runs as an Electron desktop app with a local AI agent runtime (Hermes), and as a standalone web application accessible from any browser.
-- **Bilingual Interface** — Full English and Chinese (中文) support with instant language switching.
+- **Bilingual Interface** — Full English and Simplified Chinese support with instant language switching.
 - **Command Palette (⌘K)** — Fast navigation across all views: Plaza, Talk, Rewind, Record, Settings, and session management.
 
 ## Screenshots
