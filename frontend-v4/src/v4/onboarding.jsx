@@ -1,4 +1,4 @@
-// OCWORLD v4 — OC creation ritual.
+// ZEALWISH v4 — OC creation ritual.
 // 4-step PCB onboarding: ignite → visual style → prompt → meet.
 // Cinematic; only shown on first run, replayable from settings.
 
@@ -113,7 +113,7 @@ function OnboardingRitual({ onComplete }) {
           <>
             <div className="grotesk" style={{
               fontSize: 11, letterSpacing: '0.4em', color: 'var(--ink-muted)',
-            }}>OCWORLD · IGNITION</div>
+            }}>ZEALWISH · IGNITION</div>
             <h1 className="heitai" style={{
               fontSize: 'clamp(40px, 6vw, 64px)', margin: 0, textAlign: 'center',
               color: 'var(--ink)', lineHeight: 1.1,

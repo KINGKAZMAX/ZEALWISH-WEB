@@ -1,4 +1,4 @@
-// Runtime adapter for OCWORLD v4.
+// Runtime adapter for ZEALWISH v4.
 // When loaded inside the oc-world Electron shell, window.ocWorld is provided
 // by preload.ts. We build window.OCRuntime on top of it so all v4 components
 // (sidebar, views, splash, etc.) keep working without changes.

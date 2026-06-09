@@ -1,4 +1,4 @@
-// OCWORLD v3 sidebar — glass surface, simplified anchors, no kanji medallions.
+// ZEALWISH v3 sidebar — glass surface, simplified anchors, no kanji medallions.
 // One column of icon + label, restrained accent, soft session list.
 
 function SidebarV2({ active, setActive, collapsed, setCollapsed, sessions, activeSession, setActiveSession, onNewSession, onOpenPalette, affinity = 412, intimacy = 32, day = 27 }) {
@@ -62,7 +62,7 @@ function SidebarV2({ active, setActive, collapsed, setCollapsed, sessions, activ
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <OCMark scale={0.45} animated={false} />
           <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
-            <span className="grotesk" style={{ fontSize: 13.5, color: 'var(--ink)', letterSpacing: '0.04em', fontWeight: 700 }}>OCWORLD</span>
+            <span className="grotesk" style={{ fontSize: 13.5, color: 'var(--ink)', letterSpacing: '0.04em', fontWeight: 700 }}>ZEALWISH</span>
             <span className="mono" style={{ fontSize: 9, color: 'var(--ink-faint)', letterSpacing: '0.18em', marginTop: 1 }}>v0.4 · SIGNAL</span>
           </div>
         </div>
@@ -198,12 +198,12 @@ function SidebarV2({ active, setActive, collapsed, setCollapsed, sessions, activ
 }
 
 const DEFAULT_SESSIONS = [
-  { id: 's1', title: '今天降温了，记得加件外套', date: '14:32', preview: '"昨晚你 1 点才睡哦。"', tag: 'today' },
-  { id: 's2', title: '关于昨晚那个梦', date: '昨天', preview: '梦到一个会说话的橘子。', tag: 'today' },
-  { id: 's3', title: '我又拖延了…', date: '前天', preview: '我帮你把任务切小了。', tag: 'today' },
-  { id: 's4', title: '第27天 · 你说的咖啡馆', date: '5天前', preview: '风信子拿铁，下雨天。', tag: 'earlier' },
-  { id: 's5', title: '给XZ的一封信', date: '2周前', preview: '不一定要寄出去。', tag: 'earlier' },
-  { id: 's6', title: '周末计划讨论', date: '3周前', preview: '想去看那个展览。', tag: 'earlier' },
+  { id: 's1', title: "It's getting cold, grab a jacket", date: '14:32', preview: '"You stayed up till 1am again."', tag: 'today' },
+  { id: 's2', title: 'About that dream last night', date: 'Yesterday', preview: 'Dreamed about a talking orange.', tag: 'today' },
+  { id: 's3', title: "I've been procrastinating…", date: '2 days ago', preview: 'I broke the task into smaller pieces.', tag: 'today' },
+  { id: 's4', title: 'Day 27 · that café you mentioned', date: '5 days ago', preview: 'Hyacinth latte, rainy afternoon.', tag: 'earlier' },
+  { id: 's5', title: 'A letter to XZ', date: '2 weeks ago', preview: "Doesn't have to be sent.", tag: 'earlier' },
+  { id: 's6', title: 'Weekend plans', date: '3 weeks ago', preview: 'Want to see that exhibition.', tag: 'earlier' },
 ];
 
 const iconBtnV3 = {

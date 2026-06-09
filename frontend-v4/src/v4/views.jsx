@@ -1,4 +1,4 @@
-// OCWORLD v3 views — glass surfaces, simplified anchors, i18n.
+// ZEALWISH v3 views — glass surfaces, simplified anchors, i18n.
 // Removed: kanji medallions, "QUICK GATES · 06 ROOMS" mono header, heavy black borders.
 
 // ─────────────────────────────────────────────

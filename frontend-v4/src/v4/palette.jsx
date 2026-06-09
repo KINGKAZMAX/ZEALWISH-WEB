@@ -1,4 +1,4 @@
-// ⌘K command palette for OCWORLD v2.
+// ⌘K command palette for ZEALWISH v2.
 
 function CommandPalette({ open, onClose, onNav, onNewSession, sessions, onPickSession }) {
   const [q, setQ] = React.useState('');
@@ -108,7 +108,7 @@ function CommandPalette({ open, onClose, onNav, onNewSession, sessions, onPickSe
           display: 'flex', justifyContent: 'space-between',
         }}>
           <span>↑↓ 选择 · ↵ 打开</span>
-          <span>OCWORLD · CMD</span>
+          <span>ZEALWISH · CMD</span>
         </div>
       </div>
     </div>

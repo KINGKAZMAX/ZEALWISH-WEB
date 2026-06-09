@@ -1,4 +1,4 @@
-// OCWORLD v4 — API service adapter.
+// ZEALWISH v4 — API service adapter.
 // Thin wrapper that routes frontend calls to window.OCRuntime
 // (which is set up by ocworld-bridge.jsx from window.ocWorld).
 
