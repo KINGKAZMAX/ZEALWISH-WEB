@@ -17,7 +17,10 @@ describe("frontend-v4 ZEALWISH Web3 landing", () => {
 
     expect(index).toContain("ZEALWISH");
     expect(index).toContain("src/v5/zealwish-landing.jsx");
-    expect(index).toContain("V4 app shell components");
+    expect(index).toContain("ZEALWISH product app shell");
+    expect(index).not.toContain("src/v4/");
+    expect(index).not.toContain("Teko");
+    expect(index).not.toContain("Inter:wght");
     expect(index).not.toContain("OCWORLD");
     expect(index).not.toMatch(chinesePattern);
   });
@@ -28,13 +31,23 @@ describe("frontend-v4 ZEALWISH Web3 landing", () => {
 
     expect(landing).toContain("Create. Grow. Own your AI character.");
     expect(landing).toContain("Free will for your digital self.");
+    expect(landing).toContain("Character Birth Ritual");
+    expect(landing).toContain("First Conversation");
+    expect(landing).toContain("Memory Vault");
+    expect(landing).toContain("Character Passport");
+    expect(landing).toContain("Worlds Portability");
+    expect(landing).toContain("OKX Wallet API");
     expect(landing).toContain("NFT is not the product. Ownership is.");
     expect(landing).toContain("Wallet-owned AI character");
     expect(landing).toContain("Character Passport NFT");
     expect(landing).toContain("Blockchain Anchor");
     expect(landing).toContain("Built for ownership, not speculation");
     expect(landing).toContain("Create Character Passport");
+    expect(landing).toContain("ZEALWISH-0001 / Alive");
     expect(landing).not.toContain("OCWORLD");
+    expect(landing).not.toContain("OC-0001");
+    expect(landing).not.toContain("Create Your OC");
+    expect(landing).not.toContain("window.ZEALWISH_MOUNT_APP");
     expect(landing).not.toMatch(chinesePattern);
   });
 
