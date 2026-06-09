@@ -124,6 +124,37 @@ services/
     Wallet, character passport, NFT, and blockchain adapter interfaces.
 ```
 
+
+## Target Web Product Blueprint
+
+The landing page is only the public introduction. The product web app should now follow the product blueprint in:
+
+```text
+docs/product/zealwish-web-product-blueprint.md
+```
+
+The target web product is a browser-based AI character life system with these app areas:
+
+```text
+/app/create    Character Birth ritual
+/app/home      Character Home / Living Room
+/app/chat      Relationship conversation
+/app/memory    Memory Vault and Relationship Timeline
+/app/passport  Ownership, permissions, provenance, export
+/app/worlds    Cross-platform destinations and future integrations
+/app/settings  Safety, privacy, model, wallet, export, deletion
+```
+
+Product implementation order:
+
+1. Character Birth replaces the legacy creation form.
+2. First conversation proves relationship continuity.
+3. Memory Vault makes remembered facts visible and controllable.
+4. Character Passport introduces ownership after value is proven.
+5. Worlds demonstrates portability beyond one app.
+
+Wallet connection must happen at the Passport boundary, not before the first character creation moment. Memory must remain private by default; only user-approved summaries, hashes, permissions, and provenance should become passport-linked.
+
 ## Current Homepage Information Architecture
 
 The homepage intro should communicate the product in this order:

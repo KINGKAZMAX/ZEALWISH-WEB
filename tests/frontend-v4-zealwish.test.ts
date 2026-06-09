@@ -7,6 +7,7 @@ const root = process.cwd();
 const indexPath = join(root, "frontend-v4", "index.html");
 const landingPath = join(root, "frontend-v4", "src", "v5", "zealwish-landing.jsx");
 const architecturePath = join(root, "docs", "architecture", "web-architecture.md");
+const productBlueprintPath = join(root, "docs", "product", "zealwish-web-product-blueprint.md");
 const chinesePattern = /[\u4e00-\u9fff]/;
 const expectedMainCharacterHash = "c8b5166f56b2fbb5e58999cea670732a5e6516f8b9a4b2f07aa1ae6ffe11cf4c";
 
@@ -46,6 +47,20 @@ describe("frontend-v4 ZEALWISH Web3 landing", () => {
     expect(architecture).toContain("Target Monorepo Shape");
     expect(architecture).toContain("All user-facing product copy must be English.");
     expect(architecture).not.toMatch(chinesePattern);
+  });
+
+
+  it("documents the target ZEALWISH web product blueprint", () => {
+    expect(existsSync(productBlueprintPath)).toBe(true);
+    const blueprint = readFileSync(productBlueprintPath, "utf8");
+
+    expect(blueprint).toContain("ZEALWISH is a web platform where anyone can create a living AI character");
+    expect(blueprint).toContain("Character Birth ritual");
+    expect(blueprint).toContain("Memory Vault and Relationship Timeline");
+    expect(blueprint).toContain("Character Passport");
+    expect(blueprint).toContain("Wallet connection happens at the passport boundary");
+    expect(blueprint).toContain("https://eips.ethereum.org/EIPS/eip-6551");
+    expect(blueprint).not.toMatch(chinesePattern);
   });
 
   it("main visual uses the transparent character PNG", () => {
