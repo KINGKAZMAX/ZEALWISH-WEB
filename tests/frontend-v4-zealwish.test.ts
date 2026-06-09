@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { createHash } from "node:crypto";
 
 const root = process.cwd();
+const rootIndexPath = join(root, "index.html");
 const indexPath = join(root, "frontend-v4", "index.html");
 const landingPath = join(root, "frontend-v4", "src", "v5", "zealwish-landing.jsx");
 const architecturePath = join(root, "docs", "architecture", "web-architecture.md");
@@ -12,6 +13,16 @@ const chinesePattern = /[\u4e00-\u9fff]/;
 const expectedMainCharacterHash = "c8b5166f56b2fbb5e58999cea670732a5e6516f8b9a4b2f07aa1ae6ffe11cf4c";
 
 describe("frontend-v4 ZEALWISH Web3 landing", () => {
+  it("keeps the root Vite entry branded as ZEALWISH English-only", () => {
+    const rootIndex = readFileSync(rootIndexPath, "utf8");
+
+    expect(rootIndex).toContain('lang="en"');
+    expect(rootIndex).toContain("ZEALWISH");
+    expect(rootIndex).not.toContain("OC World");
+    expect(rootIndex).not.toContain("OCWORLD");
+    expect(rootIndex).not.toMatch(chinesePattern);
+  });
+
   it("routes the active preview to the ZEALWISH v5 landing entry", () => {
     const index = readFileSync(indexPath, "utf8");
 
@@ -49,6 +60,28 @@ describe("frontend-v4 ZEALWISH Web3 landing", () => {
     expect(landing).not.toContain("Create Your OC");
     expect(landing).not.toContain("window.ZEALWISH_MOUNT_APP");
     expect(landing).not.toMatch(chinesePattern);
+  });
+
+  it("keeps OKX wallet onboarding at the Character Passport boundary", () => {
+    const landing = readFileSync(landingPath, "utf8");
+
+    expect(landing).toContain("Wallet connection happens at the Character Passport boundary, not on the first screen.");
+    expect(landing).toContain("Connect OKX Wallet");
+    expect(landing).toContain("How to create or import an OKX Wallet");
+    expect(landing).toContain("https://web3.okx.com/zh-hant/onchainos/dev-docs/wallet/wallet-api-introduction");
+    expect(landing).toContain("https://web3.okx.com/zh-hans/help/how-do-i-create-import-an-okx-wallet");
+    expect(landing.indexOf("Character Birth Ritual")).toBeLessThan(landing.indexOf("First Conversation"));
+    expect(landing.indexOf("First Conversation")).toBeLessThan(landing.indexOf("Memory Vault"));
+    expect(landing.indexOf("Memory Vault")).toBeLessThan(landing.indexOf("Character Passport"));
+    expect(landing.indexOf("Character Passport")).toBeLessThan(landing.indexOf("Worlds Portability"));
+  });
+
+  it("wires the passport CTA into the product path launcher without runtime globals", () => {
+    const landing = readFileSync(landingPath, "utf8");
+
+    expect(landing).toContain("function PassportSection({ onLaunchApp })");
+    expect(landing).toContain("<PassportSection onLaunchApp={handleLaunchApp} />");
+    expect(landing).not.toContain("function PassportSection() {");
   });
 
   it("documents the preview and architecture contract in English", () => {

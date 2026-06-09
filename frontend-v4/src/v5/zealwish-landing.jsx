@@ -46,7 +46,7 @@ const ownershipProofs = [
 
 const passportSteps = [
   ["Draft", "Create passport draft", "Save identity, personality, first memory, and export permissions before any wallet action."],
-  ["OKX", "Connect with OKX Wallet API", "Use wallet detection and account connection as the passport boundary, not the first screen."],
+  ["OKX", "Connect OKX Wallet", "Wallet connection happens at the Character Passport boundary, not on the first screen."],
   ["Sign", "Sign ownership intent", "Let the user verify what identity and permissions will be bound to the character."],
   ["Carry", "Export to future worlds", "Keep memory private by default while allowing approved proofs and permissions to travel."]
 ];
@@ -80,9 +80,9 @@ const appTabs = [
     id: "passport",
     label: "Character Passport",
     title: "Character Passport",
-    primary: "Wallet connection happens after the passport draft is valuable. OKX Wallet API can provide the account connection path for ownership actions.",
+    primary: "Wallet connection happens at the Character Passport boundary, not on the first screen. OKX Wallet API can provide the account connection path for ownership actions.",
     sideTitle: "Passport readiness",
-    stats: [["Identity", "Ready"], ["First memory", "Saved"], ["OKX Wallet", "Connect when ready"], ["Mint state", "Optional draft"]]
+    stats: [["Identity", "Ready"], ["First memory", "Saved"], ["OKX Wallet", "Connect OKX Wallet"], ["Mint state", "Optional draft"]]
   },
   {
     id: "worlds",
@@ -140,7 +140,7 @@ function Hero({ onLaunchApp }) {
           Free will for your digital self. ZEALWISH turns a character into a living identity: born through ritual, deepened by conversation, protected by memory, and prepared for portable ownership.
         </p>
         <div className="actions">
-          <a className="primary-button edge" href="#app" onClick={onLaunchApp}>Create Character Passport</a>
+          <a className="primary-button edge" href="#birth">Begin Character Birth</a>
           <a className="secondary-button edge" href="#birth">View Product Path</a>
         </div>
         <div className="signal-strip mono" aria-label="Product path">
@@ -255,18 +255,19 @@ function OwnershipThesisSection() {
   );
 }
 
-function PassportSection() {
+function PassportSection({ onLaunchApp }) {
   return (
     <section id="passport" className="section">
       <div className="section-heading">
         <div className="eyebrow mono">Ownership after value</div>
         <h2 className="display">Character Passport connects wallet only when it matters.</h2>
         <p>
-          OKX wallet should be introduced as ownership infrastructure for account connection, signing, and future passport actions. It should not block the first creative moment.
+          Wallet connection happens at the Character Passport boundary, not on the first screen. OKX wallet should be introduced as ownership infrastructure for account connection, signing, and future passport actions after the character has identity, conversation, and memory.
         </p>
         <div className="actions">
+          <a className="primary-button edge" href="#app" onClick={onLaunchApp}>Create Character Passport</a>
           <a className="secondary-button edge" href="https://web3.okx.com/zh-hant/onchainos/dev-docs/wallet/wallet-api-introduction" target="_blank" rel="noreferrer">OKX Wallet API</a>
-          <a className="secondary-button edge" href="https://web3.okx.com/zh-hans/help/how-do-i-create-import-an-okx-wallet" target="_blank" rel="noreferrer">OKX Wallet Guide</a>
+          <a className="secondary-button edge" href="https://web3.okx.com/zh-hans/help/how-do-i-create-import-an-okx-wallet" target="_blank" rel="noreferrer">How to create or import an OKX Wallet</a>
         </div>
       </div>
       <div className="wallet-rail">
@@ -355,7 +356,7 @@ function ProductApp({ onClose }) {
               <div><b>Character Birth Ritual</b>Identity and personality become visible.</div>
               <div><b>First Conversation</b>The user decides what can be remembered.</div>
               <div><b>Memory Vault</b>Records become editable and permissioned.</div>
-              <div><b>Character Passport</b>Wallet ownership can be connected through OKX Wallet API when needed.</div>
+              <div><b>Character Passport</b>Wallet connection happens at the Character Passport boundary, not on the first screen.</div>
               <div><b>Worlds Portability</b>The character prepares to move beyond one platform.</div>
             </div>
           </section>
@@ -408,7 +409,7 @@ function App() {
         <JourneySection />
         <MemorySection />
         <OwnershipThesisSection />
-        <PassportSection />
+        <PassportSection onLaunchApp={handleLaunchApp} />
         <WorldsSection />
         <FinalCTA onLaunchApp={handleLaunchApp} />
       </main>
