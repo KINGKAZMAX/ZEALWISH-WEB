@@ -1,4 +1,4 @@
-// ZEALWISH v4 — Resident OC character.
+// OCWORLD v4 — Resident OC character.
 // A small "living" SVG character with breathing, blinking, eye tracking, blush.
 // Replaces the abstract OCMark in the desktop corner.
 

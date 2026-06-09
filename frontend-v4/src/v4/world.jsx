@@ -1,4 +1,4 @@
-// ZEALWISH v4 — Agent World view.
+// OCWORLD v4 — Agent World view.
 // The "second world" preview — task board, OC社交ring, A2A status.
 // Per the brief: 现实端 OC 桌面 + Agent 世界（替你冒险）.
 

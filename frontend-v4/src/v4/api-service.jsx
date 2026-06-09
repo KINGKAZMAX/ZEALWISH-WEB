@@ -1,4 +1,4 @@
-// ZEALWISH v4 — API service adapter.
+// OCWORLD v4 — API service adapter.
 // Thin wrapper that routes frontend calls to window.OCRuntime
 // (which is set up by ocworld-bridge.jsx from window.ocWorld).
 
@@ -7,7 +7,7 @@ const ApiService = {
     const runtime = window.OCRuntime;
     if (!runtime?.sendChat) {
       return {
-        text: 'Mm, I\'m listening.',
+        text: '嗯，我在听。',
         emotion: 'idle',
         source: 'mock',
       };
@@ -28,7 +28,7 @@ const ApiService = {
     } catch (err) {
       console.warn('[ApiService] sendChat failed:', err);
       return {
-        text: 'Noted quietly. Full flow activates once the real runtime is connected.',
+        text: '我把这件事记下来了。接上真实运行时后会走完整流程。',
         emotion: 'thinking',
         source: 'fallback',
       };

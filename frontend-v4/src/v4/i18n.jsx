@@ -1,11 +1,11 @@
-// ZEALWISH v4 — i18n dictionary + LangContext.
+// OCWORLD v3 — i18n dictionary + LangContext.
 // Two locales: 'zh' (default), 'en'. Strings used across views/sidebar/splash.
 
 const I18N = {
   zh: {
     // app frame
     'app.tagline':       '桌面的住人',
-    'app.subtitle':      'ZEALWISH · v0.4 · Signal',
+    'app.subtitle':      'OCWORLD · v0.3 · Glass',
 
     // nav
     'nav.home':          '广场',
@@ -108,7 +108,7 @@ const I18N = {
 
     // splash
     'splash.subhead':       '角落的住人',
-    'splash.body':          'ZEALWISH 为你生成一个 OC——不是 app，也不是聊天机器人。TA 住在你屏幕的边缘，不抢你的注意力，只在该出现时出现。',
+    'splash.body':          'OCWORLD 为你生成一个 OC——不是 app，也不是聊天机器人。TA 住在你屏幕的边缘，不抢你的注意力，只在该出现时出现。',
     'splash.enter':         '进入',
 
     // topbar
@@ -118,7 +118,7 @@ const I18N = {
   },
   en: {
     'app.tagline':       'Desktop dweller',
-    'app.subtitle':      'ZEALWISH · v0.4 · Signal',
+    'app.subtitle':      'OCWORLD · v0.3 · Glass',
 
     'nav.home':          'Plaza',
     'nav.chat':          'Talk',
@@ -209,7 +209,7 @@ const I18N = {
     'settings.replay.btn':  'Replay',
 
     'splash.subhead':       'Dweller in the corner',
-    'splash.body':          "ZEALWISH generates an OC for you — not an app, not a chatbot. They live at the edge of your screen, never grabbing for attention, appearing only when they should.",
+    'splash.body':          "OCWORLD generates an OC for you — not an app, not a chatbot. They live at the edge of your screen, never grabbing for attention, appearing only when they should.",
     'splash.enter':         'Enter',
 
     'topbar.lang':          'Language',
@@ -218,7 +218,7 @@ const I18N = {
   }
 };
 
-const LangContext = React.createContext({ lang: 'en', t: (k) => k, setLang: () => {} });
+const LangContext = React.createContext({ lang: 'zh', t: (k) => k, setLang: () => {} });
 
 function useT() {
   return React.useContext(LangContext);

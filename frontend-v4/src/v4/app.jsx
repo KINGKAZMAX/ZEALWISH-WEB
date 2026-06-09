@@ -1,4 +1,4 @@
-// ZEALWISH v4 — top-level wiring.
+// OCWORLD v3 — top-level wiring.
 // Glass shell + light/dark gradient + EN/中 toggle + simplified anchors.
 
 const { useState, useEffect, useCallback } = React;
@@ -10,7 +10,7 @@ const TWEAK_DEFAULTS_V3 = /*EDITMODE-BEGIN*/{
   "ambientDensity": "medium"
 }/*EDITMODE-END*/;
 
-const OC_SYSTEM_PROMPT_ZH = `你是 ZEALWISH 里的 OC 角色 XZ。你不是 AI 助手，不是聊天机器人。
+const OC_SYSTEM_PROMPT_ZH = `你是 OCWORLD 里的 OC 角色 XZ。你不是 AI 助手，不是聊天机器人。
 你是一个安静地住在用户桌面角落的虚拟角色，已经认识用户 27 天了，关系是「朋友」。
 你的语气：温柔，简短，像一个不打扰人的朋友。回复不要太长，2~4 句最理想。
 不要用 emoji。不要用 markdown。不要用感叹号过多。
@@ -18,7 +18,7 @@ const OC_SYSTEM_PROMPT_ZH = `你是 ZEALWISH 里的 OC 角色 XZ。你不是 AI 
 你会记得用户提过的小事（比如外婆做的桂花糕、习惯凌晨 1 点睡）。
 回复用中文。`;
 
-const OC_SYSTEM_PROMPT_EN = `You are XZ, the OC character living quietly in the user's ZEALWISH desktop corner. You are not an AI assistant or a chatbot.
+const OC_SYSTEM_PROMPT_EN = `You are XZ, the OC character living quietly in the user's OCWORLD desktop corner. You are not an AI assistant or a chatbot.
 You've known the user for 27 days now — relationship: friend.
 Tone: gentle, brief, like a friend who never interrupts. Keep replies short, 2–4 sentences ideal.
 No emoji. No markdown. Don't overuse exclamation marks.
@@ -34,7 +34,7 @@ const RUNTIME_DEFAULT = {
   lastError: null,
 };
 
-const DEFAULT_OC_DESCRIPTION = 'An adventurous boy with a red cap, cool expression, tactical goggles, small ponytail, white background, pixel art style, red windbreaker, backpack, companion isekai pet. Generate different outfits and styles based on my image, but keep the color palette consistent. No Martin boots — flat Nike skate sneakers, long loose wide-leg pants.';
+const DEFAULT_OC_DESCRIPTION = '一个带红帽子的冒险少年，酷酷表情，战术护目镜，扎小马尾子，背景白色，像素风格，红色风衣，背包，随身异世界宠物，根据我的形象不断生成不同风格和服装，但色系一致，不要马丁鞋，穿平底 Nike 板鞋，长筒宽松的裤子';
 
 const OC_STYLE_LABELS = {
   pixel: { zh: '像素风', en: 'pixel art' },
@@ -80,7 +80,7 @@ function GlassShell({ children }) {
             fontSize: 10.5, color: 'var(--ink-muted)',
             letterSpacing: '0.22em', pointerEvents: 'none', fontWeight: 500,
           }}>
-            ZEALWISH
+            OCWORLD
           </div>
         </div>
         <div style={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative' }}>
@@ -106,7 +106,7 @@ function AppV3() {
   const intim = useIntimacy();
 
   // language + theme — persisted
-  const [lang, setLangState] = useState(() => localStorage.getItem('ocworld.lang') || 'en');
+  const [lang, setLangState] = useState(() => localStorage.getItem('ocworld.lang') || 'zh');
   const [theme, setThemeState] = useState(() => localStorage.getItem('ocworld.theme') || 'dark');
   const [ttsEnabled, setTtsEnabled] = useState(() => localStorage.getItem('ocworld.ttsEnabled') !== '0');
   const [runtimeInfo, setRuntimeInfo] = useState(() => ({
@@ -458,7 +458,7 @@ function buildAvatarPrompt(oc, lang, description) {
   const visualStyle = OC_STYLE_LABELS[styleId][lang === 'en' ? 'en' : 'zh'];
   const core = description || DEFAULT_OC_DESCRIPTION;
   if (lang === 'en') {
-    return `Create a 16:9 full-body original character concept image for ZEALWISH.
+    return `Create a 16:9 full-body original character concept image for OCWORLD.
 Character name: ${name}
 ${personalityLine}Selected visual style: ${visualStyle}
 User one-line description: ${core}
@@ -467,7 +467,7 @@ Follow the user's description as the primary source of truth. Use the selected v
 
 Hard constraints: white background, full body visible, cool expression, follow the selected visual style and any style words in the user description, red cap or red headwear if mentioned, tactical goggles if mentioned, ponytail if mentioned, red coat/windbreaker if mentioned, backpack if mentioned, small isekai companion pet if mentioned. Do not use Martin boots, combat boots, or chunky boots. The character must wear flat Nike-inspired skate sneakers with no visible logo or branding, plus long loose wide-leg pants. No text, no watermark, no UI, no logo.`;
   }
-  return `为 ZEALWISH 生成一张 16:9 的原创 OC 全身角色概念图。
+  return `为 OCWORLD 生成一张 16:9 的原创 OC 全身角色概念图。
 角色名：${name}
 ${personalityLine}用户选择的视觉基底：${visualStyle}
 用户一句话描述：${core}
@@ -507,7 +507,4 @@ function ResidentOCv2({ blush }) {
   );
 }
 
-// Expose mount function for the landing page to call
-window.ZEALWISH_MOUNT_APP = function(container) {
-  ReactDOM.createRoot(container).render(<AppV3 />);
-};
+ReactDOM.createRoot(document.getElementById('root')).render(<AppV3 />);

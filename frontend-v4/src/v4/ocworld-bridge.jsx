@@ -1,4 +1,4 @@
-// Runtime adapter for ZEALWISH v4.
+// Runtime adapter for OCWORLD v4.
 // When loaded inside the oc-world Electron shell, window.ocWorld is provided
 // by preload.ts. We build window.OCRuntime on top of it so all v4 components
 // (sidebar, views, splash, etc.) keep working without changes.
@@ -15,17 +15,17 @@
 
   function fallbackReply(text) {
     const t = String(text || "").toLowerCase();
-    if (!t.trim()) return "Mm, I'm listening.";
-    if (t.includes("tired") || t.includes("sleep") || t.includes("anxious")) {
-      return "Looks like you've been holding on for a while. Let's get one small thing working first, then the rest.";
+    if (!t.trim()) return "嗯，我在听。";
+    if (t.includes("累") || t.includes("困") || t.includes("焦虑")) {
+      return "看得出来你已经绷了一会儿。先把最能展示的一条链路跑通，剩下的慢慢补。";
     }
-    if (t.includes("plan")) {
-      return "Pick the smallest possible action: ask, reply, speak, then generate an image.";
+    if (t.includes("计划") || t.includes("plan")) {
+      return "先选一个最小可演示动作：问一句、回一句、读出来，再生成一张图。";
     }
-    if (t.includes("draw") || t.includes("image") || t.includes("avatar")) {
-      return "Sure, I'll turn that into a visual concept that looks more like an OC.";
+    if (t.includes("画") || t.includes("图") || t.includes("头像")) {
+      return "可以，我会把这句话变成一张更像 OC 的视觉草图。";
     }
-    return "Noted quietly. This version works for demos — full memory comes once we connect the real runtime.";
+    return "我把这件事记下来了。现在这版可以先用于演示，接上真实运行时后会走 Hermes 和本地记忆。";
   }
 
   function pickLastUserMessage(messages, fallbackText) {
