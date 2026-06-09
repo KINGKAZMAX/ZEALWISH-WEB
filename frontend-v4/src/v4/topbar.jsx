@@ -1,4 +1,4 @@
-// OCWORLD v3 — Top-right floating control: language + theme toggle.
+// ZEALWISH v4 — Top-right floating control: language + theme toggle.
 // Glass pill, sits in the macOS chrome area (top-right of viewport).
 
 function TopBar({ lang, setLang, theme, setTheme }) {
@@ -19,8 +19,8 @@ function TopBar({ lang, setLang, theme, setTheme }) {
         height: 32,
       }}>
         {[
-          { id: 'zh', label: '中' },
           { id: 'en', label: 'EN' },
+          { id: 'zh', label: '中' },
         ].map((opt) => {
           const active = lang === opt.id;
           return (

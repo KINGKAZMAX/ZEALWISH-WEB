@@ -1,4 +1,4 @@
-// ⌘K command palette for OCWORLD v2.
+// ⌘K command palette for ZEALWISH v4.
 
 function CommandPalette({ open, onClose, onNav, onNewSession, sessions, onPickSession }) {
   const [q, setQ] = React.useState('');
@@ -14,12 +14,12 @@ function CommandPalette({ open, onClose, onNav, onNewSession, sessions, onPickSe
 
   const items = React.useMemo(() => {
     const navItems = [
-      { kind: 'nav', id: 'home',     label: '广场 · Plaza',    kanji: '広', do: () => onNav('home') },
-      { kind: 'nav', id: 'chat',     label: '对话 · Talk',     kanji: '会', do: () => onNav('chat') },
-      { kind: 'nav', id: 'rewind',   label: '回溯 · Rewind',   kanji: '記', do: () => onNav('rewind') },
-      { kind: 'nav', id: 'memory',   label: '记录 · Record',   kanji: '録', do: () => onNav('memory') },
-      { kind: 'nav', id: 'settings', label: '设置 · Settings', kanji: '設', do: () => onNav('settings') },
-      { kind: 'act', id: 'new',      label: '新对话',           kanji: '＋', do: () => onNewSession() },
+      { kind: 'nav', id: 'home',     label: 'Plaza',    kanji: '広', do: () => onNav('home') },
+      { kind: 'nav', id: 'chat',     label: 'Talk',     kanji: '会', do: () => onNav('chat') },
+      { kind: 'nav', id: 'rewind',   label: 'Rewind',   kanji: '記', do: () => onNav('rewind') },
+      { kind: 'nav', id: 'memory',   label: 'Record',   kanji: '録', do: () => onNav('memory') },
+      { kind: 'nav', id: 'settings', label: 'Settings', kanji: '設', do: () => onNav('settings') },
+      { kind: 'act', id: 'new',      label: 'New chat',           kanji: '＋', do: () => onNewSession() },
     ];
     const sessionItems = (sessions || []).map(s => ({
       kind: 'session', id: s.id, label: s.title, hint: s.date, kanji: '話',
@@ -64,7 +64,7 @@ function CommandPalette({ open, onClose, onNav, onNewSession, sessions, onPickSe
               if (e.key === 'ArrowUp') { e.preventDefault(); setSel(s => Math.max(0, s - 1)); }
               if (e.key === 'Enter' && items[sel]) { e.preventDefault(); trigger(items[sel]); }
             }}
-            placeholder="搜索 / 跳转 / 命令…"
+            placeholder="Search / jump / command…"
             style={{
               flex: 1, border: 'none', outline: 'none', background: 'transparent',
               fontSize: 15, color: 'var(--ink)',
@@ -77,7 +77,7 @@ function CommandPalette({ open, onClose, onNav, onNewSession, sessions, onPickSe
         <div style={{ maxHeight: 320, overflowY: 'auto', padding: 4 }}>
           {items.length === 0 ? (
             <div style={{ padding: 24, textAlign: 'center', color: 'var(--ink-faint)', fontSize: 13 }}>
-              没找到这个。
+              Nothing found.
             </div>
           ) : items.map((it, i) => (
             <button key={it.kind + ':' + it.id} onClick={() => trigger(it)}
@@ -107,8 +107,8 @@ function CommandPalette({ open, onClose, onNav, onNewSession, sessions, onPickSe
           fontSize: 9, color: 'var(--ink-faint)', letterSpacing: '0.18em',
           display: 'flex', justifyContent: 'space-between',
         }}>
-          <span>↑↓ 选择 · ↵ 打开</span>
-          <span>OCWORLD · CMD</span>
+          <span>↑↓ select · ↵ open</span>
+          <span>ZEALWISH · CMD</span>
         </div>
       </div>
     </div>

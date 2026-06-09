@@ -1,4 +1,4 @@
-// OCWORLD v3 views — glass surfaces, simplified anchors, i18n.
+// ZEALWISH v4 views — glass surfaces, simplified anchors, i18n.
 // Removed: kanji medallions, "QUICK GATES · 06 ROOMS" mono header, heavy black borders.
 
 // ─────────────────────────────────────────────
@@ -47,12 +47,12 @@ function runtimeLabels(info, lang) {
 }
 
 const OC_STYLE_OPTIONS = [
-  { id: 'pixel',   zh: '像素风',   en: 'Pixel Art',  glyph: '像' },
-  { id: 'anime',   zh: '二次元',   en: 'Anime',      glyph: '二' },
-  { id: 'cyber',   zh: '赛博机械', en: 'Cyber Mech', glyph: '械' },
+  { id: 'pixel',   zh: '像素风',   en: 'Pixel Art',  glyph: 'PX' },
+  { id: 'anime',   zh: '二次元',   en: 'Anime',      glyph: 'AN' },
+  { id: 'cyber',   zh: '赛博机械', en: 'Cyber Mech', glyph: 'CY' },
   { id: 'figure',  zh: '3D 手办',  en: '3D Figure',  glyph: '3D' },
-  { id: 'comic',   zh: '漫画线稿', en: 'Comic Ink',  glyph: '漫' },
-  { id: 'arcade',  zh: '复古街机', en: 'Arcade',     glyph: '机' },
+  { id: 'comic',   zh: '漫画线稿', en: 'Comic Ink',  glyph: 'CK' },
+  { id: 'arcade',  zh: '复古街机', en: 'Arcade',     glyph: 'AR' },
 ];
 
 function PlazaViewV2({ onSendTask, onPickQuickStart, onNav, runtimeInfo, avatarDataUrl }) {

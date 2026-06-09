@@ -1,16 +1,16 @@
-// OCWORLD v4 — OC creation ritual.
+// ZEALWISH v4 — OC creation ritual.
 // 4-step PCB onboarding: ignite → visual style → prompt → meet.
 // Cinematic; only shown on first run, replayable from settings.
 
-const OC_PROMPT_EXAMPLE = '一个带红帽子的冒险少年，酷酷表情，战术护目镜，扎小马尾子，背景白色，像素风格，红色风衣，背包，随身异世界宠物根据我的形象不断的去生成不同的风格和服装，但是色系一致，不要马丁鞋，穿平底 Nike 板鞋，长筒宽松的裤子';
+const OC_PROMPT_EXAMPLE = 'An adventurous boy with a red cap, cool expression, tactical goggles, small ponytail, white background, pixel art style, red windbreaker, backpack, companion isekai pet. Generate different outfits based on my look but keep the color palette consistent. No Martin boots — flat Nike skate sneakers, long loose wide-leg pants.';
 
 const VISUAL_STYLES = [
-  { id: 'pixel',   zh: '像素风',   en: 'Pixel Art',  glyph: '像' },
-  { id: 'anime',   zh: '二次元',   en: 'Anime',      glyph: '二' },
-  { id: 'cyber',   zh: '赛博机械', en: 'Cyber Mech', glyph: '械' },
+  { id: 'pixel',   zh: '像素风',   en: 'Pixel Art',  glyph: 'PX' },
+  { id: 'anime',   zh: '二次元',   en: 'Anime',      glyph: 'AN' },
+  { id: 'cyber',   zh: '赛博机械', en: 'Cyber Mech', glyph: 'CY' },
   { id: 'figure',  zh: '3D 手办',  en: '3D Figure',  glyph: '3D' },
-  { id: 'comic',   zh: '漫画线稿', en: 'Comic Ink',  glyph: '漫' },
-  { id: 'arcade',  zh: '复古街机', en: 'Arcade',     glyph: '机' },
+  { id: 'comic',   zh: '漫画线稿', en: 'Comic Ink',  glyph: 'CK' },
+  { id: 'arcade',  zh: '复古街机', en: 'Arcade',     glyph: 'AR' },
 ];
 
 // PCB circuit backdrop — animated traces converging to center
@@ -113,7 +113,7 @@ function OnboardingRitual({ onComplete }) {
           <>
             <div className="grotesk" style={{
               fontSize: 11, letterSpacing: '0.4em', color: 'var(--ink-muted)',
-            }}>OCWORLD · IGNITION</div>
+            }}>ZEALWISH · IGNITION</div>
             <h1 className="heitai" style={{
               fontSize: 'clamp(40px, 6vw, 64px)', margin: 0, textAlign: 'center',
               color: 'var(--ink)', lineHeight: 1.1,

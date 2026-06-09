@@ -1,4 +1,4 @@
-// OCWORLD v4 — intimacy hook + chat header strip.
+// ZEALWISH v4 — intimacy hook + chat header strip.
 // 0–100, persisted, with stage labels and a称呼 dictionary the chat uses.
 
 const INTIMACY_STAGES = [

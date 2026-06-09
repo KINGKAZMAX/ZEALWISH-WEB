@@ -1,4 +1,4 @@
-// OCWORLD mark — XZ. Renders the user's hand-drawn pixel portrait.
+// ZEALWISH mark — XZ. Renders the user's hand-drawn pixel portrait.
 // Keeps the legacy <OCMark scale={N}>/animated/blush API so all callers
 // (sidebar, splash, views, resident OC) keep working.
 
@@ -58,7 +58,7 @@ function OCWordmark({ markSize = 26, fontSize = 14 }) {
         letterSpacing: '0.04em',
         color: 'var(--ink)',
       }}>
-        OCWORLD
+        ZEALWISH
       </span>
     </div>
   );

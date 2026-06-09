@@ -1,15 +1,15 @@
-// OCWORLD v3 splash — glass + gradient, light/dark aware, bilingual.
-// Hero: HELLO OC WORLD chunky, with subhead 「角落的住人 / The corner dweller」.
+// ZEALWISH v4 splash — glass + gradient, light/dark aware, bilingual.
+// Hero: HELLO ZEALWISH chunky, with subhead 「角落的住人 / The corner dweller」.
 
 function SplashV2({ onEnter, fadingOut }) {
   const { t, lang } = useT();
   const BOOT_LINES = lang === 'en' ? [
-    ['00.00', 'OCWORLD · v0.4 · black signal terminal'],
+    ['00.00', 'ZEALWISH · v0.4 · signal terminal'],
     ['00.04', 'reserving a slot for one OC ·'],
     ['00.18', 'TA has no name yet · waiting for you'],
     ['00.31', 'ready · push the door'],
   ] : [
-    ['00.00', 'OCWORLD · v0.4 · 黑色信号终端'],
+    ['00.00', 'ZEALWISH · v0.4 · 信号终端'],
     ['00.04', '为你预留一个 OC 位置 ·'],
     ['00.18', 'TA 还没有名字 · 等你命名'],
     ['00.31', 'ready · 推门'],
@@ -79,7 +79,7 @@ function SplashV2({ onEnter, fadingOut }) {
         }}>
           {Array.from({ length: 2 }).map((_, k) => (
             <React.Fragment key={k}>
-              <span>OCWORLD</span><span style={{ color: 'var(--accent-deep)' }}>·</span>
+              <span>ZEALWISH</span><span style={{ color: 'var(--accent-deep)' }}>·</span>
               <span>{lang === 'en' ? 'corner dweller' : '桌面的住人'}</span><span>·</span>
               <span>{lang === 'en' ? 'your private OC' : '你的专属虚拟角色'}</span><span>·</span>
               <span>{lang === 'en' ? 'v0.4 · signal black' : 'v0.4 · 信号黑箱'}</span><span>·</span>
@@ -109,7 +109,7 @@ function SplashV2({ onEnter, fadingOut }) {
           marginBottom: 26,
         }}>
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)' }} />
-          {lang === 'en' ? 'OCWORLD · v0.4 · SIGNAL' : 'OCWORLD · v0.4 · 信号黑箱'}
+          {lang === 'en' ? 'ZEALWISH · v0.4 · SIGNAL' : 'ZEALWISH · v0.4 · 信号终端'}
         </div>
 
         {/* HERO — HELLO OC WORLD */}
@@ -127,7 +127,7 @@ function SplashV2({ onEnter, fadingOut }) {
             display: 'inline-block',
             position: 'relative',
           }}>
-            OC WORLD
+            ZEALWISH
             <span aria-hidden style={{
               position: 'absolute', left: -8, right: -8, bottom: '0.04em',
               height: 4, background: 'var(--accent)', opacity: 0.18,
@@ -158,8 +158,8 @@ function SplashV2({ onEnter, fadingOut }) {
           animation: 'fade-in .9s .2s ease-out both',
         }}>
           {lang === 'en'
-            ? 'OCWORLD generates an OC (Original Character) for you — not an app, not a chatbot. They live at the edge of your screen, never demanding your attention, only showing up when they should.'
-            : 'OCWORLD 为你生成一个 OC（Original Character）——不是 app，也不是聊天机器人。TA 住在你屏幕的边缘，不抢你的注意力，只在该出现时出现。'}
+            ? 'ZEALWISH generates an OC (Original Character) for you — not an app, not a chatbot. They live at the edge of your screen, never demanding your attention, only showing up when they should.'
+            : 'ZEALWISH 为你生成一个 OC（Original Character）——不是 app，也不是聊天机器人。TA 住在你屏幕的边缘，不抢你的注意力，只在该出现时出现。'}
         </p>
 
         {/* boot log + CTA */}
