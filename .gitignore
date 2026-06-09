@@ -7,3 +7,10 @@ node_modules/
 tmp-env-test-*/
 release/
 hermes-agent/
+
+# Local preview and generated artifacts
+.DS_Store
+artifacts/
+frontend-v4/.DS_Store
+frontend-v4/.vscode/
+frontend-v4/screenshots/
