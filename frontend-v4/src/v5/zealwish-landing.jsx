@@ -5,7 +5,7 @@ const bootLines = [
   "CHARACTER BIRTH RITUAL READY",
   "FIRST CONVERSATION CHANNEL OPEN",
   "MEMORY VAULT PERMISSIONED",
-  "OKX WALLET API ROUTE STANDBY",
+  "OKX WALLET CONNECTION READY",
   "WORLDS PORTABILITY PATH ARMED"
 ];
 
@@ -80,7 +80,7 @@ const appTabs = [
     id: "passport",
     label: "Character Passport",
     title: "Character Passport",
-    primary: "Wallet connection happens at the Character Passport boundary, not on the first screen. OKX Wallet API can provide the account connection path for ownership actions.",
+    primary: "Wallet connection happens at the Character Passport boundary, not on the first screen. OKX Wallet can provide the account connection path for ownership actions.",
     sideTitle: "Passport readiness",
     stats: [["Identity", "Ready"], ["First memory", "Saved"], ["OKX Wallet", "Connect OKX Wallet"], ["Mint state", "Optional draft"]]
   },
@@ -163,7 +163,7 @@ function Hero({ onLaunchApp }) {
 }
 
 function Ticker() {
-  const words = ["ZEALWISH", "Character Birth Ritual", "First Conversation", "Memory Vault", "Character Passport", "OKX Wallet API", "Worlds Portability", "Own the identity"];
+  const words = ["ZEALWISH", "Character Birth Ritual", "First Conversation", "Memory Vault", "Character Passport", "OKX Wallet", "Worlds Portability", "Own the identity"];
   return (
     <div className="ticker" aria-hidden="true">
       <div className="ticker-track mono">
@@ -266,8 +266,7 @@ function PassportSection({ onLaunchApp }) {
         </p>
         <div className="actions">
           <a className="primary-button edge" href="#app" onClick={onLaunchApp}>Create Character Passport</a>
-          <a className="secondary-button edge" href="https://web3.okx.com/zh-hant/onchainos/dev-docs/wallet/wallet-api-introduction" target="_blank" rel="noreferrer">OKX Wallet API</a>
-          <a className="secondary-button edge" href="https://web3.okx.com/zh-hans/help/how-do-i-create-import-an-okx-wallet" target="_blank" rel="noreferrer">How to create or import an OKX Wallet</a>
+          <span className="secondary-button edge" aria-label="OKX Wallet connection is introduced inside the passport flow">OKX Wallet connection</span>
         </div>
       </div>
       <div className="wallet-rail">

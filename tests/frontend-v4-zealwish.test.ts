@@ -47,7 +47,7 @@ describe("frontend-v4 ZEALWISH Web3 landing", () => {
     expect(landing).toContain("Memory Vault");
     expect(landing).toContain("Character Passport");
     expect(landing).toContain("Worlds Portability");
-    expect(landing).toContain("OKX Wallet API");
+    expect(landing).toContain("OKX Wallet");
     expect(landing).toContain("NFT is not the product. Ownership is.");
     expect(landing).toContain("Wallet-owned AI character");
     expect(landing).toContain("Character Passport NFT");
@@ -67,9 +67,10 @@ describe("frontend-v4 ZEALWISH Web3 landing", () => {
 
     expect(landing).toContain("Wallet connection happens at the Character Passport boundary, not on the first screen.");
     expect(landing).toContain("Connect OKX Wallet");
-    expect(landing).toContain("How to create or import an OKX Wallet");
-    expect(landing).toContain("https://web3.okx.com/zh-hant/onchainos/dev-docs/wallet/wallet-api-introduction");
-    expect(landing).toContain("https://web3.okx.com/zh-hans/help/how-do-i-create-import-an-okx-wallet");
+    expect(landing).not.toContain("How to create or import an OKX Wallet");
+    expect(landing).not.toContain("https://web3.okx.com");
+    expect(landing).not.toContain("wallet-api-introduction");
+    expect(landing).not.toContain("how-do-i-create-import-an-okx-wallet");
     expect(landing.indexOf("Character Birth Ritual")).toBeLessThan(landing.indexOf("First Conversation"));
     expect(landing.indexOf("First Conversation")).toBeLessThan(landing.indexOf("Memory Vault"));
     expect(landing.indexOf("Memory Vault")).toBeLessThan(landing.indexOf("Character Passport"));
