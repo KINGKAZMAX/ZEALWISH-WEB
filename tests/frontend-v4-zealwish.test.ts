@@ -7,8 +7,9 @@ const root = process.cwd();
 const rootIndexPath = join(root, "index.html");
 const indexPath = join(root, "frontend-v4", "index.html");
 const landingPath = join(root, "frontend-v4", "src", "v5", "zealwish-landing.jsx");
-const v4AppPath = join(root, "frontend-v4", "src", "v4", "app.jsx");
-const bridgePath = join(root, "frontend-v4", "src", "v4", "ocworld-bridge.jsx");
+const walletPath = join(root, "frontend-v4", "src", "v4", "wallet-service.jsx");
+const walletRuntimePath = join(root, "frontend-v4", "src", "v4", "wallet-service.js");
+const topbarPath = join(root, "frontend-v4", "src", "v4", "topbar.jsx");
 const architecturePath = join(root, "docs", "architecture", "web-architecture.md");
 const chinesePattern = /[\u4e00-\u9fff]/;
 const expectedMainCharacterHash = "c8b5166f56b2fbb5e58999cea670732a5e6516f8b9a4b2f07aa1ae6ffe11cf4c";
@@ -30,9 +31,14 @@ describe("frontend-v4 ZEALWISH Web3 landing", () => {
 
     expect(index).toContain("ZEALWISH");
     expect(index).toContain("src/v5/zealwish-landing.jsx");
-    expect(index).toContain("V4 app shell components");
-    expect(index).toContain('src="tweaks-panel.jsx"');
-    expect(index).not.toContain("OCWORLD");
+    expect(index).toContain("ZEALWISH web-only preview components");
+    expect(index).toContain('src="src/v4/wallet-service.jsx"');
+    expect(index).not.toContain('src="src/v4/wallet-service.js"');
+    expect(index).not.toContain('src="src/v4/app.jsx"');
+    expect(index).not.toContain('src="src/v4/ocworld-bridge.jsx"');
+    expect(index).not.toContain('src="tweaks-panel.jsx"');
+    expect(index).not.toMatch(/ocworld/i);
+    expect(index).not.toMatch(/app shell/i);
     expect(index).not.toMatch(chinesePattern);
   });
 
@@ -52,36 +58,63 @@ describe("frontend-v4 ZEALWISH Web3 landing", () => {
     expect(landing).not.toMatch(chinesePattern);
   });
 
-  it("passes explicit launch intents from the landing page into every core web app module", () => {
+  it("implements the product as an inline ZEALWISH web console, not an app shell", () => {
     const landing = readFileSync(landingPath, "utf8");
 
-    for (const intent of ["home", "create", "chat", "world", "memory", "rewind", "settings"]) {
-      expect(landing).toContain(`onLaunchApp('${intent}')`);
+    expect(landing).toContain("function WebConsoleSection");
+    expect(landing).toContain("ZEALWISH Web Console");
+    expect(landing).toContain("Open Web Console");
+    expect(landing).toContain("const WEB_MODULES");
+    for (const moduleId of ["create", "talk", "memory", "world", "rewind", "settings"]) {
+      expect(landing).toContain(`id: '${moduleId}'`);
     }
-    expect(landing).toContain("function AppPortalSection({ onLaunchApp })");
-    expect(landing).toContain("ZEALWISH Web App Console");
-    expect(landing).toContain("window.ZEALWISH_MOUNT_APP(appContainer, { intent })");
+    expect(landing).toContain("setActiveModule");
+    expect(landing).toContain("handleSendWebChat");
+    expect(landing).toContain("handleSavePassport");
+    expect(landing).toContain("handleAddMemory");
+    expect(landing).toContain("handleExportPassport");
+    expect(landing).toContain("data-zealwish-web-console");
+    expect(landing).not.toContain("ZEALWISH_MOUNT_APP");
+    expect(landing).not.toContain("data-zealwish-app-shell");
+    expect(landing).not.toContain("function AppPortalSection");
+    expect(landing).not.toContain("Launch App");
+    expect(landing).not.toMatch(/app shell/i);
   });
 
-  it("mounts the actual ZEALWISH web app shell with direct module entry modes", () => {
-    const app = readFileSync(v4AppPath, "utf8");
+  it("keeps browser-only web functions in the landing page without Electron runtime", () => {
+    const landing = readFileSync(landingPath, "utf8");
 
-    expect(app).toContain("function AppV3({ initialIntent = 'home' } = {})");
-    expect(app).toContain("initialIntent === 'create'");
-    expect(app).toContain("const validInitialViews = ['home', 'chat', 'world', 'rewind', 'memory', 'settings']");
-    expect(app).toContain("validInitialViews.includes(initialIntent) ? initialIntent : 'home'");
-    expect(app).toContain('data-zealwish-app-shell="true"');
-    expect(app).toContain("ZEALWISH WEB APP");
-    expect(app).toContain("window.ZEALWISH_MOUNT_APP = function(container, options = {})");
-    expect(app).toContain("<AppV3 initialIntent={intent} />");
+    expect(landing).toContain("WEB_CHAT_FALLBACKS");
+    expect(landing).toContain("ZEALWISH_BROWSER_AVATAR_FALLBACK");
+    expect(landing).toContain("localStorage.setItem('zealwish.web.passport'");
+    expect(landing).toContain("localStorage.setItem('zealwish.web.memories'");
+    expect(landing).not.toContain("Image generation is only available inside the oc-world Electron runtime.");
+    expect(landing).not.toMatch(/ocworld/i);
+    expect(landing).not.toMatch(/oc-world/i);
   });
 
-  it("keeps browser-only web functions usable without Electron runtime", () => {
-    const bridge = readFileSync(bridgePath, "utf8");
+  it("loads an OKX-compatible wallet service and exposes wallet-owned UI actions", () => {
+    expect(existsSync(walletPath)).toBe(true);
+    const index = readFileSync(indexPath, "utf8");
+    const landing = readFileSync(landingPath, "utf8");
+    const topbar = readFileSync(topbarPath, "utf8");
+    const wallet = readFileSync(walletPath, "utf8");
+    const walletRuntime = readFileSync(walletRuntimePath, "utf8");
 
-    expect(bridge).toContain("ZEALWISH_BROWSER_AVATAR_FALLBACK");
-    expect(bridge).toContain('source: "browser-fallback"');
-    expect(bridge).not.toContain("Image generation is only available inside the oc-world Electron runtime.");
+    expect(index).toContain('src="src/v4/wallet-service.jsx"');
+    expect(index).not.toContain('src="src/v4/wallet-service.js"');
+    expect(index).not.toContain('src="src/v4/topbar.jsx"');
+    expect(wallet).toContain("window.ZEALWISH_WALLET");
+    expect(walletRuntime).toContain("window.ZEALWISH_API");
+    expect(walletRuntime).toContain("ZEALWISH_DEFAULT_LOCAL_API_BASE");
+    expect(wallet).toContain("window.okxwallet");
+    expect(wallet).toContain("eip6963:requestProvider");
+    expect(wallet).toContain("eth_requestAccounts");
+    expect(wallet).toContain("eth_chainId");
+    expect(landing).toContain("Connect OKX Wallet");
+    expect(landing).toContain("handleConnectWallet");
+    expect(landing).toContain("Connect OKX Wallet");
+    expect(wallet).not.toMatch(chinesePattern);
   });
 
   it("documents the preview and architecture contract in English", () => {
