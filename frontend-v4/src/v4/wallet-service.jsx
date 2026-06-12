@@ -6,7 +6,6 @@
   const STORAGE_KEY = "zealwish.wallet.publicState";
 
   const ZEALWISH_DEFAULT_LOCAL_API_BASE = "http://127.0.0.1:7291/api";
-  const LOCAL_PREVIEW_PORTS = new Set(["8789", "8790", "8000", "8080"]);
 
   function trimTrailingSlash(value) {
     return String(value || "").replace(/\/+$/, "");
@@ -17,9 +16,10 @@
     if (explicit) return trimTrailingSlash(explicit);
 
     const host = window.location?.hostname || "";
-    const port = window.location?.port || "";
     const isLocalhost = host === "localhost" || host === "127.0.0.1" || host === "::1";
-    if (isLocalhost && LOCAL_PREVIEW_PORTS.has(port)) return ZEALWISH_DEFAULT_LOCAL_API_BASE;
+    // Local dev keeps the standalone API server; any deployed origin calls its
+    // own serverless functions at same-origin /api.
+    if (isLocalhost) return ZEALWISH_DEFAULT_LOCAL_API_BASE;
 
     return "/api";
   }
@@ -221,6 +221,27 @@
     }
   }
 
+  async function signMessage(message) {
+    const clean = String(message || "");
+    if (!clean) throw new Error("Nothing to sign.");
+    let provider = selectedProvider;
+    if (!provider?.request) {
+      requestEip6963Providers();
+      provider = findProvider()?.provider || null;
+    }
+    if (!provider?.request) throw new Error("Connect a wallet before signing.");
+    let address = state.address;
+    if (!address) {
+      const accounts = await provider.request({ method: "eth_requestAccounts" });
+      address = Array.isArray(accounts) ? accounts[0] : "";
+    }
+    if (!address) throw new Error("Connect a wallet before signing.");
+    const hexMessage = `0x${Array.from(new TextEncoder().encode(clean))
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("")}`;
+    return provider.request({ method: "personal_sign", params: [hexMessage, address] });
+  }
+
   function disconnect() {
     selectedProvider = null;
     try { localStorage.removeItem(STORAGE_KEY); } catch {}
@@ -268,6 +289,7 @@
     disconnect,
     onChange,
     formatAddress,
+    signMessage,
     requestEip6963Providers,
   };
 })();
