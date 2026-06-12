@@ -8,17 +8,30 @@ const rootIndexPath = join(root, "index.html");
 const indexPath = join(root, "frontend-v4", "index.html");
 const webPath = join(root, "frontend-v4", "web.html");
 const landingPath = join(root, "frontend-v4", "src", "v5", "zealwish-landing.jsx");
+const landingBundlePath = join(root, "frontend-v4", "src", "v5", "zealwish-landing.js");
 const webAppPath = join(root, "frontend-v4", "src", "v6", "zealwish-web-app.jsx");
+const webAppBundlePath = join(root, "frontend-v4", "src", "v6", "zealwish-web-app.js");
 const walletPath = join(root, "frontend-v4", "src", "v4", "wallet-service.jsx");
 const walletRuntimePath = join(root, "frontend-v4", "src", "v4", "wallet-service.js");
 const webBundleScriptPath = join(root, "scripts", "build-zealwish-web-app.mjs");
-const topbarPath = join(root, "frontend-v4", "src", "v4", "topbar.jsx");
+const landingBundleScriptPath = join(root, "scripts", "build-zealwish-landing.mjs");
 const architecturePath = join(root, "docs", "architecture", "web-architecture.md");
 const webServerPath = join(root, "ocworld-web", "server.js");
-const chinesePattern = /[\u4e00-\u9fff]/;
+const vercelConfigPath = join(root, "vercel.json");
+const chinesePattern = /[一-鿿]/;
+const cacheBusterPattern = /\?v=\d{8}-\d{4}/;
 const expectedMainCharacterHash = "c8b5166f56b2fbb5e58999cea670732a5e6516f8b9a4b2f07aa1ae6ffe11cf4c";
 
-describe("frontend-v4 ZEALWISH Web3 landing", () => {
+const apiFunctionNames = [
+  "chat.js",
+  "speak.js",
+  "generate-image.js",
+  "analyze-photo.js",
+  "detect-gender.js",
+  "health.js",
+];
+
+describe("frontend-v4 ZEALWISH voice-first web product", () => {
   it("keeps the Vite/root entry branded as ZEALWISH English-only", () => {
     const rootIndex = readFileSync(rootIndexPath, "utf8");
 
@@ -26,76 +39,78 @@ describe("frontend-v4 ZEALWISH Web3 landing", () => {
     expect(rootIndex).toContain("ZEALWISH");
     expect(rootIndex).not.toContain("OC World");
     expect(rootIndex).not.toContain("OCWORLD");
-    expect(rootIndex).not.toContain("EcomCanvas");
     expect(rootIndex).not.toMatch(chinesePattern);
   });
 
-  it("routes the active preview to the ZEALWISH v5 landing entry", () => {
+  it("ships the landing with vendored React and precompiled bundles — no unpkg, no in-browser Babel", () => {
     const index = readFileSync(indexPath, "utf8");
 
     expect(index).toContain("ZEALWISH");
-    expect(index).toContain("src/v5/zealwish-landing.jsx");
-    expect(index).toContain("ZEALWISH web-only preview components");
-    expect(index).toContain('src="src/v4/wallet-service.jsx"');
-    expect(index).not.toContain('src="src/v4/wallet-service.js"');
-    expect(index).not.toContain('src="src/v4/app.jsx"');
-    expect(index).not.toContain('src="src/v4/ocworld-bridge.jsx"');
-    expect(index).not.toContain('src="tweaks-panel.jsx"');
+    expect(index).toContain('src="vendor/react.production.min.js"');
+    expect(index).toContain('src="vendor/react-dom.production.min.js"');
+    expect(index).toMatch(/src="src\/v4\/wallet-service\.js\?v=\d{8}-\d{4}"/);
+    expect(index).toMatch(/src="src\/v5\/zealwish-landing\.js\?v=\d{8}-\d{4}"/);
+    expect(index).not.toContain("unpkg.com");
+    expect(index).not.toContain("@babel/standalone");
+    expect(index).not.toContain('type="text/babel"');
+    expect(index).not.toContain('src="src/v4/wallet-service.jsx"');
+    expect(index).not.toContain('src="src/v5/zealwish-landing.jsx"');
     expect(index).not.toMatch(/ocworld/i);
-    expect(index).not.toMatch(/app shell/i);
     expect(index).not.toMatch(chinesePattern);
   });
 
-  it("ships the approved English free-will and Web3 ownership positioning", () => {
+  it("positions the landing as a voice-first companion with working workspace CTAs", () => {
     expect(existsSync(landingPath)).toBe(true);
+    expect(existsSync(landingBundlePath)).toBe(true);
     const landing = readFileSync(landingPath, "utf8");
 
-    expect(landing).toContain("Create. Grow. Own your AI character.");
-    expect(landing).toContain("Free will for your digital self.");
+    expect(landing).toContain("remembers");
+    expect(landing).toContain("Start talking");
+    expect(landing).toContain("web.html#/talk");
+    expect(landing).toContain("web.html#/create");
+    expect(landing).toContain("web.html#/home");
+    expect(landing).toContain("Open ZEALWISH Web");
     expect(landing).toContain("NFT is not the product. Ownership is.");
-    expect(landing).toContain("Wallet-owned AI character");
-    expect(landing).toContain("Character Passport NFT");
-    expect(landing).toContain("Blockchain Anchor");
     expect(landing).toContain("Built for ownership, not speculation");
-    expect(landing).toContain("Create Character Passport");
+    expect(landing).toContain("Connect OKX Wallet");
+    expect(landing).toContain("handleConnectWallet");
+    expect(landing).toContain("assets/zealwish-main-character.png");
     expect(landing).not.toContain("OCWORLD");
     expect(landing).not.toMatch(chinesePattern);
   });
 
-  it("keeps the landing page as product display and routes CTAs to the Web workspace", () => {
-    const landing = readFileSync(landingPath, "utf8");
-
-    expect(landing).toContain("Create. Grow. Own your AI character.");
-    expect(landing).toContain("Open ZEALWISH Web");
-    expect(landing).toContain("web.html#/create");
-    expect(landing).toContain("web.html#/home");
-    expect(landing).not.toContain("Open Web Console");
-    expect(landing).not.toContain("function WebConsoleSection");
-    expect(landing).not.toContain("data-zealwish-web-console");
-    expect(landing).not.toContain("setActiveModule");
-    expect(landing).not.toContain("ZEALWISH_MOUNT_APP");
-    expect(landing).not.toContain("data-zealwish-app-shell");
-    expect(landing).not.toContain("function AppPortalSection");
-    expect(landing).not.toContain("Launch App");
-    expect(landing).not.toMatch(/app shell/i);
-
-    const index = readFileSync(indexPath, "utf8");
-    expect(index).not.toContain(".web-console-shell");
-    expect(index).not.toContain(".web-console-nav button");
-  });
-
-  it("ships a separate standard ZEALWISH Web workspace with hash navigation", () => {
+  it("ships the Web workspace with vendored React and a versioned compiled bundle", () => {
     expect(existsSync(webPath)).toBe(true);
-    expect(existsSync(webAppPath)).toBe(true);
+    expect(existsSync(webAppBundlePath)).toBe(true);
     const web = readFileSync(webPath, "utf8");
-    const webApp = readFileSync(webAppPath, "utf8");
+    const compiled = readFileSync(webAppBundlePath, "utf8");
+    const webBundleScript = readFileSync(webBundleScriptPath, "utf8");
+    const landingBundleScript = readFileSync(landingBundleScriptPath, "utf8");
 
     expect(web).toContain("ZEALWISH Web");
-    expect(web).toContain('src="src/v4/wallet-service.jsx"');
-    expect(web).toContain("src/v6/zealwish-web-app.js?v=20260611-api");
-    expect(web).not.toContain("src/v5/zealwish-landing.jsx");
+    expect(web).toContain('src="vendor/react.production.min.js"');
+    expect(web).toContain('src="vendor/react-dom.production.min.js"');
+    expect(web).toMatch(/src="src\/v4\/wallet-service\.js\?v=\d{8}-\d{4}"/);
+    expect(web).toMatch(/src="src\/v6\/zealwish-web-app\.js\?v=\d{8}-\d{4}"/);
+    expect(web).not.toContain("unpkg.com");
+    expect(web).not.toContain("react.development.js");
+    expect(web).not.toContain("@babel/standalone");
+    expect(web).not.toContain('type="text/babel"');
+    expect(web).not.toContain('src="src/v4/wallet-service.jsx"');
     expect(web).not.toMatch(/ocworld/i);
     expect(web).not.toMatch(chinesePattern);
+
+    expect(compiled).not.toContain("require(");
+    expect(compiled).not.toContain("react/jsx-runtime");
+    // ethers verifyMessage is bundled (EIP-191 prefix is embedded by hashMessage).
+    expect(compiled).toContain("Ethereum Signed Message");
+    expect(webBundleScript).toContain('jsxFactory: "React.createElement"');
+    expect(webBundleScript).toContain("cache buster");
+    expect(landingBundleScript).toContain("zealwish-landing.jsx");
+  });
+
+  it("keeps hash navigation across all workspace modules", () => {
+    const webApp = readFileSync(webAppPath, "utf8");
 
     expect(webApp).toContain("data-zealwish-web-app");
     expect(webApp).toContain("const WEB_APP_MODULES");
@@ -104,194 +119,177 @@ describe("frontend-v4 ZEALWISH Web3 landing", () => {
       expect(webApp).toContain(`'#/${moduleId}'`);
     }
     expect(webApp).toContain("hashchange");
-    expect(webApp).toContain("handleSavePassport");
-    expect(webApp).toContain("handleSendWebChat");
-    expect(webApp).toContain("handleAddMemory");
-    expect(webApp).toContain("handleExportPassport");
     expect(webApp).not.toMatch(/ocworld/i);
     expect(webApp).not.toMatch(chinesePattern);
   });
 
-  it("presents the Web workspace as an operational dashboard rather than a marketing page", () => {
+  it("streams chat over SSE with speak-on-first-sentence and a labeled deterministic fallback", () => {
+    const webApp = readFileSync(webAppPath, "utf8");
+
+    expect(webApp).toContain("async function streamChat");
+    expect(webApp).toContain("text/event-stream");
+    expect(webApp).toContain("stream: true");
+    expect(webApp).toContain("function firstSentence");
+    expect(webApp).toContain("queueSpeech");
+    expect(webApp).toContain("WEB_CHAT_FALLBACKS");
+    expect(webApp).toContain("source = 'fallback'");
+    expect(webApp).toContain("message.source === 'fallback'");
+    expect(webApp).toContain("offline echo");
+    expect(webApp).toContain("getFallbackReply");
+  });
+
+  it("runs a voice-first Talk surface: mic input, auto-speak, toggle, gender voice, presence states", () => {
     const webApp = readFileSync(webAppPath, "utf8");
     const web = readFileSync(webPath, "utf8");
 
-    expect(web).toContain("app-inspector");
-    expect(web).toContain("dashboard-grid");
-    expect(web).toContain("operating-queue");
+    expect(webApp).toContain("SpeechRecognition");
+    expect(webApp).toContain("webkitSpeechRecognition");
+    expect(webApp).toContain("resolveVoiceGender");
+    expect(webApp).toContain("VOICE_PREF_KEY");
+    expect(webApp).toContain("speechSynthesis");
+    expect(webApp).toContain("/speak");
+    expect(webApp).toContain("audioBase64");
+    expect(webApp).toContain("PresenceAvatar");
+    expect(webApp).toContain("Waveform");
+    expect(web).toContain(".talk-mic-hero");
+    expect(web).toContain(".presence");
+    expect(web).toContain(".waveform");
+    expect(web).toContain("presenceBreath");
+    expect(web).toContain("prefers-reduced-motion");
+  });
+
+  it("keeps a visible memory vault: facts, episodes, relationship, recall highlight", () => {
+    const webApp = readFileSync(webAppPath, "utf8");
+    const web = readFileSync(webPath, "utf8");
+
+    expect(webApp).toContain("zealwish.web.vault");
+    expect(webApp).toContain("selectRecalledFacts");
+    expect(webApp).toContain("recalledAt");
+    expect(webApp).toContain("RECALLED JUST NOW");
+    expect(webApp).toContain("relationshipScore");
+    expect(webApp).toContain("relationshipLevel");
+    expect(webApp).toContain("extractFactCandidate");
+    expect(webApp).toContain("episodes");
+    expect(webApp).toContain("milestones");
+    // Legacy keys stay readable for older exports.
+    expect(webApp).toContain("zealwish.web.passport");
+    expect(webApp).toContain("zealwish.web.memories");
+    expect(web).toContain(".recall-flash");
+    expect(web).toContain(".bond-meter");
+    expect(web).toContain(".episode-row");
+  });
+
+  it("builds, signs, verifies, and exports the wallet passport v1", () => {
+    const webApp = readFileSync(webAppPath, "utf8");
+    const wallet = readFileSync(walletPath, "utf8");
+
+    expect(webApp).toContain("zealwish.passport/v1");
+    expect(webApp).toContain("traits_hash");
+    expect(webApp).toContain("memory_vault_hash");
+    expect(webApp).toContain("passport_id");
+    expect(webApp).toContain("owner_address");
+    expect(webApp).toContain("issued_at");
+    expect(webApp).toContain("sha256Hex");
+    expect(webApp).toContain('import { verifyMessage } from "ethers"');
+    expect(webApp).toContain("signMessage");
+    expect(webApp).toContain("Verified");
+    expect(webApp).toContain("zealwish.export/v1");
+    expect(webApp).toContain("URL.createObjectURL");
+    expect(wallet).toContain("personal_sign");
+    expect(wallet).toContain("signMessage");
+  });
+
+  it("creates characters with image generation, surprise seed, and a non-blocking fallback", () => {
+    const webApp = readFileSync(webAppPath, "utf8");
+
+    expect(webApp).toContain("SURPRISE_NAMES");
+    expect(webApp).toContain("SURPRISE_ARCHETYPES");
+    expect(webApp).toContain("/generate-image");
+    expect(webApp).toContain("/detect-gender");
+    expect(webApp).toContain("ZEALWISH_BROWSER_AVATAR_FALLBACK");
+    expect(webApp).toContain("3000");
+    expect(webApp).toContain("defaultIdentity");
+  });
+
+  it("presents a bento home with presence, latest memory, and passport status", () => {
+    const webApp = readFileSync(webAppPath, "utf8");
+    const web = readFileSync(webPath, "utf8");
+
+    expect(webApp).toContain("data-zealwish-web-dashboard");
+    expect(webApp).toContain("Latest memory");
+    expect(webApp).toContain("Passport");
+    expect(web).toContain(".bento-grid");
+    expect(web).toContain(".bento-presence");
+    expect(web).toContain(".glass-panel");
+  });
+
+  it("keeps the mobile workspace free of horizontal overflow", () => {
+    const web = readFileSync(webPath, "utf8");
+
     expect(web).toContain("overflow-x: hidden");
     expect(web).toContain(":focus-visible");
-    expect(web).toContain("prefers-reduced-motion");
-    expect(web).toContain(".page-title h1 { margin: 10px 0 0; font-family: Teko, Inter, sans-serif; font-size: clamp(48px, 6vw, 88px);");
-    expect(web).toContain(".chat-panel { min-height: 420px;");
-    expect(web).toContain(".chat-log { display: grid; gap: 12px; align-content: start; overflow: auto; max-height: 240px;");
-    expect(webApp).toContain("data-zealwish-web-dashboard");
-    expect(webApp).toContain("Passport integrity");
-    expect(webApp).toContain("Daily operating queue");
-    expect(webApp).toContain("Start character creation");
-    expect(webApp).toContain("Continue companion chat");
-    expect(webApp).toContain("Export ownership record");
-    expect(webApp).not.toContain("Web Console");
-    expect(webApp).not.toMatch(chinesePattern);
-  });
-
-  it("treats Settings as a Web data ownership control center", () => {
-    const webApp = readFileSync(webAppPath, "utf8");
-    const web = readFileSync(webPath, "utf8");
-
-    expect(web).toContain("settings-grid");
-    expect(web).toContain("storage-ledger");
-    expect(web).toContain("copy-status");
-    expect(webApp).toContain("data-zealwish-settings-panel");
-    expect(webApp).toContain("Data ownership center");
-    expect(webApp).toContain("Connection status");
-    expect(webApp).toContain("Local browser storage");
-    expect(webApp).toContain("Runtime API");
-    expect(webApp).toContain("API connected.");
-    expect(webApp).toContain("API unavailable — browser fallback active.");
-    expect(webApp).toContain("Copy export JSON");
-    expect(webApp).toContain("navigator.clipboard.writeText");
-    expect(webApp).not.toMatch(chinesePattern);
-  });
-
-  it("ships the Web workspace with production-ready browser scripts", () => {
-    const web = readFileSync(webPath, "utf8");
-    const compiledWebAppPath = join(root, "frontend-v4", "src", "v6", "zealwish-web-app.js");
-    const compiledWebApp = readFileSync(compiledWebAppPath, "utf8");
-    const webBundleScript = readFileSync(webBundleScriptPath, "utf8");
-
-    expect(existsSync(compiledWebAppPath)).toBe(true);
-    expect(existsSync(webBundleScriptPath)).toBe(true);
-    expect(web).toContain("react.production.min.js");
-    expect(web).toContain("react-dom.production.min.js");
-    expect(web).toContain('src="src/v6/zealwish-web-app.js?v=20260611-api"');
-    expect(compiledWebApp).not.toContain("require(");
-    expect(compiledWebApp).not.toContain("react/jsx-runtime");
-    expect(webBundleScript).toContain('jsxFactory: "React.createElement"');
-    expect(webBundleScript).toContain("tsconfigRaw");
-    expect(web).not.toContain("react.development.js");
-    expect(web).not.toContain("@babel/standalone");
-    expect(web).not.toContain('type="text/babel"');
-  });
-
-  it("keeps the mobile Web workspace compact enough for first-screen operation", () => {
-    const web = readFileSync(webPath, "utf8");
-
     expect(web).toContain("@media (max-width: 820px)");
     expect(web).toContain(".module-nav { display: flex; overflow-x: auto;");
     expect(web).toContain(".web-app-shell, .app-sidebar, .app-main, .app-topbar, .workspace { width: 100%; max-width: 100vw; }");
-    expect(web).toContain(".module-nav a { flex: 0 0 136px;");
-    expect(web).toContain(".sidebar-footer { display: none; }");
     expect(web).toContain(".app-inspector { display: none; }");
-    expect(web).toContain(".page-title h1 { font-size: clamp(44px, 15vw, 72px); }");
-
-    const webApp = readFileSync(webAppPath, "utf8");
-    expect(webApp).toContain("data-module-id");
-    expect(webApp).toContain("scrollIntoView");
+    expect(web).toContain(".bento-grid { grid-template-columns: 1fr; }");
+    expect(web).toContain(".talk-stage { grid-template-columns: 1fr; }");
   });
 
-  it("keeps desktop Talk and Create primary actions above the 900px first-screen fold", () => {
-    const web = readFileSync(webPath, "utf8");
-
-    expect(web).toContain(".workspace { padding: clamp(18px, 3vw, 34px); }");
-    expect(web).toContain(".page-title { max-width: 860px; margin-bottom: 18px; }");
-    expect(web).toContain(".page-title h1 { margin: 10px 0 0; font-family: Teko, Inter, sans-serif; font-size: clamp(48px, 6vw, 88px);");
-    expect(web).toContain(".page-title p { margin: 10px 0 0; max-width: 620px; color: var(--muted); font-size: 15px; line-height: 1.5; }");
-    expect(web).toContain(".panel {");
-    expect(web).toContain("padding: clamp(18px, 2vw, 24px);");
-    expect(web).toContain(".panel h2 { margin: 10px 0 12px; font-family: Teko, Inter, sans-serif; font-size: clamp(32px, 4vw, 52px);");
-    expect(web).toContain(".field-label { display: block; margin: 12px 0 8px;");
-    expect(web).toContain("textarea.field { min-height: 104px;");
-    expect(web).toContain(".chat-panel { min-height: 420px;");
-    expect(web).toContain(".chat-log { display: grid; gap: 12px; align-content: start; overflow: auto; max-height: 240px;");
-    expect(web).not.toContain(".chat-panel { min-height: 620px;");
-  });
-
-  it("gives key Web workspace actions visible state feedback and a real export download path", () => {
-    const webApp = readFileSync(webAppPath, "utf8");
-
-    expect(webApp).toContain("saveStatus");
-    expect(webApp).toContain("Passport saved locally.");
-    expect(webApp).toContain("memoryStatus");
-    expect(webApp).toContain("Memory added to vault.");
-    expect(webApp).toContain("Download export JSON");
-    expect(webApp).toContain("URL.createObjectURL");
-    expect(webApp).not.toMatch(chinesePattern);
-  });
-
-  it("keeps production Web pages operational instead of placeholder-only", () => {
-    const webApp = readFileSync(webAppPath, "utf8");
-    const web = readFileSync(webPath, "utf8");
-
-    expect(webApp).toContain("worldStatus");
-    expect(webApp).toContain("World route activated:");
-    expect(webApp).toContain("Open route");
-    expect(webApp).toContain("timelineStatus");
-    expect(webApp).toContain("Timeline checkpoint opened:");
-    expect(webApp).toContain("Export full timeline");
-    expect(web).toContain(".route-card button");
-    expect(web).toContain(".timeline-row button");
-  });
-
-  it("keeps the mobile Settings primary export action near the top of the workflow", () => {
-    const web = readFileSync(webPath, "utf8");
-
-    expect(web).toContain("settings-export");
-    expect(web).toContain(".settings-export { order: -1; }");
-    expect(web).toContain(".dashboard-metric strong {");
-    expect(web).toContain("overflow-wrap: break-word;");
-  });
-
-  it("does not ship a hard-coded chat API key in the deployable Web server", () => {
-    const server = readFileSync(webServerPath, "utf8");
-
-    expect(server).not.toMatch(/sk-[A-Za-z0-9_-]{20,}/);
-    expect(server).toContain("CHAT_API_KEY not configured");
-    expect(server).toContain("server-fallback");
-  });
-
-  it("uses the ZEALWISH HTTP API first and keeps browser fallback when the API is unavailable", () => {
-    const webApp = readFileSync(webAppPath, "utf8");
-
-    expect(webApp).toContain("WEB_CHAT_FALLBACKS");
-    expect(webApp).toContain("ZEALWISH_BROWSER_AVATAR_FALLBACK");
-    expect(webApp).toContain("refreshApiStatus");
-    expect(webApp).toContain("window.ZEALWISH_API?.health");
-    expect(webApp).toContain("window.ZEALWISH_API?.chat");
-    expect(webApp).toContain("apiStatus");
-    expect(webApp).toContain("source: result?.source || 'http-api'");
-    expect(webApp).toContain("source: 'browser-fallback'");
-    expect(webApp).toContain("localStorage.setItem('zealwish.web.passport'");
-    expect(webApp).toContain("localStorage.setItem('zealwish.web.memories'");
-    expect(webApp).not.toContain("Image generation is only available inside the oc-world Electron runtime.");
-    expect(webApp).not.toMatch(/ocworld/i);
-    expect(webApp).not.toMatch(/oc-world/i);
-  });
-
-  it("loads an OKX-compatible wallet service and exposes wallet-owned UI actions", () => {
-    expect(existsSync(walletPath)).toBe(true);
-    const index = readFileSync(indexPath, "utf8");
-    const landing = readFileSync(landingPath, "utf8");
-    const web = readFileSync(webPath, "utf8");
-    const topbar = readFileSync(topbarPath, "utf8");
+  it("resolves the API base to same-origin /api off localhost and the local server in dev", () => {
     const wallet = readFileSync(walletPath, "utf8");
     const walletRuntime = readFileSync(walletRuntimePath, "utf8");
 
-    expect(index).toContain('src="src/v4/wallet-service.jsx"');
-    expect(web).toContain('src="src/v4/wallet-service.jsx"');
-    expect(index).not.toContain('src="src/v4/wallet-service.js"');
-    expect(index).not.toContain('src="src/v4/topbar.jsx"');
-    expect(wallet).toContain("window.ZEALWISH_WALLET");
-    expect(walletRuntime).toContain("window.ZEALWISH_API");
-    expect(walletRuntime).toContain("ZEALWISH_DEFAULT_LOCAL_API_BASE");
+    expect(wallet).toContain('"http://127.0.0.1:7291/api"');
+    expect(wallet).toContain('return "/api"');
     expect(wallet).toContain("window.okxwallet");
     expect(wallet).toContain("eip6963:requestProvider");
     expect(wallet).toContain("eth_requestAccounts");
     expect(wallet).toContain("eth_chainId");
-    expect(landing).toContain("Connect OKX Wallet");
-    expect(landing).toContain("handleConnectWallet");
-    expect(landing).toContain("Connect OKX Wallet");
     expect(wallet).not.toMatch(chinesePattern);
+    expect(walletRuntime).toContain("ZEALWISH_API");
+    expect(walletRuntime).toContain("personal_sign");
+  });
+
+  it("ships Vercel serverless functions with StepFun keys read from env only", () => {
+    for (const name of apiFunctionNames) {
+      const filePath = join(root, "api", name);
+      expect(existsSync(filePath), `api/${name} should exist`).toBe(true);
+      const source = readFileSync(filePath, "utf8");
+      expect(source).toContain("export default");
+      expect(source).not.toMatch(/sk-[A-Za-z0-9_-]{20,}/);
+      expect(source).not.toMatch(chinesePattern);
+    }
+    const chat = readFileSync(join(root, "api", "chat.js"), "utf8");
+    expect(chat).toContain("supportsResponseStreaming");
+    expect(chat).toContain("text/event-stream");
+    const lib = readFileSync(join(root, "api", "_lib", "stepfun.js"), "utf8");
+    expect(lib).toContain("process.env");
+    expect(lib).toContain("api.stepfun.com");
+    expect(lib).not.toMatch(/sk-[A-Za-z0-9_-]{20,}/);
+  });
+
+  it("configures the Vercel project for static frontend + /api functions", () => {
+    expect(existsSync(vercelConfigPath)).toBe(true);
+    const config = JSON.parse(readFileSync(vercelConfigPath, "utf8"));
+
+    expect(config.outputDirectory).toBe("frontend-v4");
+    expect(config.functions["api/*.js"].maxDuration).toBeGreaterThanOrEqual(30);
+    const allHeaders = JSON.stringify(config.headers);
+    expect(allHeaders).toContain("X-Content-Type-Options");
+    expect(allHeaders).toContain("microphone=(self)");
+    expect(existsSync(join(root, ".vercelignore"))).toBe(true);
+  });
+
+  it("keeps the local dev server in StepFun parity with streaming and no hardcoded keys", () => {
+    const server = readFileSync(webServerPath, "utf8");
+
+    expect(server).not.toMatch(/sk-[A-Za-z0-9_-]{20,}/);
+    expect(server).toContain("api.stepfun.com");
+    expect(server).toContain("step-3.7-flash");
+    expect(server).toContain("stepaudio-2.5-tts");
+    expect(server).toContain("text/event-stream");
+    expect(server).not.toMatch(chinesePattern);
   });
 
   it("documents the preview and architecture contract in English", () => {
@@ -299,8 +297,6 @@ describe("frontend-v4 ZEALWISH Web3 landing", () => {
     const architecture = readFileSync(architecturePath, "utf8");
 
     expect(architecture).toContain("Current Preview Contract");
-    expect(architecture).toContain("Frontend / Backend Separation");
-    expect(architecture).toContain("Target Monorepo Shape");
     expect(architecture).toContain("All user-facing product copy must be English.");
     expect(architecture).not.toMatch(chinesePattern);
   });
@@ -312,7 +308,6 @@ describe("frontend-v4 ZEALWISH Web3 landing", () => {
 
     expect(landing).toContain("assets/zealwish-main-character.png");
     expect(png.subarray(1, 4).toString("ascii")).toBe("PNG");
-    expect(png[25]).toBe(6);
     expect(createHash("sha256").update(png).digest("hex")).toBe(expectedMainCharacterHash);
   });
 });
