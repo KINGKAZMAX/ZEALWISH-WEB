@@ -122,7 +122,7 @@
   .page-title .eyebrow { color: var(--red); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
   .page-title h1 { margin: 10px 0 0; font-family: Teko, Archivo, sans-serif; font-size: clamp(48px, 6vw, 88px); line-height: .82; text-transform: uppercase; }
   .page-title p { margin: 10px 0 0; max-width: 620px; color: var(--muted); font-size: 15px; line-height: 1.5; }
-  .grid-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .78fr); gap: 16px; }
+  .grid-two { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(280px, .68fr); gap: 16px; }
   .panel { min-width: 0; border: 1px solid var(--line-red); background: linear-gradient(180deg, rgba(255,45,45,.08), transparent 42%), var(--panel); padding: clamp(18px, 2vw, 24px); }
   .panel .code { color: var(--red); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; }
   .panel h2 { margin: 10px 0 12px; font-family: Teko, Archivo, sans-serif; font-size: clamp(32px, 4vw, 52px); line-height: .84; text-transform: uppercase; }
@@ -198,6 +198,33 @@
   }
   @keyframes portraitShimmer { 0% { background-position: 130% 0; } 100% { background-position: -130% 0; } }
   .portrait-note { color: var(--faint); font-size: 11px; }
+  .style-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .style-chip {
+    text-align: left; border: 1px solid var(--line); background: var(--panel-soft); color: var(--white);
+    padding: 10px 12px; display: grid; gap: 2px;
+    transition: border-color 200ms var(--ease), background 200ms var(--ease), transform 200ms var(--ease);
+  }
+  .style-chip:hover { border-color: rgba(255,45,45,.6); transform: translateY(-1px); }
+  .style-chip.is-active { border-color: var(--red); background: rgba(255,45,45,.14); }
+  .style-chip b { font-size: 13px; letter-spacing: .04em; }
+  .style-chip small { color: var(--faint); font-size: 10px; letter-spacing: .04em; }
+  .seed-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .seed-chip {
+    border: 1px solid var(--line); background: rgba(0,0,0,.3); color: var(--muted);
+    font-size: 11px; letter-spacing: .04em; padding: 6px 10px;
+    transition: border-color 200ms var(--ease), color 200ms var(--ease), background 200ms var(--ease);
+  }
+  .seed-chip:hover { border-color: rgba(255,45,45,.6); color: var(--white); }
+  .seed-chip.is-active { border-color: var(--red); color: var(--white); background: rgba(255,45,45,.14); }
+  .photo-drop {
+    width: 100%; border: 1px dashed rgba(255,45,45,.45); background: rgba(0,0,0,.3); color: var(--muted);
+    padding: 12px 14px; font-size: 11px; letter-spacing: .06em; text-align: center;
+    transition: border-color 200ms var(--ease), color 200ms var(--ease);
+  }
+  .photo-drop:hover { border-color: var(--red); color: var(--white); }
+  .create-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .create-actions .button-primary, .create-actions .button-secondary { flex: 1 1 150px; min-width: 150px; padding: 0 8px; font-size: 11px; letter-spacing: .06em; white-space: nowrap; }
+  .create-meta { margin-top: 12px; color: var(--faint); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
 
   /* ---------- Talk: voice-first stage ---------- */
   .talk-stage { display: grid; grid-template-columns: minmax(280px, .62fr) minmax(0, 1fr); gap: 18px; align-items: start; }
@@ -331,6 +358,7 @@
     .page-title h1 { font-size: clamp(44px, 15vw, 72px); }
     .dashboard-header h1 { font-size: clamp(44px, 14vw, 72px); }
     .grid-two, .world-grid, .settings-grid, .vault-grid { grid-template-columns: 1fr; }
+    .style-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .bento-grid { grid-template-columns: 1fr; }
     .bento-presence { grid-column: span 1; grid-template-columns: 1fr; text-align: center; justify-items: center; }
     .talk-stage { grid-template-columns: 1fr; }
@@ -359,7 +387,7 @@
 </div>
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
-<script src="src/v4/wallet-service.js?v=20260613-0423"></script>
-<script src="src/v6/zealwish-web-app.js?v=20260613-0423"></script>
+<script src="src/v4/wallet-service.js?v=20260613-0441"></script>
+<script src="src/v6/zealwish-web-app.js?v=20260613-0441"></script>
 </body>
 </html>

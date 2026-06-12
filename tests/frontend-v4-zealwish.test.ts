@@ -211,6 +211,27 @@ describe("frontend-v4 ZEALWISH voice-first web product", () => {
     expect(webApp).toContain("defaultIdentity");
   });
 
+  it("encapsulates portrait styling: style picker, look seeds, photo auto-detect, single action row", () => {
+    const webApp = readFileSync(webAppPath, "utf8");
+    const web = readFileSync(webPath, "utf8");
+
+    expect(webApp).toContain("const ART_STYLES");
+    expect(webApp).toContain("Pixel Art");
+    expect(webApp).toContain("Anime");
+    expect(webApp).toContain("Cyber Mech");
+    expect(webApp).toContain("3D Figure");
+    expect(webApp).toContain("Comic Ink");
+    expect(webApp).toContain("Arcade");
+    expect(webApp).toContain("const LOOK_SEEDS");
+    expect(webApp).toContain("buildPortraitPrompt");
+    expect(webApp).toContain("/analyze-photo");
+    expect(webApp).toContain("downscaleImage");
+    expect(web).toContain(".style-chip");
+    expect(web).toContain(".seed-chip");
+    expect(web).toContain(".photo-drop");
+    expect(web).toContain(".create-actions { display: flex; flex-wrap: wrap;");
+  });
+
   it("presents a bento home with presence, latest memory, and passport status", () => {
     const webApp = readFileSync(webAppPath, "utf8");
     const web = readFileSync(webPath, "utf8");

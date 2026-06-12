@@ -37,6 +37,59 @@ const WEB_APP_MODULES = [
   { id: 'settings', label: 'Passport', code: '06', title: 'Ownership Center' }
 ];
 
+// Visual styles are fully encapsulated prompts — users never write style prompts.
+// The pixel default mirrors the ZEALWISH mascot: game-protagonist energy, red/black palette.
+const ART_STYLES = [
+  { id: 'pixel', label: 'Pixel Art', hint: 'NFT-grade 16-bit', prompt: 'Detailed 16-bit pixel art character sprite, visible chunky pixel grid, pixelated retro game aesthetic, NFT profile-picture framing, crisp uniform pixels, bold limited palette with red and black accents, classic game-protagonist energy' },
+  { id: 'anime', label: 'Anime', hint: 'Key-visual cel', prompt: 'High-quality anime key visual character art, cel shading, clean expressive lineart, vivid colors' },
+  { id: 'cybermech', label: 'Cyber Mech', hint: 'Armored sci-fi', prompt: 'Cyberpunk mech-suit character art, glowing red circuitry, hard-surface armor plating, dark sci-fi atmosphere' },
+  { id: 'figure3d', label: '3D Figure', hint: 'Collectible render', prompt: 'Stylized 3D collectible figure render, game-cinematic quality, soft studio lighting, toy-grade materials, high detail' },
+  { id: 'comicink', label: 'Comic Ink', hint: 'Bold linework', prompt: 'Bold comic ink illustration, heavy black linework, halftone shading, monochrome with a single red accent' },
+  { id: 'arcade', label: 'Arcade', hint: '90s box art', prompt: 'Retro 90s arcade box-art style character, dynamic heroic pose, saturated airbrushed colors, subtle grain' }
+];
+
+const LOOK_SEEDS = [
+  'red varsity jacket', 'tactical goggles', 'silver ponytail', 'hooded cloak',
+  'small companion pet', 'freckles and a grin', 'neon earrings', 'battle-worn scarf'
+];
+
+function buildPortraitPrompt({ name, prompt, artStyle, lookSeeds, skinStyle }) {
+  const style = ART_STYLES.find((entry) => entry.id === artStyle) || ART_STYLES[0];
+  const seeds = (lookSeeds || []).filter(Boolean).join(', ');
+  return [
+    `${style.prompt}.`,
+    `Character: ${name || 'a companion'} — ${String(prompt || 'a warm AI companion').slice(0, 220)}.`,
+    seeds ? `Signature look: ${seeds}.` : '',
+    skinStyle ? `Wardrobe: ${skinStyle}.` : '',
+    'Chest-up portrait of a single character, centered, clean composition, dark backdrop with cinematic red rim light.'
+  ].filter(Boolean).join(' ');
+}
+
+function downscaleImage(file, maxSize = 768) {
+  return new Promise((resolvePhoto, rejectPhoto) => {
+    const reader = new FileReader();
+    reader.onerror = () => rejectPhoto(new Error('Could not read the photo.'));
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => rejectPhoto(new Error('Could not decode the photo.'));
+      image.onload = () => {
+        try {
+          const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round(image.width * scale));
+          canvas.height = Math.max(1, Math.round(image.height * scale));
+          canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+          resolvePhoto(canvas.toDataURL('image/jpeg', 0.85));
+        } catch (error) {
+          rejectPhoto(error);
+        }
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 const SURPRISE_NAMES = [
   "Echo", "Vesper", "Juno", "Calla", "Orion", "Sable", "Mira", "Atlas",
   "Nyx", "Rowan", "Lyra", "Cassian"
@@ -115,6 +168,8 @@ function defaultIdentity() {
     name: 'Echo',
     prompt: 'A warm, quick-witted companion who remembers what matters to you.',
     gender: 'female',
+    artStyle: 'pixel',
+    lookSeeds: [],
     avatar: ZEALWISH_BROWSER_AVATAR_FALLBACK,
     wallet: 'not connected',
     chainId: 'pending',
@@ -576,7 +631,7 @@ function InspectorRail({ activeModule, identity, vault, wallet, apiStatus, signe
     ["Character", identity?.name || "Draft"],
     ["Passport", signedPassport?.verified ? "Verified" : signedPassport ? "Signed" : "Unclaimed"],
     ["Wallet", wallet?.shortAddress || "Pending"],
-    ["Memories", `${vault.facts.length} facts / ${vault.episodes.length} moments`],
+    ["Memories", `${vault.facts.length} ${vault.facts.length === 1 ? 'fact' : 'facts'} / ${vault.episodes.length} ${vault.episodes.length === 1 ? 'moment' : 'moments'}`],
     ["Bond", `${relationshipLevel(score)} ${score}/100`],
     ["API", apiStatus?.label || "Checking API..."]
   ];
@@ -766,24 +821,67 @@ function CreateView({ identity, wallet, onSaveIdentity, onGeneratePortrait, port
   const [name, setName] = useState(identity?.name || '');
   const [prompt, setPrompt] = useState(identity?.prompt || '');
   const [gender, setGender] = useState(identity?.gender || 'auto');
+  const [artStyle, setArtStyle] = useState(identity?.artStyle || 'pixel');
+  const [lookSeeds, setLookSeeds] = useState(() => identity?.lookSeeds || []);
   const [saveStatus, setSaveStatus] = useState('');
+  const [photoStatus, setPhotoStatus] = useState('');
+  const photoInputRef = useRef(null);
+
+  const toggleSeed = useCallback((seed) => {
+    setLookSeeds((previous) => previous.includes(seed)
+      ? previous.filter((item) => item !== seed)
+      : [...previous, seed].slice(-6));
+  }, []);
 
   const handleSurprise = useCallback(() => {
     setName(SURPRISE_NAMES[randomInt(SURPRISE_NAMES.length)]);
     setPrompt(SURPRISE_ARCHETYPES[randomInt(SURPRISE_ARCHETYPES.length)]);
+    setArtStyle(ART_STYLES[randomInt(ART_STYLES.length)].id);
+    const first = LOOK_SEEDS[randomInt(LOOK_SEEDS.length)];
+    let second = LOOK_SEEDS[randomInt(LOOK_SEEDS.length)];
+    if (second === first) second = LOOK_SEEDS[(LOOK_SEEDS.indexOf(first) + 1) % LOOK_SEEDS.length];
+    setLookSeeds([first, second]);
     setGender('auto');
     setSaveStatus('Surprise seed loaded — tweak anything, then save.');
   }, []);
 
   const handleSaveClick = useCallback(async () => {
     setSaveStatus('Saving passport...');
-    await onSaveIdentity({ name, prompt, gender });
+    await onSaveIdentity({ name, prompt, gender, artStyle, lookSeeds });
     setSaveStatus('Passport saved. Your companion is live — go talk.');
-  }, [name, prompt, gender, onSaveIdentity]);
+  }, [name, prompt, gender, artStyle, lookSeeds, onSaveIdentity]);
 
   const handlePortraitClick = useCallback(() => {
-    onGeneratePortrait({ name, prompt });
-  }, [name, prompt, onGeneratePortrait]);
+    onGeneratePortrait({ name, prompt, artStyle, lookSeeds });
+  }, [name, prompt, artStyle, lookSeeds, onGeneratePortrait]);
+
+  const handlePhotoChange = useCallback(async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    setPhotoStatus('Analyzing photo...');
+    try {
+      const imageDataUrl = await downscaleImage(file, 768);
+      const base = window.ZEALWISH_API?.resolveApiBase?.();
+      if (!base) throw new Error('API unavailable');
+      const response = await fetch(`${base}/analyze-photo`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageDataUrl })
+      });
+      if (!response.ok) throw new Error('Analyze failed');
+      const data = await response.json().catch(() => null);
+      const keywords = Array.isArray(data?.keywords) ? data.keywords.filter(Boolean).slice(0, 4) : [];
+      if (keywords.length) setLookSeeds((previous) => [...new Set([...previous, ...keywords])].slice(-6));
+      if (data?.description && !prompt.trim()) setPrompt(data.description);
+      setPhotoStatus(keywords.length ? `Appearance detected: ${keywords.join(', ')}` : 'Photo analyzed — no clear appearance signals.');
+    } catch {
+      setPhotoStatus('Photo analysis unavailable — pick look seeds manually.');
+    }
+  }, [prompt]);
+
+  const customSeeds = lookSeeds.filter((seed) => !LOOK_SEEDS.includes(seed));
+  const activeStyle = ART_STYLES.find((entry) => entry.id === artStyle) || ART_STYLES[0];
 
   const portraitNote = {
     idle: '',
@@ -796,7 +894,7 @@ function CreateView({ identity, wallet, onSaveIdentity, onGeneratePortrait, port
   return (
     <>
       <PageTitle eyebrow="Create" title="Character Passport">
-        Shape an identity in under two minutes. No signup — the character is yours in this browser immediately, wallet-claimable later.
+        Shape an identity in under two minutes. No signup, no prompt engineering — pick a style, tap a few look seeds, done.
       </PageTitle>
       <div className="grid-two">
         <div className="panel edge">
@@ -804,6 +902,51 @@ function CreateView({ identity, wallet, onSaveIdentity, onGeneratePortrait, port
           <h2>Shape identity</h2>
           <label className="field-label" htmlFor="create-name">Character name</label>
           <input id="create-name" className="field" value={name} onChange={(event) => setName(event.target.value)} placeholder="Echo" />
+
+          <label className="field-label">Visual style</label>
+          <div className="style-chips" role="radiogroup" aria-label="Portrait visual style">
+            {ART_STYLES.map((style) => (
+              <button
+                type="button"
+                key={style.id}
+                role="radio"
+                aria-checked={artStyle === style.id}
+                className={artStyle === style.id ? 'style-chip is-active' : 'style-chip'}
+                onClick={() => setArtStyle(style.id)}
+              >
+                <b>{style.label}</b>
+                <small>{style.hint}</small>
+              </button>
+            ))}
+          </div>
+
+          <label className="field-label">Look seeds — tap to build the look</label>
+          <div className="seed-chips">
+            {LOOK_SEEDS.map((seed) => (
+              <button
+                type="button"
+                key={seed}
+                aria-pressed={lookSeeds.includes(seed)}
+                className={lookSeeds.includes(seed) ? 'seed-chip mono is-active' : 'seed-chip mono'}
+                onClick={() => toggleSeed(seed)}
+              >
+                {seed}
+              </button>
+            ))}
+            {customSeeds.map((seed) => (
+              <button type="button" key={seed} aria-pressed="true" className="seed-chip mono is-active" onClick={() => toggleSeed(seed)} title="From your photo — tap to remove">
+                {seed}
+              </button>
+            ))}
+          </div>
+
+          <label className="field-label">Reference photo (optional)</label>
+          <input ref={photoInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handlePhotoChange} />
+          <button type="button" className="photo-drop mono" onClick={() => photoInputRef.current?.click()}>
+            Upload a photo — appearance is auto-detected into look seeds
+          </button>
+          {photoStatus ? <div className="action-status mono" role="status" aria-live="polite">{photoStatus}</div> : null}
+
           <label className="field-label" htmlFor="create-prompt">Identity prompt</label>
           <textarea id="create-prompt" className="field" value={prompt} onChange={(event) => setPrompt(event.target.value)} placeholder="Who are they? What do they care about?" />
           <label className="field-label" htmlFor="create-gender">Voice</label>
@@ -812,13 +955,14 @@ function CreateView({ identity, wallet, onSaveIdentity, onGeneratePortrait, port
             <option value="female">Female voice</option>
             <option value="male">Male voice</option>
           </select>
-          <div className="settings-actions">
+          <div className="create-actions">
             <button className="button-primary edge" onClick={handleSaveClick}>Save Passport</button>
             <button className="button-secondary edge" onClick={handleSurprise}>Surprise me</button>
             <button className="button-secondary edge" onClick={handlePortraitClick} disabled={portraitState === 'rendering' || portraitState === 'slow'}>
               {portraitState === 'rendering' || portraitState === 'slow' ? 'Rendering...' : 'Generate portrait'}
             </button>
           </div>
+          <div className="create-meta mono">AI IMAGE / 1:1 / {activeStyle.label} STYLE / STEPFUN</div>
           <div className="action-status mono" role="status" aria-live="polite">{saveStatus}</div>
         </div>
         <div className="panel edge passport-preview">
@@ -1433,7 +1577,7 @@ function App() {
     try { localStorage.setItem(PASSPORT_KEY, JSON.stringify(next)); } catch {}
   }, []);
 
-  const handleSaveIdentity = useCallback(async ({ name, prompt, gender }) => {
+  const handleSaveIdentity = useCallback(async ({ name, prompt, gender, artStyle, lookSeeds }) => {
     let resolvedGender = gender;
     if (gender === 'auto') {
       resolvedGender = 'female';
@@ -1457,6 +1601,8 @@ function App() {
       name: String(name || '').trim() || 'Echo',
       prompt: String(prompt || '').trim() || defaultIdentity().prompt,
       gender: resolvedGender,
+      artStyle: ART_STYLES.some((entry) => entry.id === artStyle) ? artStyle : (identityRef.current.artStyle || 'pixel'),
+      lookSeeds: Array.isArray(lookSeeds) ? lookSeeds.slice(0, 6) : (identityRef.current.lookSeeds || []),
       wallet: wallet?.address || 'not connected',
       chainId: wallet?.chainId || 'pending',
       updatedAt: new Date().toISOString()
@@ -1470,7 +1616,7 @@ function App() {
   }, [wallet, persistIdentity, updateVault]);
 
   const portraitTimerRef = useRef(null);
-  const handleGeneratePortrait = useCallback(async ({ name, prompt, style }) => {
+  const handleGeneratePortrait = useCallback(async ({ name, prompt, artStyle, lookSeeds, skinStyle }) => {
     setPortraitState('rendering');
     clearTimeout(portraitTimerRef.current);
     // Never block the user beyond 3 seconds: flip to the bundled look and keep rendering behind the scenes.
@@ -1484,7 +1630,7 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: `Character portrait of ${name || 'a companion'}: ${prompt || 'a warm AI companion'}.${style ? ` Style: ${style}.` : ''} Bold dark OLED background, cinematic red rim light, clean modern character art, chest-up framing.`,
+          prompt: buildPortraitPrompt({ name, prompt, artStyle, lookSeeds, skinStyle }),
           aspectRatio: '1:1'
         })
       });
@@ -1679,7 +1825,13 @@ function App() {
       draft.milestones.unshift({ id: `m-${randomHex(4)}`, at: new Date().toISOString(), title: `Applied skin: ${skin.title}`, tag: 'world' });
       draft.milestones = draft.milestones.slice(0, 20);
     });
-    handleGeneratePortrait({ name: identityRef.current.name, prompt: identityRef.current.prompt, style: skin.style });
+    handleGeneratePortrait({
+      name: identityRef.current.name,
+      prompt: identityRef.current.prompt,
+      artStyle: identityRef.current.artStyle || 'pixel',
+      lookSeeds: identityRef.current.lookSeeds || [],
+      skinStyle: skin.style
+    });
   }, [updateVault, handleGeneratePortrait]);
 
   const handleClaimPassport = useCallback(async () => {
