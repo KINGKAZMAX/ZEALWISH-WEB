@@ -19,3 +19,11 @@ landing-full.jpg
 frontend-v4/.DS_Store
 frontend-v4/.vscode/
 frontend-v4/screenshots/
+
+# Deploy + local-only material
+.vercel
+outputs/
+UCWS-2026/
+前端/
+frontend-v4/uploads/
+logo/
