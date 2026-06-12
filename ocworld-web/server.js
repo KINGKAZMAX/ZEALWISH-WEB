@@ -29,24 +29,26 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
-const IMAGE_API_KEY = process.env.IMAGE_GEN_API_KEY;
-const IMAGE_BASE_URL = process.env.IMAGE_GEN_BASE_URL || 'https://api.moocoo.ai/v1';
-const IMAGE_MODEL = process.env.IMAGE_GEN_MODEL || 'gpt-image-2';
+const CHAT_API_KEY = process.env.CHAT_API_KEY || process.env.STEPFUN_API_KEY || process.env.STEP_API_KEY;
+const CHAT_BASE_URL = process.env.CHAT_BASE_URL || 'https://api.stepfun.com';
+const CHAT_MODEL = process.env.CHAT_MODEL || 'step-3.7-flash';
 
-const VISION_API_KEY = process.env.VISION_API_KEY;
-const VISION_BASE_URL = process.env.VISION_BASE_URL || 'https://api.bltcy.ai/v1';
-const VISION_MODEL = process.env.VISION_MODEL || 'gpt-5.5-2026-04-23';
-
-const CHAT_API_KEY = process.env.CHAT_API_KEY;
-const CHAT_BASE_URL = process.env.CHAT_BASE_URL || 'https://api.tutorial.clouddreamai.com';
-const CHAT_MODEL = process.env.CHAT_MODEL || 'auto-v2';
-
-const TTS_API_KEY = process.env.STEPFUN_API_KEY;
-const TTS_ENDPOINT = process.env.STEPFUN_TTS_ENDPOINT || 'https://api.stepfun.com/step_plan/v1/audio/speech';
+const TTS_API_KEY = process.env.STEPFUN_API_KEY || process.env.STEP_API_KEY || process.env.CHAT_API_KEY;
+const TTS_ENDPOINT = process.env.STEPFUN_TTS_ENDPOINT || 'https://api.stepfun.com/v1/audio/speech';
 const TTS_MODEL = process.env.STEPFUN_TTS_MODEL || 'stepaudio-2.5-tts';
 const TTS_VOICE_MALE = 'cixingnansheng';
 const TTS_VOICE_FEMALE = 'tianmeinvsheng';
 
+const IMAGE_API_KEY = process.env.IMAGE_GEN_API_KEY || process.env.STEPFUN_API_KEY || process.env.STEP_API_KEY;
+const IMAGE_BASE_URL = process.env.IMAGE_GEN_BASE_URL || 'https://api.stepfun.com/v1';
+const IMAGE_MODEL = process.env.IMAGE_GEN_MODEL || 'step-1x-medium';
+
+const VISION_API_KEY = process.env.VISION_API_KEY || process.env.STEPFUN_API_KEY || process.env.STEP_API_KEY;
+const VISION_BASE_URL = process.env.VISION_BASE_URL || 'https://api.stepfun.com/v1';
+const VISION_MODEL = process.env.VISION_MODEL || 'step-3.7-flash';
+
+const FALLBACK_WARNING = 'Chat API key not configured — deterministic companion reply.';
+const UPSTREAM_WARNING = 'Chat upstream unavailable — deterministic companion reply.';
 
 function fallbackChatReply(messages = []) {
   const last = [...messages].reverse().find((message) => message?.role === 'user')?.content || '';
@@ -57,12 +59,48 @@ function fallbackChatReply(messages = []) {
   return 'Signal received. Your ZEALWISH passport can keep growing from this moment.';
 }
 
+async function fetchWithTimeout(url, options = {}, timeoutMs = 25000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// --- SSE helpers (same protocol as api/chat.js) ---
+
+function sseHeaders(res) {
+  res.status(200);
+  res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-cache, no-transform');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.flushHeaders?.();
+}
+
+function sseWrite(res, payload) {
+  res.write(`data: ${JSON.stringify(payload)}\n\n`);
+}
+
+function sseFinish(res, donePayload) {
+  sseWrite(res, donePayload);
+  res.write('data: [DONE]\n\n');
+  res.end();
+}
+
+function streamFallback(res, text, warning) {
+  sseWrite(res, { delta: text });
+  sseFinish(res, { done: true, text, source: 'fallback', warning });
+}
+
 app.post('/api/generate-image', async (req, res) => {
   if (!IMAGE_API_KEY) {
-    return res.status(500).json({ error: 'IMAGE_GEN_API_KEY not configured' });
+    return res.status(503).json({ error: 'Image generation not configured' });
   }
 
-  const { prompt, aspectRatio = '16:9', imageSize } = req.body;
+  const { prompt, aspectRatio = '1:1', imageSize } = req.body;
   if (!prompt) {
     return res.status(400).json({ error: 'prompt is required' });
   }
@@ -78,34 +116,33 @@ app.post('/api/generate-image', async (req, res) => {
         model: IMAGE_MODEL,
         prompt,
         n: 1,
-        size: imageSize || ({ '16:9': '1536x1024', '9:16': '1024x1536' }[aspectRatio] || '1024x1024'),
+        size: imageSize || ({ '16:9': '1280x800', '9:16': '800x1280' }[aspectRatio] || '1024x1024'),
         response_format: 'b64_json',
       }),
-    }, { timeout: 55000 });
+    }, { timeout: 50000 });
 
     if (!response.ok) {
-      const errText = await response.text();
-      console.error('Image API error:', response.status, errText);
-      return res.status(response.status).json({ error: `Image API: ${response.status}` });
+      console.error('Image API error:', response.status);
+      return res.status(502).json({ error: 'Image generation failed' });
     }
 
     const data = await response.json();
     const imageB64 = data.data?.[0]?.b64_json;
     if (!imageB64) {
-      return res.status(500).json({ error: 'No image data in response' });
+      return res.status(502).json({ error: 'Image generation failed' });
     }
 
     const dataUrl = imageB64.startsWith('data:') ? imageB64 : `data:image/png;base64,${imageB64}`;
     res.json({ dataUrl });
   } catch (err) {
     console.error('Image generation failed:', err.message);
-    res.status(500).json({ error: err.message });
+    res.status(502).json({ error: 'Image generation failed' });
   }
 });
 
 app.post('/api/analyze-photo', async (req, res) => {
   if (!VISION_API_KEY) {
-    return res.status(500).json({ error: 'VISION_API_KEY not configured' });
+    return res.status(503).json({ error: 'Vision analysis not configured' });
   }
 
   const { imageDataUrl } = req.body;
@@ -127,13 +164,13 @@ app.post('/api/analyze-photo', async (req, res) => {
           content: [
             {
               type: 'text',
-              text: `分析这张照片中人物的外貌特征，用于生成虚拟角色。请以纯JSON格式返回（不要markdown代码块）：
-{"keywords":["关键词1","关键词2",...],"description":"一段完整的角色外貌描述"}
+              text: `Analyze the appearance of the person in this photo for creating a virtual character. Reply ONLY with raw JSON (no markdown code fences):
+{"keywords":["keyword1","keyword2",...],"description":"a complete character appearance description"}
 
-要求：
-- keywords：提取发型发色、面部特征、体型、服装、配饰、气质等关键词，每个2-6字，8-15个
-- description：50-100字的完整描述，适合用于生成动漫/像素/赛博等风格的虚拟角色
-- 如果照片中没有人物，根据图片内容想象一个与之相关的角色`
+Requirements:
+- keywords: extract 8-15 short keywords covering hair style and color, eyes and facial features, body type, outfit, accessories, and overall vibe
+- description: a 2-3 sentence English character description suitable for generating an anime / pixel / cyber style virtual character
+- if there is no person in the photo, imagine a character inspired by the image content`
             },
             {
               type: 'image_url',
@@ -146,9 +183,8 @@ app.post('/api/analyze-photo', async (req, res) => {
     }, { timeout: 25000 });
 
     if (!response.ok) {
-      const errText = await response.text();
-      console.error('Vision API error:', response.status, errText);
-      return res.status(response.status).json({ error: `Vision API: ${response.status}` });
+      console.error('Vision API error:', response.status);
+      return res.status(502).json({ error: 'Photo analysis failed' });
     }
 
     const data = await response.json();
@@ -168,67 +204,141 @@ app.post('/api/analyze-photo', async (req, res) => {
     });
   } catch (err) {
     console.error('Photo analysis failed:', err.message);
-    res.status(500).json({ error: err.message });
+    res.status(502).json({ error: 'Photo analysis failed' });
   }
 });
 
 app.post('/api/chat', async (req, res) => {
-  const { system, messages } = req.body;
-  if (!messages || !messages.length) {
-    return res.status(400).json({ error: 'messages is required' });
+  const { system, messages, stream } = req.body;
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return res.status(400).json({ error: 'messages is required and must be a non-empty array' });
   }
+
+  const wantsStream = stream === true;
 
   if (!CHAT_API_KEY) {
-    return res.json({ text: fallbackChatReply(messages), source: 'server-fallback', warning: 'CHAT_API_KEY not configured' });
+    const text = fallbackChatReply(messages);
+    if (wantsStream) {
+      sseHeaders(res);
+      return streamFallback(res, text, FALLBACK_WARNING);
+    }
+    return res.json({ text, source: 'fallback', warning: FALLBACK_WARNING });
   }
 
-  try {
-    const payload = {
-      model: CHAT_MODEL,
-      messages: [
-        ...(system ? [{ role: 'system', content: system }] : []),
-        ...messages,
-      ],
-      max_tokens: 512,
-    };
+  const payload = {
+    model: CHAT_MODEL,
+    messages: [
+      ...(system ? [{ role: 'system', content: system }] : []),
+      ...messages,
+    ],
+    max_tokens: 512,
+    stream: wantsStream,
+  };
 
-    const response = await fetch(`${CHAT_BASE_URL}/v1/chat/completions`, {
+  if (!wantsStream) {
+    try {
+      const response = await fetchWithTimeout(`${CHAT_BASE_URL}/v1/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${CHAT_API_KEY}`,
+        },
+        body: JSON.stringify(payload),
+      }, 45000);
+
+      if (!response.ok) {
+        console.error('Chat API error:', response.status);
+        return res.json({ text: fallbackChatReply(messages), source: 'fallback', warning: UPSTREAM_WARNING });
+      }
+
+      const data = await response.json();
+      const text = data.choices?.[0]?.message?.content || '';
+      return res.json({ text, source: 'llm' });
+    } catch (err) {
+      console.error('Chat failed:', err.message);
+      return res.json({ text: fallbackChatReply(messages), source: 'fallback', warning: UPSTREAM_WARNING });
+    }
+  }
+
+  // --- Streaming (SSE) path ---
+  sseHeaders(res);
+
+  let accumulated = '';
+  try {
+    const response = await fetchWithTimeout(`${CHAT_BASE_URL}/v1/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${CHAT_API_KEY}`,
       },
       body: JSON.stringify(payload),
-    });
+    }, 45000);
 
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error('Chat API error:', response.status, errText);
-      return res.status(response.status).json({ error: `Chat API: ${response.status}` });
+    if (!response.ok || !response.body) {
+      console.error('Chat API stream error:', response.status);
+      return streamFallback(res, fallbackChatReply(messages), UPSTREAM_WARNING);
     }
 
-    const data = await response.json();
-    const text = data.choices?.[0]?.message?.content || '';
-    res.json({ text, source: 'llm' });
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let upstreamDone = false;
+
+    while (!upstreamDone) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+
+      let newlineIdx;
+      while ((newlineIdx = buffer.indexOf('\n')) !== -1) {
+        const line = buffer.slice(0, newlineIdx).trim();
+        buffer = buffer.slice(newlineIdx + 1);
+        if (!line.startsWith('data:')) continue;
+        const dataStr = line.slice(5).trim();
+        if (dataStr === '[DONE]') {
+          upstreamDone = true;
+          break;
+        }
+        try {
+          const chunk = JSON.parse(dataStr);
+          const delta = chunk.choices?.[0]?.delta?.content;
+          if (delta) {
+            accumulated += delta;
+            sseWrite(res, { delta });
+          }
+        } catch {
+          // Ignore malformed upstream chunks.
+        }
+      }
+    }
+
+    if (!accumulated) {
+      console.error('Chat API stream returned no content');
+      return streamFallback(res, fallbackChatReply(messages), UPSTREAM_WARNING);
+    }
+    return sseFinish(res, { done: true, text: accumulated, source: 'llm' });
   } catch (err) {
-    console.error('Chat failed:', err.message);
-    res.status(500).json({ error: err.message });
+    console.error('Chat stream failed:', err.message);
+    if (!accumulated) {
+      return streamFallback(res, fallbackChatReply(messages), UPSTREAM_WARNING);
+    }
+    return sseFinish(res, { done: true, text: accumulated, source: 'llm', warning: 'Stream interrupted — partial reply.' });
   }
 });
 
 app.post('/api/speak', async (req, res) => {
   if (!TTS_API_KEY) {
-    return res.status(500).json({ error: 'TTS not configured' });
+    return res.status(503).json({ error: 'TTS not configured' });
   }
 
   const { text, gender = 'female' } = req.body;
-  if (!text || !text.trim()) {
+  if (!text || !String(text).trim()) {
     return res.status(400).json({ error: 'text is required' });
   }
 
   try {
     const voice = gender === 'male' ? TTS_VOICE_MALE : TTS_VOICE_FEMALE;
-    const response = await fetch(TTS_ENDPOINT, {
+    const response = await fetchWithTimeout(TTS_ENDPOINT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -236,18 +346,17 @@ app.post('/api/speak', async (req, res) => {
       },
       body: JSON.stringify({
         model: TTS_MODEL,
-        input: text,
+        input: String(text).trim().slice(0, 800),
         voice,
         response_format: 'mp3',
         sample_rate: 24000,
         speed: 1,
       }),
-    });
+    }, 20000);
 
     if (!response.ok) {
-      const errText = await response.text();
-      console.error('TTS API error:', response.status, errText);
-      return res.status(response.status).json({ error: `TTS API: ${response.status}` });
+      console.error('TTS API error:', response.status);
+      return res.status(502).json({ error: 'TTS failed' });
     }
 
     const arrayBuffer = await response.arrayBuffer();
@@ -255,22 +364,18 @@ app.post('/api/speak', async (req, res) => {
     res.json({ audioBase64, mimeType: 'audio/mpeg' });
   } catch (err) {
     console.error('TTS failed:', err.message);
-    res.status(500).json({ error: err.message });
+    res.status(502).json({ error: 'TTS failed' });
   }
 });
 
 app.post('/api/detect-gender', async (req, res) => {
   const { description } = req.body;
-  if (!description) {
-    return res.json({ gender: 'female' });
-  }
-
-  if (!CHAT_API_KEY) {
-    return res.json({ gender: 'female', warning: 'CHAT_API_KEY not configured' });
+  if (!description || !CHAT_API_KEY) {
+    return res.json({ gender: 'female', warning: 'default' });
   }
 
   try {
-    const response = await fetch(`${CHAT_BASE_URL}/v1/chat/completions`, {
+    const response = await fetchWithTimeout(`${CHAT_BASE_URL}/v1/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -280,14 +385,16 @@ app.post('/api/detect-gender', async (req, res) => {
         model: CHAT_MODEL,
         messages: [{
           role: 'user',
-          content: `根据以下角色描述，判断这个角色的性别。只回复"male"或"female"，不要其他内容。\n\n角色描述：${description}`,
+          content: `Based on this character description, answer with exactly one word, "male" or "female". No other content.\n\nDescription: ${description}`,
         }],
-        max_tokens: 10,
+        // step-3.7-flash is a reasoning model; very low max_tokens yields
+        // empty content (finish_reason "length"), so allow headroom.
+        max_tokens: 200,
       }),
-    });
+    }, 15000);
 
     if (!response.ok) {
-      return res.json({ gender: 'female' });
+      return res.json({ gender: 'female', warning: 'default' });
     }
 
     const data = await response.json();
@@ -295,12 +402,18 @@ app.post('/api/detect-gender', async (req, res) => {
     const gender = text.includes('male') && !text.includes('female') ? 'male' : 'female';
     res.json({ gender });
   } catch {
-    res.json({ gender: 'female' });
+    res.json({ gender: 'female', warning: 'default' });
   }
 });
 
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok' });
+  res.json({
+    status: 'ok',
+    chat: Boolean(CHAT_API_KEY),
+    tts: Boolean(TTS_API_KEY),
+    image: Boolean(IMAGE_API_KEY),
+    vision: Boolean(VISION_API_KEY),
+  });
 });
 
 app.get('/api/runtime-status', (_req, res) => {
@@ -343,8 +456,8 @@ async function fetchWithRetry(url, options, { maxRetries = 2, baseDelay = 1000, 
 const PORT = process.env.API_PORT || 7291;
 app.listen(PORT, () => {
   console.log(`[ocworld-api] running on http://localhost:${PORT}`);
-  console.log(`[ocworld-api] CHAT:      ${CHAT_API_KEY ? 'configured ✓' : 'NOT configured ✗'} (${CHAT_MODEL})`);
-  console.log(`[ocworld-api] TTS:       ${TTS_API_KEY ? 'configured ✓' : 'NOT configured ✗'} (${TTS_MODEL})`);
-  console.log(`[ocworld-api] IMAGE_GEN: ${IMAGE_API_KEY ? 'configured ✓' : 'NOT configured ✗'}`);
-  console.log(`[ocworld-api] VISION:    ${VISION_API_KEY ? 'configured ✓' : 'NOT configured ✗'}`);
+  console.log(`[ocworld-api] CHAT:      ${CHAT_API_KEY ? 'configured' : 'NOT configured'} (${CHAT_MODEL})`);
+  console.log(`[ocworld-api] TTS:       ${TTS_API_KEY ? 'configured' : 'NOT configured'} (${TTS_MODEL})`);
+  console.log(`[ocworld-api] IMAGE_GEN: ${IMAGE_API_KEY ? 'configured' : 'NOT configured'} (${IMAGE_MODEL})`);
+  console.log(`[ocworld-api] VISION:    ${VISION_API_KEY ? 'configured' : 'NOT configured'} (${VISION_MODEL})`);
 });
