@@ -292,6 +292,41 @@ describe("frontend-v4 ZEALWISH voice-first web product", () => {
     expect(server).not.toMatch(chinesePattern);
   });
 
+  it("locks the product to English and ships no emoji glyphs", () => {
+    const emojiPattern = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}]/u;
+    const index = readFileSync(indexPath, "utf8");
+    const web = readFileSync(webPath, "utf8");
+    const webApp = readFileSync(webAppPath, "utf8");
+    const landing = readFileSync(landingPath, "utf8");
+
+    expect(index).toContain('translate="no"');
+    expect(web).toContain('translate="no"');
+    expect(index).toContain('content="notranslate"');
+    expect(web).toContain('content="notranslate"');
+    expect(webApp).not.toMatch(emojiPattern);
+    expect(landing).not.toMatch(emojiPattern);
+    expect(webApp).toContain("Always answer in English");
+    // Controls use inline SVG icons instead of emoji.
+    expect(webApp).toContain("function IconMic");
+    expect(webApp).toContain("function IconSpeaker");
+  });
+
+  it("keeps every world route live: skins restyle, scenes wrap Talk, tasks brief the character", () => {
+    const webApp = readFileSync(webAppPath, "utf8");
+    const web = readFileSync(webPath, "utf8");
+
+    expect(webApp).toContain("WORLD_SCENES");
+    expect(webApp).toContain("AGENT_TASKS");
+    expect(webApp).toContain("CREATOR_SKINS");
+    expect(webApp).toContain("handleEnterScene");
+    expect(webApp).toContain("handleRunTask");
+    expect(webApp).toContain("handleApplySkin");
+    expect(webApp).toContain("zealwish.web.scene");
+    expect(webApp).toContain("Current scene:");
+    expect(web).toContain(".world-grid");
+    expect(web).toContain(".scene-chip");
+  });
+
   it("documents the preview and architecture contract in English", () => {
     expect(existsSync(architecturePath)).toBe(true);
     const architecture = readFileSync(architecturePath, "utf8");

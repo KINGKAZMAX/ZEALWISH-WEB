@@ -227,7 +227,7 @@ function selectRecalledFacts(vault, userText) {
   return picked.slice(0, 5);
 }
 
-function buildChatSystemPrompt(identity, vault, recalledFacts) {
+function buildChatSystemPrompt(identity, vault, recalledFacts, scene) {
   const score = relationshipScore(vault);
   const recentEpisodes = (vault?.episodes || []).slice(0, 3)
     .map((episode) => `They said "${episode.user}" and you replied "${String(episode.reply || '').slice(0, 80)}"`);
@@ -237,8 +237,9 @@ function buildChatSystemPrompt(identity, vault, recalledFacts) {
     `Durable memories about your human (weave them in naturally, never list them):`,
     ...(recalledFacts.length ? recalledFacts.map((fact) => `- ${fact.text}`) : ['- No durable memories yet; be curious and learn one.']),
     recentEpisodes.length ? `Recent moments: ${recentEpisodes.join(' / ')}` : '',
+    scene ? `Current scene: ${scene.prompt}` : '',
     `Relationship: ${relationshipLevel(score)} (${score}/100), ${vault?.relationship?.interactions || 0} conversations so far.`,
-    'Reply in warm, concise English (1-3 sentences), as a present companion. Reference a memory when it genuinely fits.'
+    'Reply in warm, concise English (1-3 sentences), as a present companion. Always answer in English, even if your human writes in another language. Reference a memory when it genuinely fits.'
   ].filter(Boolean).join('\n');
 }
 
@@ -517,6 +518,33 @@ function useVoiceActivity() {
   return activity;
 }
 
+function IconMic({ size = 20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="9" y="3" width="6" height="11" rx="3" />
+      <path d="M5 11a7 7 0 0 0 14 0" />
+      <path d="M12 18v3" />
+    </svg>
+  );
+}
+
+function IconStop({ size = 20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+      <rect x="6.5" y="6.5" width="11" height="11" rx="1.5" />
+    </svg>
+  );
+}
+
+function IconSpeaker({ muted = false, size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M11 5 6.5 8.5H3v7h3.5L11 19z" fill="currentColor" stroke="none" />
+      {muted ? <path d="m16 9 5 6m0-6-5 6" /> : <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" />}
+    </svg>
+  );
+}
+
 function Waveform({ active, bars = 5 }) {
   return (
     <span className={active ? 'waveform is-active' : 'waveform'} aria-hidden="true">
@@ -717,7 +745,7 @@ function HomeView({ identity, vault, wallet, signedPassport, voiceEnabled, onTog
         <article className="bento-card">
           <span className="mono bento-label">Worlds</span>
           <p className="bento-memory">One passport, many destinations: skins, scenes, agents.</p>
-          <small className="mono">Preview layer</small>
+          <small className="mono">Live routes</small>
           <button className="bento-link mono" onClick={() => setActiveModule('world')}>World routes &rarr;</button>
         </article>
       </div>
@@ -810,7 +838,7 @@ function CreateView({ identity, wallet, onSaveIdentity, onGeneratePortrait, port
 
 // --- Talk: voice-first conversation ---
 
-function TalkView({ identity, vault, chatInput, setChatInput, chatMessages, onSend, chatStatus, chatPhase, apiStatus, voiceEnabled, onToggleVoice, onVoiceTranscript, recalledNow }) {
+function TalkView({ identity, vault, chatInput, setChatInput, chatMessages, onSend, chatStatus, chatPhase, apiStatus, voiceEnabled, onToggleVoice, onVoiceTranscript, recalledNow, activeScene, onLeaveScene }) {
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef(null);
   const transcriptHandlerRef = useRef(onVoiceTranscript);
@@ -890,7 +918,7 @@ function TalkView({ identity, vault, chatInput, setChatInput, chatMessages, onSe
             title={SR ? (isListening ? 'Stop listening' : 'Hold a conversation by voice') : 'Voice input needs Chrome or Edge'}
             aria-label={isListening ? 'Stop listening' : 'Start voice input'}
           >
-            <span className="talk-mic-icon" aria-hidden="true">{isListening ? '■' : '🎤'}</span>
+            <span className="talk-mic-icon" aria-hidden="true">{isListening ? <IconStop /> : <IconMic />}</span>
             <span className="mono">{isListening ? 'Tap to stop' : 'Tap to speak'}</span>
           </button>
           <button
@@ -900,7 +928,8 @@ function TalkView({ identity, vault, chatInput, setChatInput, chatMessages, onSe
             aria-pressed={voiceEnabled}
             title={voiceEnabled ? 'Voice replies on. Click to mute.' : 'Voice replies off. Click to unmute.'}
           >
-            {voiceEnabled ? '🔊 Voice on' : '🔇 Voice off'}
+            <IconSpeaker muted={!voiceEnabled} />
+            <span>{voiceEnabled ? 'Voice on' : 'Voice off'}</span>
           </button>
           {!SR ? <p className="mono talk-sr-note">Voice input needs Chrome or Edge — typing always works.</p> : null}
         </div>
@@ -908,6 +937,12 @@ function TalkView({ identity, vault, chatInput, setChatInput, chatMessages, onSe
         <div className="panel edge chat-panel">
           <div className="chat-panel-head">
             <div className="code mono">{apiStatus?.state === 'online' ? 'TALK / LIVE API' : 'TALK / OFFLINE FALLBACK'}</div>
+            {activeScene ? (
+              <span className="scene-chip">
+                <span className="mono">Scene: {activeScene.title}</span>
+                <button type="button" className="mono" onClick={onLeaveScene}>Leave</button>
+              </span>
+            ) : null}
             {recalledNow?.length ? (
               <div className="recall-chips" aria-label="Memories recalled for this reply">
                 {recalledNow.slice(0, 2).map((fact) => (
@@ -921,7 +956,7 @@ function TalkView({ identity, vault, chatInput, setChatInput, chatMessages, onSe
               <div className={`message ${message.role}${message.streaming ? ' is-streaming' : ''}`} key={`${message.role}-${index}`}>
                 <b>{message.role === 'user' ? 'You' : identity?.name}</b>
                 <span>{message.text}{message.streaming ? <i className="stream-caret" aria-hidden="true" /> : null}</span>
-                {message.source === 'fallback' ? <small className="mono message-tag">offline echo — connect the API key for live replies</small> : null}
+                {message.source === 'fallback' ? <small className="mono message-tag">offline echo</small> : null}
               </div>
             ))}
           </div>
@@ -1028,32 +1063,104 @@ function MemoryView({ vault, memoryDraft, setMemoryDraft, onAddMemory }) {
   );
 }
 
-// --- World (clearly-labeled preview layer) ---
+// --- World: live routes (skins restyle, scenes wrap Talk, tasks brief the character) ---
 
-const WORLD_ROUTES = [
-  { title: 'Creator skins', detail: 'Prepare a portable look library for the same passport identity.' },
-  { title: 'Playable scenes', detail: 'Route the character into a lightweight scene without losing memory.' },
-  { title: 'Agent tasks', detail: 'Let the character carry action context into future task flows.' },
-  { title: 'Cross-world passport', detail: 'Check the fields required before moving across worlds.' }
+const WORLD_SCENES = [
+  { id: 'rooftop', title: 'Midnight rooftop', detail: 'City lights below, long talks above.', prompt: 'The two of you are on a quiet midnight rooftop above a glowing city. Let the setting color your replies.' },
+  { id: 'arcade', title: 'Neon arcade', detail: 'High scores, louder opinions.', prompt: 'The two of you are inside a buzzing neon arcade between rounds of a game. Keep the energy playful.' },
+  { id: 'cafe', title: 'Rainy-day cafe', detail: 'Slow rain, warm cups, honest talk.', prompt: 'The two of you share a corner table in a rainy-day cafe. Keep replies warm and unhurried.' }
 ];
 
-function WorldView() {
-  const [worldStatus, setWorldStatus] = useState('Preview layer — select a route to inspect where this passport travels next.');
+const AGENT_TASKS = [
+  { id: 'plan', title: 'Plan my day', detail: 'Turn scattered priorities into three steps.', prompt: 'Help me plan my day. Ask for my single top priority, then lay out a simple three-step plan around it.' },
+  { id: 'brainstorm', title: 'Brainstorm with me', detail: 'Three sharp ideas, fast.', prompt: 'Run a quick brainstorm with me. Ask what I am working on, then offer three sharp, distinct ideas.' },
+  { id: 'checkin', title: 'Daily check-in', detail: 'Reflect a memory back, set the tone.', prompt: 'Do a short daily check-in with me. Ask how I am feeling and reflect one thing you remember about me back to me.' }
+];
+
+const CREATOR_SKINS = [
+  { id: 'street', title: 'Street signal', detail: 'Varsity red, city-night backdrop.', style: 'streetwear look with a red varsity jacket against a neon city night backdrop' },
+  { id: 'noir', title: 'Noir agent', detail: 'Sharp suit, dramatic shadow.', style: 'film-noir look with a sharp dark suit, dramatic shadows, monochrome palette with one red accent' },
+  { id: 'voyager', title: 'Star voyager', detail: 'Retro-future flight gear.', style: 'retro-futuristic flight jacket with a subtle starfield backdrop' }
+];
+
+function WorldView({ activeScene, signedPassport, portraitState, onApplySkin, onEnterScene, onRunTask, onOpenOwnership }) {
+  const [worldStatus, setWorldStatus] = useState('Every route below is live: skins restyle the portrait, scenes and tasks land in Talk.');
+  const skinBusy = portraitState === 'rendering' || portraitState === 'slow';
 
   return (
     <>
       <PageTitle eyebrow="World" title="World Layer">
-        Preview how one wallet-owned identity can route into future creator skins, playable scenes, agent tasks, and interoperable worlds.
+        One wallet-owned identity, many destinations. Apply a creator skin, step into a scene, hand over a task, or carry the passport across worlds.
       </PageTitle>
-      <div className="route-grid">
-        {WORLD_ROUTES.map((item, index) => (
-          <article className="route-card" key={item.title}>
-            <span className="mono">0{index + 1}</span>
-            <b>{item.title}</b>
-            <p>{item.detail}</p>
-            <button className="button-secondary edge" onClick={() => setWorldStatus(`Route preview: ${item.title}. Shipping after passport v1.`)}>Preview route</button>
-          </article>
-        ))}
+      <div className="world-grid">
+        <section className="panel edge world-panel">
+          <div className="code mono">01 / CREATOR SKINS</div>
+          <h2>Restyle the portrait</h2>
+          <p>Each skin regenerates the portrait in a new look — same identity, same memory.</p>
+          <div className="world-options">
+            {CREATOR_SKINS.map((skin) => (
+              <button
+                className="world-option"
+                key={skin.id}
+                disabled={skinBusy}
+                onClick={() => {
+                  onApplySkin(skin);
+                  setWorldStatus(`Rendering the ${skin.title} look — open Create to watch it land.`);
+                }}
+              >
+                <b>{skin.title}</b>
+                <small>{skin.detail}</small>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="panel edge world-panel">
+          <div className="code mono">02 / PLAYABLE SCENES</div>
+          <h2>Step into a scene</h2>
+          <p>Scenes wrap the conversation in a place. Memory travels with you.</p>
+          <div className="world-options">
+            {WORLD_SCENES.map((scene) => (
+              <button
+                className={activeScene?.id === scene.id ? 'world-option is-active' : 'world-option'}
+                key={scene.id}
+                onClick={() => onEnterScene(scene)}
+              >
+                <b>{scene.title}</b>
+                <small>{scene.detail}</small>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="panel edge world-panel">
+          <div className="code mono">03 / AGENT TASKS</div>
+          <h2>Hand over a task</h2>
+          <p>The character takes the brief straight into Talk and works with what it remembers.</p>
+          <div className="world-options">
+            {AGENT_TASKS.map((task) => (
+              <button className="world-option" key={task.id} onClick={() => onRunTask(task)}>
+                <b>{task.title}</b>
+                <small>{task.detail}</small>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="panel edge world-panel">
+          <div className="code mono">04 / CROSS-WORLD PASSPORT</div>
+          <h2>Carry it forward</h2>
+          <p>
+            {signedPassport?.verified
+              ? `Verified and owned by ${shortAddress(signedPassport.owner_address)} — this identity is ready to travel.`
+              : 'Claim the passport to make this identity portable across worlds.'}
+          </p>
+          <div className="settings-actions">
+            <button className="button-primary edge" onClick={onOpenOwnership}>
+              {signedPassport ? 'Open ownership center' : 'Claim the passport'}
+            </button>
+          </div>
+        </section>
       </div>
       <div className="action-status mono" role="status" aria-live="polite">{worldStatus}</div>
     </>
@@ -1245,6 +1352,9 @@ function App() {
   const [identity, setIdentity] = useState(loadIdentity);
   const [vault, setVault] = useState(loadVault);
   const [signedPassport, setSignedPassport] = useState(loadSignedPassport);
+  const [activeScene, setActiveScene] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('zealwish.web.scene') || 'null'); } catch { return null; }
+  });
   const [claimState, setClaimState] = useState('idle');
   const [portraitState, setPortraitState] = useState('idle');
   const [memoryDraft, setMemoryDraft] = useState('');
@@ -1262,6 +1372,8 @@ function App() {
   useEffect(() => { vaultRef.current = vault; }, [vault]);
   const identityRef = useRef(identity);
   useEffect(() => { identityRef.current = identity; }, [identity]);
+  const sceneRef = useRef(activeScene);
+  useEffect(() => { sceneRef.current = activeScene; }, [activeScene]);
 
   useEffect(() => window.ZEALWISH_WALLET?.onChange?.(setWallet), []);
   useEffect(() => {
@@ -1358,7 +1470,7 @@ function App() {
   }, [wallet, persistIdentity, updateVault]);
 
   const portraitTimerRef = useRef(null);
-  const handleGeneratePortrait = useCallback(async ({ name, prompt }) => {
+  const handleGeneratePortrait = useCallback(async ({ name, prompt, style }) => {
     setPortraitState('rendering');
     clearTimeout(portraitTimerRef.current);
     // Never block the user beyond 3 seconds: flip to the bundled look and keep rendering behind the scenes.
@@ -1372,7 +1484,7 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: `Character portrait of ${name || 'a companion'}: ${prompt || 'a warm AI companion'}. Bold dark OLED background, cinematic red rim light, clean modern character art, chest-up framing.`,
+          prompt: `Character portrait of ${name || 'a companion'}: ${prompt || 'a warm AI companion'}.${style ? ` Style: ${style}.` : ''} Bold dark OLED background, cinematic red rim light, clean modern character art, chest-up framing.`,
           aspectRatio: '1:1'
         })
       });
@@ -1444,7 +1556,7 @@ function App() {
       });
     }
 
-    const system = buildChatSystemPrompt(currentIdentity, currentVault, recalled);
+    const system = buildChatSystemPrompt(currentIdentity, currentVault, recalled, sceneRef.current);
 
     let spokenPrefix = '';
     const maybeSpeakFirstSentence = (full) => {
@@ -1474,8 +1586,30 @@ function App() {
       });
       finalText = result.text;
       source = result.source || 'llm';
-      setApiStatus({ state: source === 'llm' ? 'online' : 'fallback', label: source === 'llm' ? 'API connected.' : 'API key missing — deterministic fallback.', apiBase: getApiBaseLabel() });
-      setChatStatus(source === 'llm' ? 'Reply received.' : 'Offline echo — configure the API key for live replies.');
+      let warning = result.warning || '';
+      if (source === 'fallback' && /upstream|interrupted/i.test(warning)) {
+        // Upstream hiccups are usually transient — one quiet non-stream retry
+        // before settling for the deterministic echo.
+        try {
+          const retry = await window.ZEALWISH_API?.chat?.({ system, messages: toApiMessages(history) });
+          if (retry?.text && retry.source === 'llm') {
+            if (speakReplies) {
+              stopVoicePlayback();
+              spokenPrefix = '';
+            }
+            finalText = retry.text;
+            source = 'llm';
+            warning = '';
+            updateLiveMessage(finalText);
+          }
+        } catch {}
+      }
+      setApiStatus({ state: source === 'llm' ? 'online' : 'fallback', label: source === 'llm' ? 'API connected.' : 'Deterministic fallback active.', apiBase: getApiBaseLabel() });
+      setChatStatus(source === 'llm'
+        ? 'Reply received.'
+        : warning.toLowerCase().includes('not configured')
+          ? 'Offline echo — configure the API key for live replies.'
+          : 'Offline echo — live reply unavailable, try again.');
     } catch {
       // Total API failure: deterministic local fallback, clearly labeled.
       finalText = getFallbackReply(clean, history.length);
@@ -1515,6 +1649,38 @@ function App() {
     setChatInput('');
     handleSendWebChat(clean, 'voice');
   }, [handleSendWebChat]);
+
+  const handleEnterScene = useCallback((scene) => {
+    setActiveScene(scene);
+    sceneRef.current = scene;
+    try { localStorage.setItem('zealwish.web.scene', JSON.stringify(scene)); } catch {}
+    updateVault((draft) => {
+      draft.milestones.unshift({ id: `m-${randomHex(4)}`, at: new Date().toISOString(), title: `Entered scene: ${scene.title}`, tag: 'world' });
+      draft.milestones = draft.milestones.slice(0, 20);
+    });
+    setChatStatus(`Scene set: ${scene.title}. Say something to play it out.`);
+    setActiveModule('talk');
+  }, [updateVault, setActiveModule]);
+
+  const handleLeaveScene = useCallback(() => {
+    setActiveScene(null);
+    sceneRef.current = null;
+    try { localStorage.setItem('zealwish.web.scene', 'null'); } catch {}
+    setChatStatus('Scene cleared.');
+  }, []);
+
+  const handleRunTask = useCallback((task) => {
+    setActiveModule('talk');
+    handleSendWebChat(task.prompt, 'task');
+  }, [setActiveModule, handleSendWebChat]);
+
+  const handleApplySkin = useCallback((skin) => {
+    updateVault((draft) => {
+      draft.milestones.unshift({ id: `m-${randomHex(4)}`, at: new Date().toISOString(), title: `Applied skin: ${skin.title}`, tag: 'world' });
+      draft.milestones = draft.milestones.slice(0, 20);
+    });
+    handleGeneratePortrait({ name: identityRef.current.name, prompt: identityRef.current.prompt, style: skin.style });
+  }, [updateVault, handleGeneratePortrait]);
 
   const handleClaimPassport = useCallback(async () => {
     setClaimState('claiming');
@@ -1567,13 +1733,13 @@ function App() {
 
   const view = useMemo(() => {
     if (activeModule === 'create') return <CreateView identity={identity} wallet={wallet} onSaveIdentity={handleSaveIdentity} onGeneratePortrait={handleGeneratePortrait} portraitState={portraitState} />;
-    if (activeModule === 'talk') return <TalkView identity={identity} vault={vault} chatInput={chatInput} setChatInput={setChatInput} chatMessages={chatMessages} onSend={handleSendWebChat} chatStatus={chatStatus} chatPhase={chatPhase} apiStatus={apiStatus} voiceEnabled={voiceEnabled} onToggleVoice={handleToggleVoice} onVoiceTranscript={handleVoiceTranscript} recalledNow={recalledNow} />;
+    if (activeModule === 'talk') return <TalkView identity={identity} vault={vault} chatInput={chatInput} setChatInput={setChatInput} chatMessages={chatMessages} onSend={handleSendWebChat} chatStatus={chatStatus} chatPhase={chatPhase} apiStatus={apiStatus} voiceEnabled={voiceEnabled} onToggleVoice={handleToggleVoice} onVoiceTranscript={handleVoiceTranscript} recalledNow={recalledNow} activeScene={activeScene} onLeaveScene={handleLeaveScene} />;
     if (activeModule === 'memory') return <MemoryView vault={vault} memoryDraft={memoryDraft} setMemoryDraft={setMemoryDraft} onAddMemory={handleAddMemory} />;
-    if (activeModule === 'world') return <WorldView />;
+    if (activeModule === 'world') return <WorldView activeScene={activeScene} signedPassport={signedPassport} portraitState={portraitState} onApplySkin={handleApplySkin} onEnterScene={handleEnterScene} onRunTask={handleRunTask} onOpenOwnership={() => setActiveModule('settings')} />;
     if (activeModule === 'rewind') return <RewindView vault={vault} />;
     if (activeModule === 'settings') return <SettingsView identity={identity} vault={vault} wallet={wallet} apiStatus={apiStatus} signedPassport={signedPassport} onConnectWallet={handleConnectWallet} onRefreshApiStatus={refreshApiStatus} onClaimPassport={handleClaimPassport} claimState={claimState} onExport={handleExportPassport} exportText={exportText} />;
     return <HomeView identity={identity} vault={vault} wallet={wallet} signedPassport={signedPassport} voiceEnabled={voiceEnabled} onToggleVoice={handleToggleVoice} setActiveModule={setActiveModule} />;
-  }, [activeModule, identity, vault, wallet, chatInput, chatMessages, chatStatus, chatPhase, apiStatus, memoryDraft, exportText, voiceEnabled, signedPassport, claimState, portraitState, recalledNow, handleToggleVoice, handleVoiceTranscript, handleSaveIdentity, handleGeneratePortrait, handleSendWebChat, handleAddMemory, handleConnectWallet, refreshApiStatus, handleClaimPassport, handleExportPassport, setActiveModule]);
+  }, [activeModule, identity, vault, wallet, chatInput, chatMessages, chatStatus, chatPhase, apiStatus, memoryDraft, exportText, voiceEnabled, signedPassport, claimState, portraitState, recalledNow, activeScene, handleToggleVoice, handleVoiceTranscript, handleSaveIdentity, handleGeneratePortrait, handleSendWebChat, handleAddMemory, handleConnectWallet, refreshApiStatus, handleClaimPassport, handleExportPassport, handleEnterScene, handleLeaveScene, handleRunTask, handleApplySkin, setActiveModule]);
 
   return <Shell activeModule={activeModule} setActiveModule={setActiveModule} wallet={wallet} identity={identity} vault={vault} apiStatus={apiStatus} signedPassport={signedPassport} onConnectWallet={handleConnectWallet}>{view}</Shell>;
 }

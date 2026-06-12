@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
 <meta charset="utf-8" />
 <title>ZEALWISH Web — Talk to a character that remembers you.</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="google" content="notranslate" />
 <meta name="description" content="ZEALWISH Web is the voice-first workspace for creating, talking to, remembering, and wallet-owning a portable AI character passport." />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230A0A0B'/%3E%3Cpath d='M10 12h12l5 23 8-23h10l8 23 5-23h6L52 52H40l-8-22-8 22H12z' fill='%23FF2D2D'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -213,13 +214,16 @@
   .talk-mic-hero.is-listening { background: var(--red); animation: zealwishVoicePulse 1.4s ease-in-out infinite; }
   .talk-mic-hero .talk-mic-icon { font-size: 20px; line-height: 1; }
   .talk-mic-hero .mono { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; opacity: .85; }
-  .talk-voice-toggle { border: 1px solid rgba(255,45,45,.56); background: rgba(0,0,0,.28); color: var(--white); min-height: 32px; padding: 4px 12px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+  .talk-voice-toggle { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,45,45,.56); background: rgba(0,0,0,.28); color: var(--white); min-height: 32px; padding: 4px 12px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
   .talk-voice-toggle[aria-pressed="false"] { color: var(--muted); border-color: rgba(255,255,255,.24); }
   .talk-sr-note { color: var(--faint); font-size: 10px; text-align: center; }
   .chat-panel { min-height: 480px; display: grid; grid-template-rows: auto minmax(220px, 1fr) auto auto; }
   .chat-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
   .recall-chips { display: flex; gap: 8px; flex-wrap: wrap; }
   .recall-chip { border: 1px solid rgba(255,45,45,.4); background: rgba(255,45,45,.08); color: var(--muted); font-size: 10px; letter-spacing: .06em; padding: 4px 8px; }
+  .scene-chip { display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(255,45,45,.5); background: rgba(255,45,45,.1); color: var(--white); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; padding: 4px 10px; }
+  .scene-chip button { border: 0; background: none; padding: 0; color: var(--red); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; transition: opacity 200ms var(--ease); }
+  .scene-chip button:hover { opacity: .7; }
   .chat-log { display: grid; gap: 12px; align-content: start; overflow: auto; max-height: 420px; padding-right: 6px; }
   .message { max-width: min(720px, 92%); border: 1px solid var(--line); background: var(--panel-soft); padding: 13px 14px; }
   .message.user { margin-left: auto; border-color: rgba(255,45,45,.6); background: rgba(255,45,45,.13); }
@@ -256,12 +260,18 @@
   .episode-time, .episode-mode { color: var(--faint); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
 
   /* ---------- World / Rewind ---------- */
-  .route-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: rgba(255,45,45,.44); border: 1px solid rgba(255,45,45,.44); }
-  .route-card { min-height: 168px; padding: 18px; background: var(--elev-1); display: grid; align-content: start; gap: 12px; }
-  .route-card button { width: 100%; margin-top: 4px; min-height: 40px; padding: 0 12px; font-size: 12px; letter-spacing: .1em; }
-  .route-card span { color: var(--red); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; }
-  .route-card b { display: block; margin-top: 18px; font-size: 20px; }
-  .route-card p { font-size: 13px; color: var(--muted); }
+  .world-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .world-panel p { font-size: 14px; }
+  .world-options { display: grid; gap: 10px; margin-top: 14px; }
+  .world-option {
+    text-align: left; border: 1px solid var(--line); background: var(--panel-soft); color: var(--white);
+    padding: 13px 14px; display: grid; gap: 4px;
+    transition: border-color 200ms var(--ease), background 200ms var(--ease), transform 200ms var(--ease);
+  }
+  .world-option:hover { border-color: rgba(255,45,45,.6); background: rgba(255,45,45,.1); transform: translateX(3px); }
+  .world-option.is-active { border-color: var(--red); background: rgba(255,45,45,.16); }
+  .world-option b { font-size: 15px; }
+  .world-option small { color: var(--faint); line-height: 1.45; }
   .timeline { display: grid; border: 1px solid var(--line-red); }
   .timeline-row { display: grid; grid-template-columns: 96px minmax(0, 1fr) 96px 96px; gap: 18px; padding: 16px 18px; border-bottom: 1px solid rgba(255,45,45,.24); align-items: center; }
   .timeline-row:last-child { border-bottom: 0; }
@@ -320,7 +330,7 @@
     .workspace { padding: 22px 16px 34px; }
     .page-title h1 { font-size: clamp(44px, 15vw, 72px); }
     .dashboard-header h1 { font-size: clamp(44px, 14vw, 72px); }
-    .grid-two, .route-grid, .settings-grid, .vault-grid { grid-template-columns: 1fr; }
+    .grid-two, .world-grid, .settings-grid, .vault-grid { grid-template-columns: 1fr; }
     .bento-grid { grid-template-columns: 1fr; }
     .bento-presence { grid-column: span 1; grid-template-columns: 1fr; text-align: center; justify-items: center; }
     .talk-stage { grid-template-columns: 1fr; }
@@ -349,7 +359,7 @@
 </div>
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
-<script src="src/v4/wallet-service.js?v=20260613-0401"></script>
-<script src="src/v6/zealwish-web-app.js?v=20260613-0401"></script>
+<script src="src/v4/wallet-service.js?v=20260613-0423"></script>
+<script src="src/v6/zealwish-web-app.js?v=20260613-0423"></script>
 </body>
 </html>
