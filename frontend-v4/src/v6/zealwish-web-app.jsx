@@ -327,7 +327,7 @@ function extractFactCandidate(text) {
 
 function selectRecalledFacts(vault, userText) {
   const facts = vault?.facts || [];
-  if (!facts.length) return [];
+  if (!facts.length) return { forPrompt: [], matched: [] };
   const words = new Set(
     String(userText || '').toLowerCase().split(/[^a-z0-9']+/).filter((w) => w.length > 3)
   );
@@ -338,12 +338,16 @@ function selectRecalledFacts(vault, userText) {
     return { fact, score };
   });
   scored.sort((a, b) => b.score - a.score);
-  const picked = scored.filter((entry) => entry.score > 0).slice(0, 4).map((entry) => entry.fact);
+  // matched = genuine keyword hits only — what the UI is allowed to claim it
+  // "recalled". forPrompt pads with recent facts so the model always has some
+  // context, but those padded ones are never surfaced as recalled.
+  const matched = scored.filter((entry) => entry.score > 0).slice(0, 4).map((entry) => entry.fact);
+  const forPrompt = [...matched];
   for (const fact of facts) {
-    if (picked.length >= 3) break;
-    if (!picked.includes(fact)) picked.push(fact);
+    if (forPrompt.length >= 3) break;
+    if (!forPrompt.includes(fact)) forPrompt.push(fact);
   }
-  return picked.slice(0, 5);
+  return { forPrompt: forPrompt.slice(0, 5), matched };
 }
 
 function buildChatSystemPrompt(identity, vault, recalledFacts, scene) {
@@ -1685,6 +1689,7 @@ function App() {
   useEffect(() => { identityRef.current = identity; }, [identity]);
   const sceneRef = useRef(activeScene);
   useEffect(() => { sceneRef.current = activeScene; }, [activeScene]);
+  const recallClearTimerRef = useRef(null);
 
   useEffect(() => window.ZEALWISH_WALLET?.onChange?.(setWallet), []);
   useEffect(() => {
@@ -1898,18 +1903,19 @@ function App() {
     setChatPhase('thinking');
     setChatStatus('');
 
-    // Recall: pick relevant facts, surface them, and stamp recalledAt for the vault highlight.
-    const recalled = selectRecalledFacts(currentVault, clean);
-    setRecalledNow(recalled);
-    if (recalled.length) {
-      const recalledIds = new Set(recalled.map((fact) => fact.id));
+    // Recall: matched facts drive the honest UI ("recalling X" + vault flash);
+    // forPrompt may pad with recent context for the model only.
+    const { forPrompt: recalledForPrompt, matched: recalledMatched } = selectRecalledFacts(currentVault, clean);
+    setRecalledNow(recalledMatched);
+    if (recalledMatched.length) {
+      const recalledIds = new Set(recalledMatched.map((fact) => fact.id));
       updateVault((draft) => {
         const stamp = new Date().toISOString();
         draft.facts.forEach((fact) => { if (recalledIds.has(fact.id)) fact.recalledAt = stamp; });
       });
     }
 
-    const system = buildChatSystemPrompt(currentIdentity, currentVault, recalled, sceneRef.current);
+    const system = buildChatSystemPrompt(currentIdentity, currentVault, recalledForPrompt, sceneRef.current);
 
     let spokenPrefix = '';
     const maybeSpeakFirstSentence = (full) => {
@@ -1973,6 +1979,12 @@ function App() {
 
     setChatMessages([...history, { role: 'character', text: finalText, source, at: new Date().toISOString() }]);
     setChatPhase('idle');
+    // The "recalling…" chips belong to this exchange — retire them shortly after
+    // the reply settles instead of letting them linger over the next message.
+    if (recalledMatched.length) {
+      clearTimeout(recallClearTimerRef.current);
+      recallClearTimerRef.current = setTimeout(() => setRecalledNow([]), 9000);
+    }
 
     if (speakReplies) {
       const remainder = spokenPrefix && finalText.startsWith(spokenPrefix)
