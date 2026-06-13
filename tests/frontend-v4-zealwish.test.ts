@@ -232,6 +232,30 @@ describe("frontend-v4 ZEALWISH voice-first web product", () => {
     expect(web).toContain(".create-actions { display: flex; flex-wrap: wrap;");
   });
 
+  it("generates a 4-up portrait grid and a custom backdrop-color picker", () => {
+    const webApp = readFileSync(webAppPath, "utf8");
+    const web = readFileSync(webPath, "utf8");
+    const apiImage = readFileSync(join(root, "api", "generate-image.js"), "utf8");
+
+    // 4-up generation + selection.
+    expect(webApp).toContain("count: 4");
+    expect(webApp).toContain("portraitCandidates");
+    expect(webApp).toContain("onSelectPortrait");
+    expect(webApp).toContain("dataUrls");
+    expect(web).toContain(".portrait-grid");
+    expect(web).toContain(".portrait-option");
+    expect(web).toContain(".portrait-skeleton");
+    // API fans out to up to 4 images.
+    expect(apiImage).toContain("count");
+    expect(apiImage).toContain("dataUrls");
+    expect(apiImage).toMatch(/Math\.min\(4/);
+    // Custom backdrop color.
+    expect(webApp).toContain("BACKDROP_PRESETS");
+    expect(webApp).toContain("backdropPromptFor");
+    expect(webApp).toContain('type="color"');
+    expect(web).toContain(".backdrop-swatch");
+  });
+
   it("presents a bento home with presence, latest memory, and passport status", () => {
     const webApp = readFileSync(webAppPath, "utf8");
     const web = readFileSync(webPath, "utf8");

@@ -66,15 +66,34 @@ const LOOK_SEEDS = [
   'small companion pet', 'freckles and a grin', 'neon earrings', 'battle-worn scarf'
 ];
 
-function buildPortraitPrompt({ name, prompt, artStyle, lookSeeds, skinStyle }) {
+// Backdrop presets — swatch drives the UI, prompt drives the image model.
+// id 'auto' keeps the signature dark + red-rim look.
+const BACKDROP_PRESETS = [
+  { id: 'auto', label: 'Auto', swatch: 'linear-gradient(135deg,#1a0a0a,#FF2D2D)', prompt: '' },
+  { id: 'void', label: 'Void', swatch: '#0A0A0B', prompt: 'flat near-black studio background' },
+  { id: 'crimson', label: 'Crimson', swatch: '#FF2D2D', prompt: 'bold crimson-red gradient background' },
+  { id: 'cobalt', label: 'Cobalt', swatch: '#1E40AF', prompt: 'deep cobalt-blue gradient background' },
+  { id: 'violet', label: 'Violet', swatch: '#6D28D9', prompt: 'electric violet gradient background' },
+  { id: 'jade', label: 'Jade', swatch: '#0E9F6E', prompt: 'cool jade-green gradient background' },
+  { id: 'sunset', label: 'Sunset', swatch: '#F97316', prompt: 'warm sunset-orange gradient background' }
+];
+
+function backdropPromptFor(backdrop, customColor) {
+  if (backdrop === 'custom') return `solid ${customColor} background, clean studio backdrop`;
+  const preset = BACKDROP_PRESETS.find((entry) => entry.id === backdrop);
+  return preset?.prompt || '';
+}
+
+function buildPortraitPrompt({ name, prompt, artStyle, lookSeeds, skinStyle, backdrop, customColor }) {
   const style = ART_STYLES.find((entry) => entry.id === artStyle) || ART_STYLES[0];
   const seeds = (lookSeeds || []).filter(Boolean).join(', ');
+  const backdropPrompt = backdropPromptFor(backdrop, customColor);
   return [
     `${style.prompt}.`,
     `Character: ${name || 'a companion'} — ${String(prompt || 'a warm AI companion').slice(0, 220)}.`,
     seeds ? `Signature look: ${seeds}.` : '',
     skinStyle ? `Wardrobe: ${skinStyle}.` : '',
-    'Chest-up portrait of a single character, centered, clean composition, dark backdrop with cinematic red rim light.'
+    `Chest-up portrait of a single character, centered, clean composition, ${backdropPrompt || 'dark backdrop with cinematic red rim light'}.`
   ].filter(Boolean).join(' ');
 }
 
@@ -207,6 +226,8 @@ function defaultIdentity() {
     gender: 'female',
     artStyle: 'pixel',
     lookSeeds: [],
+    backdrop: 'auto',
+    customColor: '#10B981',
     avatar: ZEALWISH_BROWSER_AVATAR_FALLBACK,
     wallet: 'not connected',
     chainId: 'pending',
@@ -897,12 +918,14 @@ function HomeView({ identity, vault, wallet, signedPassport, voiceEnabled, onTog
 
 // --- Create ---
 
-function CreateView({ identity, wallet, onSaveIdentity, onGeneratePortrait, portraitState }) {
+function CreateView({ identity, wallet, onSaveIdentity, onGeneratePortrait, portraitState, portraitCandidates, onSelectPortrait }) {
   const [name, setName] = useState(identity?.name || '');
   const [prompt, setPrompt] = useState(identity?.prompt || '');
   const [gender, setGender] = useState(identity?.gender || 'auto');
   const [artStyle, setArtStyle] = useState(identity?.artStyle || 'pixel');
   const [lookSeeds, setLookSeeds] = useState(() => identity?.lookSeeds || []);
+  const [backdrop, setBackdrop] = useState(identity?.backdrop || 'auto');
+  const [customColor, setCustomColor] = useState(identity?.customColor || '#10B981');
   const [saveStatus, setSaveStatus] = useState('');
   const [photoStatus, setPhotoStatus] = useState('');
   const photoInputRef = useRef(null);
@@ -921,19 +944,20 @@ function CreateView({ identity, wallet, onSaveIdentity, onGeneratePortrait, port
     let second = LOOK_SEEDS[randomInt(LOOK_SEEDS.length)];
     if (second === first) second = LOOK_SEEDS[(LOOK_SEEDS.indexOf(first) + 1) % LOOK_SEEDS.length];
     setLookSeeds([first, second]);
+    setBackdrop(BACKDROP_PRESETS[randomInt(BACKDROP_PRESETS.length)].id);
     setGender('auto');
     setSaveStatus('Surprise seed loaded — tweak anything, then save.');
   }, []);
 
   const handleSaveClick = useCallback(async () => {
     setSaveStatus('Saving passport...');
-    await onSaveIdentity({ name, prompt, gender, artStyle, lookSeeds });
+    await onSaveIdentity({ name, prompt, gender, artStyle, lookSeeds, backdrop, customColor });
     setSaveStatus('Passport saved. Your companion is live — go talk.');
-  }, [name, prompt, gender, artStyle, lookSeeds, onSaveIdentity]);
+  }, [name, prompt, gender, artStyle, lookSeeds, backdrop, customColor, onSaveIdentity]);
 
   const handlePortraitClick = useCallback(() => {
-    onGeneratePortrait({ name, prompt, artStyle, lookSeeds });
-  }, [name, prompt, artStyle, lookSeeds, onGeneratePortrait]);
+    onGeneratePortrait({ name, prompt, artStyle, lookSeeds, backdrop, customColor });
+  }, [name, prompt, artStyle, lookSeeds, backdrop, customColor, onGeneratePortrait]);
 
   const handlePhotoChange = useCallback(async (event) => {
     const file = event.target.files?.[0];
@@ -1000,6 +1024,31 @@ function CreateView({ identity, wallet, onSaveIdentity, onGeneratePortrait, port
             ))}
           </div>
 
+          <label className="field-label">Backdrop color</label>
+          <div className="backdrop-row">
+            {BACKDROP_PRESETS.map((preset) => (
+              <button
+                type="button"
+                key={preset.id}
+                className={backdrop === preset.id ? 'backdrop-swatch is-active' : 'backdrop-swatch'}
+                style={{ background: preset.swatch }}
+                onClick={() => setBackdrop(preset.id)}
+                title={preset.label}
+                aria-label={`Backdrop ${preset.label}`}
+                aria-pressed={backdrop === preset.id}
+              />
+            ))}
+            <label className={backdrop === 'custom' ? 'backdrop-swatch backdrop-custom is-active' : 'backdrop-swatch backdrop-custom'} style={{ background: customColor }} title="Custom color">
+              <input
+                type="color"
+                value={customColor}
+                onChange={(event) => { setCustomColor(event.target.value); setBackdrop('custom'); }}
+                aria-label="Custom backdrop color"
+              />
+              <span aria-hidden="true">+</span>
+            </label>
+          </div>
+
           <label className="field-label">Look seeds — tap to build the look</label>
           <div className="seed-chips">
             {LOOK_SEEDS.map((seed) => (
@@ -1042,7 +1091,7 @@ function CreateView({ identity, wallet, onSaveIdentity, onGeneratePortrait, port
               {portraitState === 'rendering' || portraitState === 'slow' ? 'Rendering...' : 'Generate portrait'}
             </button>
           </div>
-          <div className="create-meta mono">AI IMAGE / 1:1 / {activeStyle.label} STYLE / STEPFUN</div>
+          <div className="create-meta mono">AI IMAGE / 4-UP / {activeStyle.label} STYLE / STEPFUN</div>
           <div className="action-status mono" role="status" aria-live="polite">{saveStatus}</div>
         </div>
         <div className="panel edge passport-preview">
@@ -1054,6 +1103,30 @@ function CreateView({ identity, wallet, onSaveIdentity, onGeneratePortrait, port
           <p>{prompt || identity?.prompt}</p>
           <p className="mono">Wallet: {wallet?.shortAddress || 'not connected'}</p>
           {portraitNote ? <p className="mono portrait-note">{portraitNote}</p> : null}
+
+          {portraitState === 'rendering' || portraitState === 'slow' ? (
+            <div className="portrait-grid" aria-hidden="true">
+              {[0, 1, 2, 3].map((i) => <div className="portrait-skeleton" key={i} />)}
+            </div>
+          ) : portraitCandidates && portraitCandidates.length > 1 ? (
+            <>
+              <div className="field-label">Pick your favorite — {portraitCandidates.length} options</div>
+              <div className="portrait-grid" role="radiogroup" aria-label="Generated portrait options">
+                {portraitCandidates.map((src, i) => (
+                  <button
+                    type="button"
+                    key={i}
+                    role="radio"
+                    aria-checked={identity?.avatar === src}
+                    className={identity?.avatar === src ? 'portrait-option is-active' : 'portrait-option'}
+                    onClick={() => onSelectPortrait(src)}
+                  >
+                    <img src={src} alt={`Portrait option ${i + 1}`} />
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : null}
         </div>
       </div>
     </>
@@ -1671,6 +1744,7 @@ function App() {
   });
   const [claimState, setClaimState] = useState('idle');
   const [portraitState, setPortraitState] = useState('idle');
+  const [portraitCandidates, setPortraitCandidates] = useState([]);
   const [memoryDraft, setMemoryDraft] = useState('');
   const [chatInput, setChatInput] = useState('');
   const [chatMessages, setChatMessages] = useState(() => loadChatLog(loadIdentity().name));
@@ -1767,7 +1841,7 @@ function App() {
     try { localStorage.setItem(PASSPORT_KEY, JSON.stringify(next)); } catch {}
   }, []);
 
-  const handleSaveIdentity = useCallback(async ({ name, prompt, gender, artStyle, lookSeeds }) => {
+  const handleSaveIdentity = useCallback(async ({ name, prompt, gender, artStyle, lookSeeds, backdrop, customColor }) => {
     let resolvedGender = gender;
     if (gender === 'auto') {
       resolvedGender = 'female';
@@ -1793,6 +1867,8 @@ function App() {
       gender: resolvedGender,
       artStyle: ART_STYLES.some((entry) => entry.id === artStyle) ? artStyle : (identityRef.current.artStyle || 'pixel'),
       lookSeeds: Array.isArray(lookSeeds) ? lookSeeds.slice(0, 6) : (identityRef.current.lookSeeds || []),
+      backdrop: backdrop || identityRef.current.backdrop || 'auto',
+      customColor: customColor || identityRef.current.customColor || '#10B981',
       wallet: wallet?.address || 'not connected',
       chainId: wallet?.chainId || 'pending',
       updatedAt: new Date().toISOString()
@@ -1805,9 +1881,21 @@ function App() {
     return next;
   }, [wallet, persistIdentity, updateVault]);
 
+  const applyAvatar = useCallback((dataUrl) => {
+    const next = { ...identityRef.current, avatar: dataUrl, updatedAt: new Date().toISOString() };
+    try { localStorage.setItem(PASSPORT_KEY, JSON.stringify(next)); } catch {}
+    setIdentity(next);
+    identityRef.current = next;
+  }, []);
+
+  const handleSelectPortrait = useCallback((dataUrl) => {
+    if (dataUrl) applyAvatar(dataUrl);
+  }, [applyAvatar]);
+
   const portraitTimerRef = useRef(null);
-  const handleGeneratePortrait = useCallback(async ({ name, prompt, artStyle, lookSeeds, skinStyle }) => {
+  const handleGeneratePortrait = useCallback(async ({ name, prompt, artStyle, lookSeeds, skinStyle, backdrop, customColor }) => {
     setPortraitState('rendering');
+    setPortraitCandidates([]);
     clearTimeout(portraitTimerRef.current);
     // Never block the user beyond 3 seconds: flip to the bundled look and keep rendering behind the scenes.
     portraitTimerRef.current = setTimeout(() => {
@@ -1820,33 +1908,27 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: buildPortraitPrompt({ name, prompt, artStyle, lookSeeds, skinStyle }),
-          aspectRatio: '1:1'
+          prompt: buildPortraitPrompt({ name, prompt, artStyle, lookSeeds, skinStyle, backdrop, customColor }),
+          aspectRatio: '1:1',
+          count: 4
         })
       });
       if (!response.ok) throw new Error('Image generation failed');
       const data = await response.json().catch(() => null);
-      if (!data?.dataUrl) throw new Error('No image returned');
-      // Compress before persisting: a raw 1024px PNG data URL can eat most of
-      // the localStorage quota on its own.
-      const compactAvatar = await compressDataUrl(data.dataUrl, 512);
-      const next = { ...identityRef.current, avatar: compactAvatar, updatedAt: new Date().toISOString() };
-      try {
-        localStorage.setItem(PASSPORT_KEY, JSON.stringify(next));
-        setIdentity(next);
-        identityRef.current = next;
-      } catch {
-        // localStorage quota — keep the in-memory portrait for this session only.
-        setIdentity(next);
-        identityRef.current = next;
-      }
+      const urls = Array.isArray(data?.dataUrls) && data.dataUrls.length ? data.dataUrls : (data?.dataUrl ? [data.dataUrl] : []);
+      if (!urls.length) throw new Error('No image returned');
+      // Compress every option before it touches state / localStorage — a raw
+      // 1024px PNG data URL can eat most of the quota on its own.
+      const compact = await Promise.all(urls.map((url) => compressDataUrl(url, 512)));
+      setPortraitCandidates(compact);
+      applyAvatar(compact[0]); // first option live immediately; user can re-pick
       setPortraitState('done');
     } catch {
       setPortraitState('failed');
     } finally {
       clearTimeout(portraitTimerRef.current);
     }
-  }, []);
+  }, [applyAvatar]);
 
   const handleAddMemory = useCallback((value = memoryDraft) => {
     const clean = String(value || '').trim();
@@ -2049,6 +2131,8 @@ function App() {
       prompt: identityRef.current.prompt,
       artStyle: identityRef.current.artStyle || 'pixel',
       lookSeeds: identityRef.current.lookSeeds || [],
+      backdrop: identityRef.current.backdrop || 'auto',
+      customColor: identityRef.current.customColor || '#10B981',
       skinStyle: skin.style
     });
   }, [updateVault, handleGeneratePortrait]);
@@ -2103,14 +2187,14 @@ function App() {
   }, [signedPassport]);
 
   const view = useMemo(() => {
-    if (activeModule === 'create') return <CreateView identity={identity} wallet={wallet} onSaveIdentity={handleSaveIdentity} onGeneratePortrait={handleGeneratePortrait} portraitState={portraitState} />;
+    if (activeModule === 'create') return <CreateView identity={identity} wallet={wallet} onSaveIdentity={handleSaveIdentity} onGeneratePortrait={handleGeneratePortrait} portraitState={portraitState} portraitCandidates={portraitCandidates} onSelectPortrait={handleSelectPortrait} />;
     if (activeModule === 'talk') return <TalkView identity={identity} vault={vault} chatInput={chatInput} setChatInput={setChatInput} chatMessages={chatMessages} onSend={handleSendWebChat} chatStatus={chatStatus} chatPhase={chatPhase} apiStatus={apiStatus} voiceEnabled={voiceEnabled} onToggleVoice={handleToggleVoice} handsFree={handsFree} onToggleHandsFree={handleToggleHandsFree} onVoiceTranscript={handleVoiceTranscript} recalledNow={recalledNow} activeScene={activeScene} onLeaveScene={handleLeaveScene} />;
     if (activeModule === 'memory') return <MemoryView vault={vault} memoryDraft={memoryDraft} setMemoryDraft={setMemoryDraft} onAddMemory={handleAddMemory} onForgetFact={handleForgetFact} />;
     if (activeModule === 'world') return <WorldView activeScene={activeScene} signedPassport={signedPassport} portraitState={portraitState} onApplySkin={handleApplySkin} onEnterScene={handleEnterScene} onRunTask={handleRunTask} onOpenOwnership={() => setActiveModule('settings')} />;
     if (activeModule === 'rewind') return <RewindView vault={vault} />;
     if (activeModule === 'settings') return <SettingsView identity={identity} vault={vault} wallet={wallet} apiStatus={apiStatus} signedPassport={signedPassport} onConnectWallet={handleConnectWallet} onRefreshApiStatus={refreshApiStatus} onClaimPassport={handleClaimPassport} claimState={claimState} onExport={handleExportPassport} exportText={exportText} />;
     return <HomeView identity={identity} vault={vault} wallet={wallet} signedPassport={signedPassport} voiceEnabled={voiceEnabled} onToggleVoice={handleToggleVoice} setActiveModule={setActiveModule} />;
-  }, [activeModule, identity, vault, wallet, chatInput, chatMessages, chatStatus, chatPhase, apiStatus, memoryDraft, exportText, voiceEnabled, handsFree, signedPassport, claimState, portraitState, recalledNow, activeScene, handleToggleVoice, handleToggleHandsFree, handleVoiceTranscript, handleSaveIdentity, handleGeneratePortrait, handleSendWebChat, handleAddMemory, handleForgetFact, handleConnectWallet, refreshApiStatus, handleClaimPassport, handleExportPassport, handleEnterScene, handleLeaveScene, handleRunTask, handleApplySkin, setActiveModule]);
+  }, [activeModule, identity, vault, wallet, chatInput, chatMessages, chatStatus, chatPhase, apiStatus, memoryDraft, exportText, voiceEnabled, handsFree, signedPassport, claimState, portraitState, portraitCandidates, recalledNow, activeScene, handleToggleVoice, handleToggleHandsFree, handleVoiceTranscript, handleSaveIdentity, handleGeneratePortrait, handleSelectPortrait, handleSendWebChat, handleAddMemory, handleForgetFact, handleConnectWallet, refreshApiStatus, handleClaimPassport, handleExportPassport, handleEnterScene, handleLeaveScene, handleRunTask, handleApplySkin, setActiveModule]);
 
   return <Shell activeModule={activeModule} setActiveModule={setActiveModule} wallet={wallet} identity={identity} vault={vault} apiStatus={apiStatus} signedPassport={signedPassport} onConnectWallet={handleConnectWallet}>{view}</Shell>;
 }

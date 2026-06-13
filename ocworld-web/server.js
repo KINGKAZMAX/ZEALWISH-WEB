@@ -102,45 +102,51 @@ app.post('/api/generate-image', async (req, res) => {
     return res.status(503).json({ error: 'Image generation not configured' });
   }
 
-  const { prompt, aspectRatio = '1:1', imageSize } = req.body;
+  const { prompt, aspectRatio = '1:1', imageSize, count = 1 } = req.body;
   if (!prompt) {
     return res.status(400).json({ error: 'prompt is required' });
   }
 
-  try {
-    const response = await fetchWithRetry(`${IMAGE_BASE_URL}/images/generations`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${IMAGE_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: IMAGE_MODEL,
-        prompt,
-        n: 1,
-        size: imageSize || ({ '16:9': '1280x800', '9:16': '800x1280' }[aspectRatio] || '1024x1024'),
-        response_format: 'b64_json',
-      }),
-    }, { timeout: 50000 });
+  const size = imageSize || ({ '16:9': '1280x800', '9:16': '800x1280' }[aspectRatio] || '1024x1024');
+  const n = Math.min(4, Math.max(1, Number(count) || 1));
 
-    if (!response.ok) {
-      console.error('Image API error:', response.status);
-      response.body?.cancel?.().catch(() => {});
-      return res.status(502).json({ error: 'Image generation failed' });
+  const generateOne = async () => {
+    try {
+      const response = await fetchWithRetry(`${IMAGE_BASE_URL}/images/generations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${IMAGE_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: IMAGE_MODEL,
+          prompt,
+          n: 1,
+          size,
+          response_format: 'b64_json',
+        }),
+      }, { timeout: 50000 });
+      if (!response.ok) {
+        console.error('Image API error:', response.status);
+        response.body?.cancel?.().catch(() => {});
+        return null;
+      }
+      const data = await response.json();
+      const imageB64 = data.data?.[0]?.b64_json;
+      if (!imageB64) return null;
+      return imageB64.startsWith('data:') ? imageB64 : `data:image/png;base64,${imageB64}`;
+    } catch (err) {
+      console.error('Image generation failed:', err.message);
+      return null;
     }
+  };
 
-    const data = await response.json();
-    const imageB64 = data.data?.[0]?.b64_json;
-    if (!imageB64) {
-      return res.status(502).json({ error: 'Image generation failed' });
-    }
-
-    const dataUrl = imageB64.startsWith('data:') ? imageB64 : `data:image/png;base64,${imageB64}`;
-    res.json({ dataUrl });
-  } catch (err) {
-    console.error('Image generation failed:', err.message);
-    res.status(502).json({ error: 'Image generation failed' });
+  const results = await Promise.all(Array.from({ length: n }, () => generateOne()));
+  const dataUrls = results.filter(Boolean);
+  if (!dataUrls.length) {
+    return res.status(502).json({ error: 'Image generation failed' });
   }
+  res.json({ dataUrl: dataUrls[0], dataUrls });
 });
 
 app.post('/api/analyze-photo', async (req, res) => {
