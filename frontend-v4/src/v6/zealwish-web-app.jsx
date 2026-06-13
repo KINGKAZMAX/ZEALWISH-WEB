@@ -666,6 +666,16 @@ function downloadJson(filename, text) {
   URL.revokeObjectURL(url);
 }
 
+function downloadDataUrl(filename, dataUrl) {
+  if (!dataUrl) return;
+  const link = document.createElement('a');
+  link.href = dataUrl;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
 // --- Shared presentation pieces ---
 
 function useVoiceActivity() {
@@ -1104,25 +1114,46 @@ function CreateView({ identity, wallet, onSaveIdentity, onGeneratePortrait, port
           <p className="mono">Wallet: {wallet?.shortAddress || 'not connected'}</p>
           {portraitNote ? <p className="mono portrait-note">{portraitNote}</p> : null}
 
+          {(identity?.avatar || '').startsWith('data:') ? (
+            <div className="settings-actions" style={{ marginTop: 12 }}>
+              <button
+                type="button"
+                className="button-secondary edge"
+                onClick={() => downloadDataUrl(`zealwish-${(name || identity?.name || 'character').toLowerCase().replace(/[^a-z0-9]+/g, '-')}.jpg`, identity.avatar)}
+              >
+                Save image
+              </button>
+            </div>
+          ) : null}
+
           {portraitState === 'rendering' || portraitState === 'slow' ? (
             <div className="portrait-grid" aria-hidden="true">
               {[0, 1, 2, 3].map((i) => <div className="portrait-skeleton" key={i} />)}
             </div>
           ) : portraitCandidates && portraitCandidates.length > 1 ? (
             <>
-              <div className="field-label">Pick your favorite — {portraitCandidates.length} options</div>
+              <div className="field-label">Pick your favorite — tap to use, &darr; to save</div>
               <div className="portrait-grid" role="radiogroup" aria-label="Generated portrait options">
                 {portraitCandidates.map((src, i) => (
-                  <button
-                    type="button"
-                    key={i}
-                    role="radio"
-                    aria-checked={identity?.avatar === src}
-                    className={identity?.avatar === src ? 'portrait-option is-active' : 'portrait-option'}
-                    onClick={() => onSelectPortrait(src)}
-                  >
-                    <img src={src} alt={`Portrait option ${i + 1}`} />
-                  </button>
+                  <div className={identity?.avatar === src ? 'portrait-cell is-active' : 'portrait-cell'} key={i}>
+                    <button
+                      type="button"
+                      role="radio"
+                      aria-checked={identity?.avatar === src}
+                      className="portrait-option"
+                      onClick={() => onSelectPortrait(src)}
+                      aria-label={`Use portrait option ${i + 1}`}
+                    >
+                      <img src={src} alt={`Portrait option ${i + 1}`} />
+                    </button>
+                    <button
+                      type="button"
+                      className="portrait-save"
+                      title="Save this image"
+                      aria-label={`Save portrait option ${i + 1}`}
+                      onClick={() => downloadDataUrl(`zealwish-${(name || identity?.name || 'character').toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${i + 1}.jpg`, src)}
+                    >&darr;</button>
+                  </div>
                 ))}
               </div>
             </>

@@ -265,10 +265,21 @@
   .backdrop-custom { display: inline-flex; align-items: center; justify-content: center; overflow: hidden; color: var(--white); font-size: 16px; font-weight: 700; }
   .backdrop-custom input[type="color"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; border: 0; }
   .portrait-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
-  .portrait-option { padding: 0; border: 1px solid var(--line); background: var(--elev-1); overflow: hidden; cursor: pointer; aspect-ratio: 1; transition: border-color 200ms var(--ease), transform 200ms var(--ease); }
+  .portrait-cell { position: relative; }
+  .portrait-option { display: block; width: 100%; padding: 0; border: 1px solid var(--line); background: var(--elev-1); overflow: hidden; cursor: pointer; aspect-ratio: 1; transition: border-color 200ms var(--ease), transform 200ms var(--ease); }
   .portrait-option img { width: 100%; height: 100%; object-fit: cover; }
-  .portrait-option:hover { transform: translateY(-2px); border-color: rgba(255,45,45,.6); }
-  .portrait-option.is-active { border-color: var(--red); box-shadow: 0 0 0 2px var(--red-glow); }
+  .portrait-cell:hover .portrait-option { transform: translateY(-2px); border-color: rgba(255,45,45,.6); }
+  .portrait-cell.is-active .portrait-option { border-color: var(--red); box-shadow: 0 0 0 2px var(--red-glow); }
+  .portrait-save {
+    position: absolute; top: 6px; right: 6px; width: 26px; height: 26px; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,255,255,.18); background: rgba(10,10,11,.72); color: var(--white);
+    font-size: 14px; border-radius: 4px; backdrop-filter: blur(6px);
+    opacity: 0; transition: opacity 200ms var(--ease), background 200ms var(--ease), border-color 200ms var(--ease);
+  }
+  .portrait-cell:hover .portrait-save, .portrait-save:focus-visible { opacity: 1; }
+  .portrait-save:hover { background: var(--red); border-color: var(--red); }
+  @media (hover: none) { .portrait-save { opacity: 1; } }
   .portrait-skeleton {
     aspect-ratio: 1; border: 1px solid var(--line); background: var(--elev-1); position: relative; overflow: hidden;
   }
@@ -458,7 +469,7 @@
 </div>
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
-<script src="src/v4/wallet-service.js?v=20260613-1551"></script>
-<script src="src/v6/zealwish-web-app.js?v=20260613-1551"></script>
+<script src="src/v4/wallet-service.js?v=20260613-1604"></script>
+<script src="src/v6/zealwish-web-app.js?v=20260613-1604"></script>
 </body>
 </html>

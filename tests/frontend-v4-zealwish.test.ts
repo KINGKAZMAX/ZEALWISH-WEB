@@ -254,6 +254,10 @@ describe("frontend-v4 ZEALWISH voice-first web product", () => {
     expect(webApp).toContain("backdropPromptFor");
     expect(webApp).toContain('type="color"');
     expect(web).toContain(".backdrop-swatch");
+    // Generated portraits can be saved to disk.
+    expect(webApp).toContain("downloadDataUrl");
+    expect(webApp).toContain("Save image");
+    expect(web).toContain(".portrait-save");
   });
 
   it("presents a bento home with presence, latest memory, and passport status", () => {
