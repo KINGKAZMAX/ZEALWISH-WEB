@@ -72,6 +72,11 @@
   .boot-screen b { font-family: Teko, Archivo, sans-serif; font-size: 64px; line-height: .84; letter-spacing: .04em; text-transform: uppercase; }
   .boot-pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--red); animation: zealwishVoicePulse 1.2s ease-in-out infinite; }
   .boot-screen .mono { color: var(--faint); font-size: 10px; letter-spacing: .3em; text-transform: uppercase; }
+  .app-crash { min-height: 100vh; display: grid; place-content: center; justify-items: center; gap: 12px; text-align: center; padding: 24px; }
+  .app-crash b { font-family: Teko, Archivo, sans-serif; font-size: 56px; line-height: .84; letter-spacing: .04em; text-transform: uppercase; }
+  .app-crash p { margin: 0; color: var(--muted); }
+  .app-crash .app-crash-note { color: var(--faint); font-size: 13px; }
+  .app-crash-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px; }
   @media (prefers-reduced-motion: no-preference) {
     .workspace > * { animation: viewEnter 360ms var(--ease) both; }
     .workspace > *:nth-child(2) { animation-delay: 50ms; }
@@ -428,7 +433,7 @@
 </div>
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
-<script src="src/v4/wallet-service.js?v=20260613-1007"></script>
-<script src="src/v6/zealwish-web-app.js?v=20260613-1007"></script>
+<script src="src/v4/wallet-service.js?v=20260613-1507"></script>
+<script src="src/v6/zealwish-web-app.js?v=20260613-1507"></script>
 </body>
 </html>

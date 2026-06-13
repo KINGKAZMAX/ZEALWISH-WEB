@@ -412,6 +412,12 @@ describe("frontend-v4 ZEALWISH voice-first web product", () => {
     expect(notFound).toContain("ZEAL");
     expect(notFound).toContain("/web.html#/home");
     expect(notFound).not.toMatch(chinesePattern);
+
+    // A render throw recovers gracefully instead of white-screening.
+    expect(webApp).toContain("class AppErrorBoundary");
+    expect(webApp).toContain("getDerivedStateFromError");
+    expect(webApp).toContain("Reload workspace");
+    expect(web).toContain(".app-crash");
   });
 
   it("documents the preview and architecture contract in English", () => {

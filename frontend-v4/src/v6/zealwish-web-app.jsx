@@ -2115,4 +2115,40 @@ function App() {
   return <Shell activeModule={activeModule} setActiveModule={setActiveModule} wallet={wallet} identity={identity} vault={vault} apiStatus={apiStatus} signedPassport={signedPassport} onConnectWallet={handleConnectWallet}>{view}</Shell>;
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+// A single render throw would otherwise wipe the boot skeleton to a blank
+// screen — catch it and offer a styled recovery instead of a dead page.
+class AppErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { failed: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error) {
+    try { console.error('[ZEALWISH] render error', error); } catch {}
+  }
+
+  render() {
+    if (this.state.failed) {
+      return (
+        <div className="app-crash">
+          <b>ZEALWISH</b>
+          <p className="mono">Something glitched on screen.</p>
+          <p className="app-crash-note">Your character, memories, and passport are safe in this browser.</p>
+          <div className="app-crash-actions">
+            <button className="button-primary edge" onClick={() => window.location.reload()}>Reload workspace</button>
+            <a className="button-secondary edge" href="index.html#top">Back to landing</a>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <AppErrorBoundary><App /></AppErrorBoundary>
+);
