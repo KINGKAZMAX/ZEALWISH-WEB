@@ -12,6 +12,7 @@
 <meta property="og:image" content="/assets/zealwish-main-character.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="description" content="ZEALWISH is a voice-first, wallet-owned AI companion platform. Talk to a living character that remembers you, grow it through memory, and own its identity through a character passport on neutral rails." />
+<link rel="preload" as="image" href="assets/zealwish-main-character.webp" type="image/webp" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230A0A0B'/%3E%3Cpath d='M10 12h12l5 23 8-23h10l8 23 5-23h6L52 52H40l-8-22-8 22H12z' fill='%23FF2D2D'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,7 +85,14 @@
   a { color: inherit; text-decoration: none; }
   button { font: inherit; }
   img { display: block; max-width: 100%; }
-  ::selection { background: var(--accent); color: var(--ink); }
+  ::selection { background: rgba(255,45,45,.45); color: #F5F5F7; }
+
+  /* thin themed scrollbars */
+  * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.18) transparent; }
+  *::-webkit-scrollbar { width: 8px; height: 8px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb { background: rgba(255,255,255,.14); border-radius: 4px; }
+  *::-webkit-scrollbar-thumb:hover { background: rgba(255,45,45,.5); }
 
   #root { position: relative; z-index: 2; min-height: 100vh; }
 
@@ -842,7 +850,7 @@
 <!-- Vendored React 18 production builds + precompiled landing bundle (no CDN, no in-browser Babel) -->
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
-<script src="src/v4/wallet-service.js?v=20260613-0922"></script>
-<script src="src/v5/zealwish-landing.js?v=20260613-0922"></script>
+<script src="src/v4/wallet-service.js?v=20260613-1007"></script>
+<script src="src/v5/zealwish-landing.js?v=20260613-1007"></script>
 </body>
 </html>

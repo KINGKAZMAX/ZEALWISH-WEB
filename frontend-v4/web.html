@@ -62,6 +62,24 @@
   }
   img { display: block; max-width: 100%; }
   #root { min-height: 100vh; }
+  ::selection { background: rgba(255,45,45,.45); color: var(--white); }
+  * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.18) transparent; }
+  *::-webkit-scrollbar { width: 8px; height: 8px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb { background: rgba(255,255,255,.14); border-radius: 4px; }
+  *::-webkit-scrollbar-thumb:hover { background: rgba(255,45,45,.5); }
+  .boot-screen { min-height: 100vh; display: grid; place-content: center; justify-items: center; gap: 14px; }
+  .boot-screen b { font-family: Teko, Archivo, sans-serif; font-size: 64px; line-height: .84; letter-spacing: .04em; text-transform: uppercase; }
+  .boot-pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--red); animation: zealwishVoicePulse 1.2s ease-in-out infinite; }
+  .boot-screen .mono { color: var(--faint); font-size: 10px; letter-spacing: .3em; text-transform: uppercase; }
+  @media (prefers-reduced-motion: no-preference) {
+    .workspace > * { animation: viewEnter 360ms var(--ease) both; }
+    .workspace > *:nth-child(2) { animation-delay: 50ms; }
+    .workspace > *:nth-child(3) { animation-delay: 100ms; }
+    .message { animation: msgEnter 280ms var(--ease) both; }
+  }
+  @keyframes viewEnter { from { opacity: 0; transform: translateY(10px); } }
+  @keyframes msgEnter { from { opacity: 0; transform: translateY(6px); } }
   .mono { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
   .display { font-family: Teko, Archivo, sans-serif; letter-spacing: 0.03em; text-transform: uppercase; }
   .edge { clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px)); }
@@ -266,10 +284,11 @@
   .scene-chip { display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(255,45,45,.5); background: rgba(255,45,45,.1); color: var(--white); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; padding: 4px 10px; }
   .scene-chip button { border: 0; background: none; padding: 0; color: var(--red); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; transition: opacity 200ms var(--ease); }
   .scene-chip button:hover { opacity: .7; }
-  .chat-log { display: grid; gap: 12px; align-content: start; overflow: auto; max-height: 420px; padding-right: 6px; }
+  .chat-log { display: grid; gap: 12px; align-content: start; overflow: auto; max-height: min(58vh, 640px); padding-right: 6px; }
   .message { max-width: min(720px, 92%); border: 1px solid var(--line); background: var(--panel-soft); padding: 13px 14px; }
   .message.user { margin-left: auto; border-color: rgba(255,45,45,.6); background: rgba(255,45,45,.13); }
-  .message b { display: block; margin-bottom: 6px; color: var(--red); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+  .message b { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; color: var(--red); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+  .msg-time { color: var(--faint); font-size: 9px; letter-spacing: .08em; font-weight: 400; white-space: nowrap; }
   .message span { color: rgba(245,245,247,.88); line-height: 1.55; white-space: pre-wrap; }
   .message-tag { display: block; margin-top: 8px; color: var(--faint); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
   .stream-caret { display: inline-block; width: 8px; height: 14px; margin-left: 3px; vertical-align: text-bottom; background: var(--red); animation: caretBlink 800ms steps(1) infinite; }
@@ -394,6 +413,11 @@
 </head>
 <body>
 <div id="root">
+  <div class="boot-screen" aria-hidden="true">
+    <b>ZEALWISH</b>
+    <span class="boot-pulse"></span>
+    <span class="mono">Waking the workspace</span>
+  </div>
   <noscript>
     <div style="padding:48px 24px;font-family:system-ui,sans-serif;color:#F5F5F7;">
       <h1 style="color:#FF2D2D;">ZEALWISH Web</h1>
@@ -404,7 +428,7 @@
 </div>
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
-<script src="src/v4/wallet-service.js?v=20260613-0922"></script>
-<script src="src/v6/zealwish-web-app.js?v=20260613-0922"></script>
+<script src="src/v4/wallet-service.js?v=20260613-1007"></script>
+<script src="src/v6/zealwish-web-app.js?v=20260613-1007"></script>
 </body>
 </html>

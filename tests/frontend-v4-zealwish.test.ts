@@ -377,6 +377,43 @@ describe("frontend-v4 ZEALWISH voice-first web product", () => {
     expect(index).toContain('name="theme-color"');
   });
 
+  it("ships product-grade polish: boot screen, scrollbar, entrance motion, WebP hero, 404, shortcuts", () => {
+    const web = readFileSync(webPath, "utf8");
+    const webApp = readFileSync(webAppPath, "utf8");
+    const index = readFileSync(indexPath, "utf8");
+    const landing = readFileSync(landingPath, "utf8");
+    const notFoundPath = join(root, "frontend-v4", "404.html");
+    const heroWebpPath = join(root, "frontend-v4", "assets", "zealwish-main-character.webp");
+
+    // No-black-flash boot skeleton + structural entrance motion (reduced-motion guarded).
+    expect(web).toContain(".boot-screen");
+    expect(web).toContain('class="boot-screen"');
+    expect(web).toContain("@keyframes viewEnter");
+    expect(web).toContain("@keyframes msgEnter");
+    expect(web).toContain("prefers-reduced-motion: no-preference");
+    // OLED-grade scrollbar + selection styling.
+    expect(web).toContain("::-webkit-scrollbar-thumb");
+    expect(web).toContain("::selection");
+    // Message timestamps + flexible chat-log height + keyboard shortcuts.
+    expect(webApp).toContain("msg-time");
+    expect(webApp).toContain("chatInputRef");
+    expect(webApp).toContain("event.key === '/'");
+    expect(web).toContain("max-height: min(58vh, 640px)");
+    // Compressed WebP hero shipped + referenced via <picture>, PNG fallback intact.
+    expect(existsSync(heroWebpPath)).toBe(true);
+    expect(landing).toContain("zealwish-main-character.webp");
+    expect(landing).toContain("assets/zealwish-main-character.png");
+    expect(index).toContain('rel="preload"');
+    expect(webApp).toContain("assets/zealwish-main-character.webp");
+    expect(webApp).toContain("isBundledAvatar");
+    // Branded 404 page for unknown deploy routes.
+    expect(existsSync(notFoundPath)).toBe(true);
+    const notFound = readFileSync(notFoundPath, "utf8");
+    expect(notFound).toContain("ZEAL");
+    expect(notFound).toContain("/web.html#/home");
+    expect(notFound).not.toMatch(chinesePattern);
+  });
+
   it("documents the preview and architecture contract in English", () => {
     expect(existsSync(architecturePath)).toBe(true);
     const architecture = readFileSync(architecturePath, "utf8");

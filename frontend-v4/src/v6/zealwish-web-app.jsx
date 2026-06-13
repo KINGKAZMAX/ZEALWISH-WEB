@@ -2,7 +2,11 @@ import { verifyMessage } from "ethers";
 
 const { useCallback, useEffect, useMemo, useRef, useState } = React;
 
-const ZEALWISH_BROWSER_AVATAR_FALLBACK = "assets/zealwish-main-character.png";
+const ZEALWISH_BROWSER_AVATAR_FALLBACK = "assets/zealwish-main-character.webp";
+
+function isBundledAvatar(avatar) {
+  return !avatar || String(avatar).startsWith('assets/');
+}
 
 const PASSPORT_KEY = "zealwish.web.passport";
 const SIGNED_PASSPORT_KEY = "zealwish.web.passport.signed";
@@ -213,7 +217,12 @@ function defaultIdentity() {
 function loadIdentity() {
   try {
     const saved = JSON.parse(localStorage.getItem(PASSPORT_KEY) || 'null');
-    if (saved?.name) return { ...defaultIdentity(), ...saved };
+    if (saved?.name) {
+      const merged = { ...defaultIdentity(), ...saved };
+      // Existing profiles pointing at the heavy PNG get the 59KB WebP instead.
+      if (merged.avatar === 'assets/zealwish-main-character.png') merged.avatar = ZEALWISH_BROWSER_AVATAR_FALLBACK;
+      return merged;
+    }
   } catch {}
   const fresh = defaultIdentity();
   try { localStorage.setItem(PASSPORT_KEY, JSON.stringify(fresh)); } catch {}
@@ -584,7 +593,7 @@ async function buildPassportV1(identity, vault, ownerAddress) {
     name: identity.name,
     prompt: identity.prompt,
     gender: identity.gender,
-    avatar: identity.avatar === ZEALWISH_BROWSER_AVATAR_FALLBACK ? 'bundled' : 'generated'
+    avatar: isBundledAvatar(identity.avatar) ? 'bundled' : 'generated'
   }));
   const memory_vault_hash = await sha256Hex(JSON.stringify({
     facts: vault.facts.map((f) => f.text),
@@ -1054,6 +1063,7 @@ function TalkView({ identity, vault, chatInput, setChatInput, chatMessages, onSe
   const recognitionRef = useRef(null);
   const transcriptHandlerRef = useRef(onVoiceTranscript);
   const logRef = useRef(null);
+  const chatInputRef = useRef(null);
   const activity = useVoiceActivity();
   const previousActivityRef = useRef('idle');
 
@@ -1130,6 +1140,27 @@ function TalkView({ identity, vault, chatInput, setChatInput, chatMessages, onSe
     stopVoicePlayback();
     startListening();
   }, [startListening]);
+
+  // Keyboard shortcuts: "/" focuses the chat input, Escape stops voice
+  // playback and closes the mic.
+  useEffect(() => {
+    const onKey = (event) => {
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
+      const tag = document.activeElement?.tagName;
+      const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+      if (event.key === '/' && !typing) {
+        event.preventDefault();
+        chatInputRef.current?.focus();
+      } else if (event.key === 'Escape') {
+        stopVoicePlayback();
+        if (recognitionRef.current) {
+          try { recognitionRef.current.stop(); } catch {}
+        }
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   // Hands-free loop: when the character finishes speaking, re-open the mic so
   // the conversation keeps flowing without another tap.
@@ -1215,7 +1246,10 @@ function TalkView({ identity, vault, chatInput, setChatInput, chatMessages, onSe
           <div className="chat-log" ref={logRef}>
             {chatMessages.map((message, index) => (
               <div className={`message ${message.role}${message.streaming ? ' is-streaming' : ''}`} key={`${message.role}-${index}`}>
-                <b>{message.role === 'user' ? 'You' : identity?.name}</b>
+                <b>
+                  {message.role === 'user' ? 'You' : identity?.name}
+                  {message.at ? <time className="msg-time mono" dateTime={message.at}>{timeAgo(message.at)}</time> : null}
+                </b>
                 <span>{message.text}{message.streaming ? <i className="stream-caret" aria-hidden="true" /> : null}</span>
                 {message.source === 'fallback' ? <small className="mono message-tag">offline echo</small> : null}
               </div>
@@ -1232,6 +1266,7 @@ function TalkView({ identity, vault, chatInput, setChatInput, chatMessages, onSe
           ) : null}
           <div className="chat-input">
             <input
+              ref={chatInputRef}
               className="field"
               value={chatInput}
               onChange={(event) => setChatInput(event.target.value)}
@@ -1660,6 +1695,22 @@ function App() {
   // The conversation survives reloads — only settled messages are persisted.
   useEffect(() => { persistChatLog(chatMessages); }, [chatMessages]);
 
+  // One-time migration: portraits generated before avatar compression shipped
+  // can be >1MB of data URL — recompress them in place to protect the quota.
+  useEffect(() => {
+    const avatar = identityRef.current?.avatar || '';
+    if (!avatar.startsWith('data:') || avatar.length < 400000) return;
+    let cancelled = false;
+    compressDataUrl(avatar, 512).then((compact) => {
+      if (cancelled || !compact || compact.length >= avatar.length) return;
+      const next = { ...identityRef.current, avatar: compact };
+      try { localStorage.setItem(PASSPORT_KEY, JSON.stringify(next)); } catch {}
+      identityRef.current = next;
+      setIdentity(next);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
   const setActiveModule = useCallback((moduleId) => {
     window.location.hash = WEB_APP_ROUTES[moduleId] || '#/home';
     setActiveModuleState(moduleId);
@@ -1840,7 +1891,7 @@ function App() {
     const gender = resolveVoiceGender(currentIdentity);
     const speakReplies = voiceEnabled;
 
-    const userMessage = { role: 'user', text: clean };
+    const userMessage = { role: 'user', text: clean, at: new Date().toISOString() };
     const history = [...chatMessages.filter((message) => !message.streaming), userMessage];
     setChatMessages([...history, { role: 'character', text: '', streaming: true }]);
     setChatInput('');
@@ -1920,7 +1971,7 @@ function App() {
       refreshApiStatus();
     }
 
-    setChatMessages([...history, { role: 'character', text: finalText, source }]);
+    setChatMessages([...history, { role: 'character', text: finalText, source, at: new Date().toISOString() }]);
     setChatPhase('idle');
 
     if (speakReplies) {
@@ -2030,7 +2081,7 @@ function App() {
       schema: 'zealwish.export/v1',
       product: 'ZEALWISH Web Workspace',
       exported_at: new Date().toISOString(),
-      identity: { ...identityRef.current, avatar: identityRef.current.avatar === ZEALWISH_BROWSER_AVATAR_FALLBACK ? 'bundled' : 'generated' },
+      identity: { ...identityRef.current, avatar: isBundledAvatar(identityRef.current.avatar) ? 'bundled' : 'generated' },
       passport: signedPassport || null,
       vault: vaultRef.current
     };

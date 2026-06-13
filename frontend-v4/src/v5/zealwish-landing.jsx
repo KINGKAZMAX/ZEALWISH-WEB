@@ -116,11 +116,14 @@ function Hero() {
         <div className="frame edge" />
         <div className="character-card">
           <div className="character-tag mono edge">ZEALWISH-0001 / Alive</div>
-          <img
-            src={ZEALWISH_BROWSER_AVATAR_FALLBACK}
-            alt="ZEALWISH red signal AI character"
-            loading="eager"
-          />
+          <picture>
+            <source srcSet="assets/zealwish-main-character.webp" type="image/webp" />
+            <img
+              src={ZEALWISH_BROWSER_AVATAR_FALLBACK}
+              alt="ZEALWISH red signal AI character"
+              loading="eager"
+            />
+          </picture>
           <VoicePanel />
         </div>
       </div>
